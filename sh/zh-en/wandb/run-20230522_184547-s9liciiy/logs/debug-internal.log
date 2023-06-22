@@ -1,0 +1,173 @@
+2023-05-22 18:45:47,872 INFO    StreamThr :21565 [internal.py:wandb_internal():87] W&B internal server running at pid: 21565, started at: 2023-05-22 18:45:47.847918
+2023-05-22 18:45:47,875 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: status
+2023-05-22 18:45:47,879 INFO    WriterThread:21565 [datastore.py:open_for_write():85] open: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/run-s9liciiy.wandb
+2023-05-22 18:45:47,893 DEBUG   SenderThread:21565 [sender.py:send():334] send: header
+2023-05-22 18:45:47,894 DEBUG   SenderThread:21565 [sender.py:send():334] send: run
+2023-05-22 18:45:48,363 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: check_version
+2023-05-22 18:45:48,366 INFO    SenderThread:21565 [dir_watcher.py:__init__():216] watching files in: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files
+2023-05-22 18:45:48,366 INFO    SenderThread:21565 [sender.py:_start_run_threads():1065] run started: s9liciiy with start time 1684806347.850489
+2023-05-22 18:45:48,366 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: summary_record
+2023-05-22 18:45:48,384 INFO    SenderThread:21565 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-05-22 18:45:48,384 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: check_version
+2023-05-22 18:45:48,581 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: run_start
+2023-05-22 18:45:48,594 DEBUG   HandlerThread:21565 [system_info.py:__init__():31] System info init
+2023-05-22 18:45:48,594 DEBUG   HandlerThread:21565 [system_info.py:__init__():46] System info init done
+2023-05-22 18:45:48,594 INFO    HandlerThread:21565 [system_monitor.py:start():151] Starting system monitor
+2023-05-22 18:45:48,595 INFO    SystemMonitor:21565 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-05-22 18:45:48,595 INFO    HandlerThread:21565 [system_monitor.py:probe():172] Collecting system info
+2023-05-22 18:45:48,604 INFO    SystemMonitor:21565 [interfaces.py:start():168] Started cpu
+2023-05-22 18:45:48,605 INFO    SystemMonitor:21565 [interfaces.py:start():168] Started disk
+2023-05-22 18:45:48,607 INFO    SystemMonitor:21565 [interfaces.py:start():168] Started gpu
+2023-05-22 18:45:48,607 INFO    SystemMonitor:21565 [interfaces.py:start():168] Started memory
+2023-05-22 18:45:48,608 INFO    SystemMonitor:21565 [interfaces.py:start():168] Started network
+2023-05-22 18:45:48,609 DEBUG   HandlerThread:21565 [system_info.py:probe():195] Probing system
+2023-05-22 18:45:48,609 DEBUG   HandlerThread:21565 [system_info.py:probe():241] Probing system done
+2023-05-22 18:45:48,609 DEBUG   HandlerThread:21565 [system_monitor.py:probe():181] {'os': 'Linux-3.10.0-1160.71.1.el7.x86_64-x86_64-with-glibc2.17', 'python': '3.9.15', 'heartbeatAt': '2023-05-23T01:45:48.609702', 'startedAt': '2023-05-23T01:45:47.773440', 'docker': None, 'cuda': None, 'args': ('/project/jonmay_231/linghaoj/canmt/bwb/data/bin', '--user-dir', '/project/jonmay_231/linghaoj/concat-src-only/model', '--save-dir', '/project/jonmay_231/linghaoj/reproduce/ckpt/xfm-src3-0.2[zh-en]', '--task', 'document_translation', '-s', 'zh', '-t', 'en', '--arch', 'transformer', '--share-decoder-input-output-embed', '--optimizer', 'adam', '--adam-betas', '(0.9, 0.98)', '--adam-eps', '1e-8', '--clip-norm', '1', '--lr', '1e-3', '--lr-scheduler', 'inverse_sqrt', '--warmup-updates', '4000', '--criterion', 'label_smoothed_cross_entropy', '--label-smoothing', '0.1', '--dropout', '0.2', '--weight-decay', '0.01', '--max-tokens', '4096', '--update-freq', '16', '--seed', '42', '--save-interval-updates', '5000', '--max-update', '500000', '--eval-bleu', '--eval-bleu-args', '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}', '--eval-bleu-remove-bpe', 'sentencepiece', '--eval-bleu-print-samples', '--best-checkpoint-metric', 'bleu', '--maximize-best-checkpoint-metric', '--keep-last-epochs', '5', '--fp16', '--wandb-project', 'reproduce-doc-mt'), 'state': 'running', 'program': '/home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train', 'host': 'd23-01.hpc.usc.edu', 'username': 'linghaoj', 'executable': '/home1/linghaoj/anaconda3/envs/env-mega/bin/python3.9', 'cpu_count': 20, 'cpu_count_logical': 20, 'cpu_freq': {'current': 2394.7010000000005, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}], 'disk': {'total': 62.89754104614258, 'used': 3.0230140686035156}, 'gpu': 'Tesla P100-PCIE-16GB', 'gpu_count': 1, 'gpu_devices': [{'name': 'Tesla P100-PCIE-16GB', 'memory_total': 17179869184}], 'memory': {'total': 125.79508209228516}}
+2023-05-22 18:45:48,610 INFO    HandlerThread:21565 [system_monitor.py:probe():182] Finished collecting system info
+2023-05-22 18:45:48,610 INFO    HandlerThread:21565 [system_monitor.py:probe():185] Publishing system info
+2023-05-22 18:45:48,610 DEBUG   HandlerThread:21565 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-05-22 18:45:48,626 DEBUG   HandlerThread:21565 [system_info.py:_save_pip():67] Saving pip packages done
+2023-05-22 18:45:48,626 DEBUG   HandlerThread:21565 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-05-22 18:45:49,372 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/requirements.txt
+2023-05-22 18:45:49,373 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/wandb-summary.json
+2023-05-22 18:45:49,373 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/conda-environment.yaml
+2023-05-22 18:45:53,381 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/conda-environment.yaml
+2023-05-22 18:45:53,387 DEBUG   HandlerThread:21565 [system_info.py:_save_conda():86] Saving conda packages done
+2023-05-22 18:45:53,397 INFO    HandlerThread:21565 [system_monitor.py:probe():187] Finished publishing system info
+2023-05-22 18:45:53,410 DEBUG   SenderThread:21565 [sender.py:send():334] send: files
+2023-05-22 18:45:53,410 INFO    SenderThread:21565 [sender.py:_save_file():1319] saving file wandb-metadata.json with policy now
+2023-05-22 18:45:53,415 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: stop_status
+2023-05-22 18:45:53,429 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: stop_status
+2023-05-22 18:45:53,432 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: status_report
+2023-05-22 18:45:53,600 DEBUG   SenderThread:21565 [sender.py:send():334] send: telemetry
+2023-05-22 18:45:53,752 DEBUG   SenderThread:21565 [sender.py:send():334] send: exit
+2023-05-22 18:45:53,752 INFO    SenderThread:21565 [sender.py:send_exit():557] handling exit code: 1
+2023-05-22 18:45:53,752 INFO    SenderThread:21565 [sender.py:send_exit():559] handling runtime: 5
+2023-05-22 18:45:53,755 INFO    SenderThread:21565 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-05-22 18:45:53,755 INFO    SenderThread:21565 [sender.py:send_exit():565] send defer
+2023-05-22 18:45:53,755 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,755 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 0
+2023-05-22 18:45:53,755 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,755 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 0
+2023-05-22 18:45:53,755 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 1
+2023-05-22 18:45:53,755 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,755 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 1
+2023-05-22 18:45:53,755 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,755 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 1
+2023-05-22 18:45:53,755 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 2
+2023-05-22 18:45:53,756 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,756 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 2
+2023-05-22 18:45:53,756 INFO    HandlerThread:21565 [system_monitor.py:finish():161] Stopping system monitor
+2023-05-22 18:45:53,756 DEBUG   SystemMonitor:21565 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-05-22 18:45:53,756 DEBUG   SystemMonitor:21565 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2023-05-22 18:45:53,756 DEBUG   SystemMonitor:21565 [system_monitor.py:_start():141] Publishing last batch of metrics
+2023-05-22 18:45:53,763 INFO    HandlerThread:21565 [interfaces.py:finish():175] Joined cpu
+2023-05-22 18:45:53,763 INFO    HandlerThread:21565 [interfaces.py:finish():175] Joined disk
+2023-05-22 18:45:53,783 INFO    HandlerThread:21565 [interfaces.py:finish():175] Joined gpu
+2023-05-22 18:45:53,783 INFO    HandlerThread:21565 [interfaces.py:finish():175] Joined memory
+2023-05-22 18:45:53,783 INFO    HandlerThread:21565 [interfaces.py:finish():175] Joined network
+2023-05-22 18:45:53,784 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,784 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 2
+2023-05-22 18:45:53,784 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 3
+2023-05-22 18:45:53,784 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,784 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 3
+2023-05-22 18:45:53,784 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,784 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 3
+2023-05-22 18:45:53,784 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 4
+2023-05-22 18:45:53,784 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,784 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 4
+2023-05-22 18:45:53,784 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,784 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 4
+2023-05-22 18:45:53,784 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 5
+2023-05-22 18:45:53,784 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,784 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 5
+2023-05-22 18:45:53,785 DEBUG   SenderThread:21565 [sender.py:send():334] send: summary
+2023-05-22 18:45:53,785 INFO    SenderThread:21565 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-05-22 18:45:53,786 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,786 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 5
+2023-05-22 18:45:53,786 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 6
+2023-05-22 18:45:53,786 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,786 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 6
+2023-05-22 18:45:53,786 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,786 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 6
+2023-05-22 18:45:53,790 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: status_report
+2023-05-22 18:45:53,962 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 7
+2023-05-22 18:45:53,962 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:53,962 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 7
+2023-05-22 18:45:53,963 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:53,963 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 7
+2023-05-22 18:45:54,027 INFO    Thread-16 :21565 [upload_job.py:push():143] Uploaded file /tmp/SLURM_13406425/tmpm0nlvet9wandb/tba36x5p-wandb-metadata.json
+2023-05-22 18:45:54,384 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/config.yaml
+2023-05-22 18:45:54,384 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/wandb-summary.json
+2023-05-22 18:45:54,384 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/output.log
+2023-05-22 18:45:54,385 INFO    Thread-13 :21565 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/wandb-metadata.json
+2023-05-22 18:45:54,751 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: poll_exit
+2023-05-22 18:45:55,769 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 8
+2023-05-22 18:45:55,770 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: poll_exit
+2023-05-22 18:45:55,770 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:55,770 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 8
+2023-05-22 18:45:55,771 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:55,771 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 8
+2023-05-22 18:45:55,774 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 9
+2023-05-22 18:45:55,774 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:55,774 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 9
+2023-05-22 18:45:55,775 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:55,775 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 9
+2023-05-22 18:45:55,775 INFO    SenderThread:21565 [dir_watcher.py:finish():362] shutting down directory watcher
+2023-05-22 18:45:56,388 INFO    SenderThread:21565 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/output.log
+2023-05-22 18:45:56,389 INFO    SenderThread:21565 [dir_watcher.py:finish():392] scan: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files
+2023-05-22 18:45:56,389 INFO    SenderThread:21565 [dir_watcher.py:finish():406] scan save: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/wandb-metadata.json wandb-metadata.json
+2023-05-22 18:45:56,389 INFO    SenderThread:21565 [dir_watcher.py:finish():406] scan save: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/config.yaml config.yaml
+2023-05-22 18:45:56,390 INFO    SenderThread:21565 [dir_watcher.py:finish():406] scan save: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/requirements.txt requirements.txt
+2023-05-22 18:45:56,397 INFO    SenderThread:21565 [dir_watcher.py:finish():406] scan save: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/conda-environment.yaml conda-environment.yaml
+2023-05-22 18:45:56,398 INFO    SenderThread:21565 [dir_watcher.py:finish():406] scan save: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/wandb-summary.json wandb-summary.json
+2023-05-22 18:45:56,398 INFO    SenderThread:21565 [dir_watcher.py:finish():406] scan save: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/output.log output.log
+2023-05-22 18:45:56,399 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 10
+2023-05-22 18:45:56,399 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:56,399 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 10
+2023-05-22 18:45:56,400 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:56,400 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 10
+2023-05-22 18:45:56,400 INFO    SenderThread:21565 [file_pusher.py:finish():160] shutting down file pusher
+2023-05-22 18:45:57,354 INFO    Thread-18 :21565 [upload_job.py:push():143] Uploaded file /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/requirements.txt
+2023-05-22 18:45:57,362 INFO    Thread-19 :21565 [upload_job.py:push():143] Uploaded file /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/conda-environment.yaml
+2023-05-22 18:45:57,380 INFO    Thread-17 :21565 [upload_job.py:push():143] Uploaded file /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/config.yaml
+2023-05-22 18:45:57,401 INFO    Thread-20 :21565 [upload_job.py:push():143] Uploaded file /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/wandb-summary.json
+2023-05-22 18:45:57,601 INFO    Thread-21 :21565 [upload_job.py:push():143] Uploaded file /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/files/output.log
+2023-05-22 18:45:57,801 INFO    Thread-12 :21565 [sender.py:transition_state():585] send defer: 11
+2023-05-22 18:45:57,802 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:57,802 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 11
+2023-05-22 18:45:57,803 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:57,803 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 11
+2023-05-22 18:45:57,803 INFO    SenderThread:21565 [file_pusher.py:join():165] waiting for file pusher
+2023-05-22 18:45:57,803 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 12
+2023-05-22 18:45:57,803 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:57,803 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 12
+2023-05-22 18:45:57,804 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:57,804 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 12
+2023-05-22 18:45:57,912 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 13
+2023-05-22 18:45:57,912 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:57,912 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 13
+2023-05-22 18:45:57,912 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:57,912 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 13
+2023-05-22 18:45:57,913 INFO    SenderThread:21565 [sender.py:transition_state():585] send defer: 14
+2023-05-22 18:45:57,913 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: defer
+2023-05-22 18:45:57,913 INFO    HandlerThread:21565 [handler.py:handle_request_defer():170] handle defer: 14
+2023-05-22 18:45:57,914 DEBUG   SenderThread:21565 [sender.py:send():334] send: final
+2023-05-22 18:45:57,914 DEBUG   SenderThread:21565 [sender.py:send():334] send: footer
+2023-05-22 18:45:57,914 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: defer
+2023-05-22 18:45:57,914 INFO    SenderThread:21565 [sender.py:send_request_defer():581] handle sender defer: 14
+2023-05-22 18:45:57,915 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: poll_exit
+2023-05-22 18:45:57,916 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: server_info
+2023-05-22 18:45:57,916 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: get_summary
+2023-05-22 18:45:57,916 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: sampled_history
+2023-05-22 18:45:57,917 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: poll_exit
+2023-05-22 18:45:57,917 DEBUG   SenderThread:21565 [sender.py:send_request():361] send_request: server_info
+2023-05-22 18:45:58,314 INFO    MainThread:21565 [wandb_run.py:_footer_history_summary_info():3427] rendering history
+2023-05-22 18:45:58,315 INFO    MainThread:21565 [wandb_run.py:_footer_history_summary_info():3459] rendering summary
+2023-05-22 18:45:58,315 INFO    MainThread:21565 [wandb_run.py:_footer_sync_info():3383] logging synced files
+2023-05-22 18:45:58,316 DEBUG   HandlerThread:21565 [handler.py:handle_request():144] handle_request: shutdown
+2023-05-22 18:45:58,316 INFO    HandlerThread:21565 [handler.py:finish():841] shutting down handler
+2023-05-22 18:45:58,917 INFO    WriterThread:21565 [datastore.py:close():299] close: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_184547-s9liciiy/run-s9liciiy.wandb
+2023-05-22 18:45:59,317 INFO    SenderThread:21565 [sender.py:finish():1491] shutting down sender
+2023-05-22 18:45:59,317 INFO    SenderThread:21565 [file_pusher.py:finish():160] shutting down file pusher
+2023-05-22 18:45:59,317 INFO    SenderThread:21565 [file_pusher.py:join():165] waiting for file pusher

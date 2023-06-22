@@ -1,0 +1,809 @@
+2023-05-26 09:01:21 | INFO | fairseq_cli.train | Namespace(no_progress_bar=False, log_interval=100, log_format=None, tensorboard_logdir='', seed=42, cpu=False, tpu=False, bf16=False, fp16=True, memory_efficient_bf16=False, memory_efficient_fp16=False, fp16_no_flatten_grads=False, fp16_init_scale=128, fp16_scale_window=None, fp16_scale_tolerance=0.0, min_loss_scale=0.0001, threshold_loss_scale=None, user_dir='/project/jonmay_231/linghaoj/concat-src-only/concat_models', empty_cache_freq=0, all_gather_list_size=16384, model_parallel_size=1, checkpoint_suffix='', quantization_config_path=None, profile=False, wandb_project='reproduce-doc-mt', wandb_entity=None, wandb_id=None, criterion='label_smoothed_cross_entropy', tokenizer=None, bpe=None, optimizer='adam', lr_scheduler='inverse_sqrt', task='document_translation', num_workers=1, skip_invalid_size_inputs_valid_test=False, max_tokens=4096, max_sentences=None, required_batch_size_multiple=8, dataset_impl=None, data_buffer_size=10, train_subset='train', valid_subset='valid', test_subset='test', validate_interval=1, validate_interval_updates=0, validate_after_updates=0, fixed_validation_seed=None, disable_validation=False, max_tokens_valid=4096, max_sentences_valid=None, curriculum=0, distributed_world_size=2, distributed_rank=0, distributed_backend='nccl', distributed_init_method='tcp://localhost:16682', distributed_port=-1, device_id=0, distributed_no_spawn=False, ddp_backend='c10d', bucket_cap_mb=25, fix_batches_to_gpus=False, find_unused_parameters=False, fast_stat_sync=False, broadcast_buffers=False, distributed_wrapper='DDP', slowmo_momentum=None, slowmo_algorithm='LocalSGD', localsgd_frequency=3, nprocs_per_node=2, arch='contextual_mega', max_epoch=0, max_update=200000, stop_time_hours=0, clip_norm=0.1, clip_mode='total', sentence_avg=False, update_freq=[16], lr=[0.001], stop_min_lr=-1, use_bmuf=False, save_dir='/project/jonmay_231/linghaoj/reproduce/ckpt/mega-src3-0.2-sf[zh-en]', restore_file='checkpoint_last.pt', finetune_from_model=None, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, optimizer_overrides='{}', save_interval=1, save_interval_updates=0, keep_interval_updates=-1, keep_last_epochs=5, keep_best_checkpoints=-1, no_save=False, no_epoch_checkpoints=True, no_last_checkpoints=False, no_save_optimizer_state=False, best_checkpoint_metric='bleu', maximize_best_checkpoint_metric=True, patience=-1, rel_pos_bias='simple', context_loss=False, coword_dropout=0.0, coword_dropout_type='sample', multi_encoder=False, label_smoothing=0.1, adam_betas='(0.9, 0.98)', adam_eps=1e-08, weight_decay=0.01, use_old_adam=False, warmup_updates=4000, warmup_init_lr=-1, data='/project/jonmay_231/linghaoj/canmt/bwb/data/bin', source_lang='zh', target_lang='en', load_alignments=False, left_pad_source='True', left_pad_target='False', max_source_positions=1024, max_target_positions=1024, upsample_primary=1, truncate_source=False, num_batch_buckets=0, eval_bleu=True, eval_bleu_detok='space', eval_bleu_detok_args=None, eval_tokenized_bleu=False, eval_bleu_remove_bpe='sentencepiece', eval_bleu_args='{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}', eval_bleu_print_samples=True, source_context_size=0, target_context_size=0, sample_context_size=False, break_tag='<brk>', pos_drop_probs=None, next_sent_ctx=True, shuffle_sample=True, encoder_layers=6, decoder_layers=6, share_decoder_input_output_embed=True, activation_fn='silu', attention_activation_fn='softmax', encoder_n_dim=16, encoder_chunk_size=-1, normalization_type='layernorm', dropout=0.2, attention_dropout=0.0, hidden_dropout=0.0, activation_dropout=0.0, no_seed_provided=False, encoder_embed_path=None, encoder_embed_dim=512, encoder_hidden_dim=1024, encoder_ffn_embed_dim=1024, encoder_z_dim=128, decoder_embed_path=None, decoder_embed_dim=512, decoder_hidden_dim=1024, decoder_ffn_embed_dim=1024, decoder_z_dim=128, decoder_n_dim=16, decoder_chunk_size=-1, decoder_input_dim=512, feature_dropout=False, normalize_before=False, normalize_embedding=False, no_scale_embedding=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, share_all_embeddings=False, adaptive_input=False, truncation_length=1024, tie_adaptive_weights=False)
+2023-05-26 09:01:21 | INFO | fairseq.tasks.translation | [zh] dictionary: 36776 types
+2023-05-26 09:01:21 | INFO | fairseq.tasks.translation | [en] dictionary: 34088 types
+2023-05-26 09:01:21 | INFO | fairseq.data.data_utils | loaded 2619 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/valid.zh-en.zh
+2023-05-26 09:01:21 | INFO | fairseq.data.data_utils | loaded 2619 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/valid.zh-en.en
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | ContextualMegaModel(
+  (encoder): ContextualMegaEncoder(
+    (embedding_dropout): FairseqDropout(p=0.2)
+    (embed_tokens): Embedding(36776, 512, padding_idx=1)
+    (layers): ModuleList(
+      (0): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (1): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (2): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (3): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (4): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (5): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+    )
+  )
+  (decoder): ContextualMegaDecoder(
+    (embedding_dropout): FairseqDropout(p=0.2)
+    (embed_tokens): Embedding(34088, 512, padding_idx=1)
+    (layers): ModuleList(
+      (0): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (1): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (2): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (3): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (4): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (5): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+    )
+    (output_projection): Linear(in_features=512, out_features=34088, bias=False)
+  )
+)
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | task: document_translation (ConcatTranslationTask)
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | model: contextual_mega (ContextualMegaModel)
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | criterion: label_smoothed_cross_entropy (LabelSmoothedCrossEntropyCriterion)
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | num. model params: 82641902 (num. trained: 82641902)
+2023-05-26 09:01:22 | INFO | fairseq.trainer | detected shared parameter: decoder.embed_tokens.weight <- decoder.output_projection.weight
+2023-05-26 09:01:22 | INFO | fairseq.utils | ***********************CUDA enviroments for all 2 workers***********************
+2023-05-26 09:01:22 | INFO | fairseq.utils | rank   0: capabilities =  8.6  ; total memory = 44.369 GB ; name = NVIDIA A40
+2023-05-26 09:01:22 | INFO | fairseq.utils | rank   1: capabilities =  8.6  ; total memory = 44.369 GB ; name = NVIDIA A40
+2023-05-26 09:01:22 | INFO | fairseq.utils | ***********************CUDA enviroments for all 2 workers***********************
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | training on 2 devices (GPUs/TPUs)
+2023-05-26 09:01:22 | INFO | fairseq_cli.train | max tokens per GPU = 4096 and max sentences per GPU = None
+2023-05-26 09:01:22 | INFO | fairseq.trainer | no existing checkpoint found /project/jonmay_231/linghaoj/reproduce/ckpt/mega-src3-0.2-sf[zh-en]/checkpoint_last.pt
+2023-05-26 09:01:22 | INFO | fairseq.trainer | loading train data for epoch 1
+2023-05-26 09:01:23 | INFO | fairseq.data.data_utils | loaded 9878328 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/train.zh-en.zh
+2023-05-26 09:01:23 | INFO | fairseq.data.data_utils | loaded 9878328 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/train.zh-en.en
+/home1/linghaoj/anaconda3/envs/env-mega/lib/python3.9/site-packages/torch/nn/parallel/distributed.py:629: UserWarning: The `check_reduction` argument in `DistributedDataParallel` module is deprecated. Please avoid using it.
+  warnings.warn(
+2023-05-26 09:05:33 | INFO | fairseq.trainer | begin training epoch 1
+2023-05-26 09:05:49 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 64.0
+2023-05-26 09:05:49 | INFO | torch.nn.parallel.distributed | Reducer buckets have been rebuilt in this iteration.
+2023-05-26 09:05:57 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 32.0
+2023-05-26 09:06:03 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-05-26 09:06:09 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-05-26 09:06:30 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 4.0
+2023-05-26 09:13:04 | INFO | train_inner | epoch 001:    105 / 3198 loss=15.365, nll_loss=15.25, ppl=38974.1, wps=28912.9, ups=0.24, wpb=119421, bsz=3087.4, num_updates=100, lr=2.5e-05, gnorm=2.539, clip=100, loss_scale=4, train_wall=403, wall=702
+2023-05-26 09:19:55 | INFO | train_inner | epoch 001:    205 / 3198 loss=11.276, nll_loss=10.735, ppl=1703.98, wps=29134.3, ups=0.24, wpb=119648, bsz=3119.8, num_updates=200, lr=5e-05, gnorm=0.649, clip=100, loss_scale=4, train_wall=402, wall=1112
+2023-05-26 09:20:02 | WARNING | fairseq.trainer | OOM: Ran out of memory with exception: CUDA out of memory. Tried to allocate 1.24 GiB (GPU 0; 44.37 GiB total capacity; 39.11 GiB already allocated; 380.56 MiB free; 42.73 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+2023-05-26 09:20:02 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 0                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 1            |        cudaMalloc retries: 4         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |   36236 MB |   40053 MB |  125526 GB |  125490 GB |
+|       from large pool |   36108 MB |   39925 MB |  124684 GB |  124648 GB |
+|       from small pool |     127 MB |     171 MB |     842 GB |     841 GB |
+|---------------------------------------------------------------------------|
+| Active memory         |   36236 MB |   40053 MB |  125526 GB |  125490 GB |
+|       from large pool |   36108 MB |   39925 MB |  124684 GB |  124648 GB |
+|       from small pool |     127 MB |     171 MB |     842 GB |     841 GB |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |   43760 MB |   43794 MB |  669562 MB |  625802 MB |
+|       from large pool |   43626 MB |   43626 MB |  667784 MB |  624158 MB |
+|       from small pool |     134 MB |     180 MB |    1778 MB |    1644 MB |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |    4975 MB |    8079 MB |  116373 GB |  116368 GB |
+|       from large pool |    4969 MB |    8071 MB |  115493 GB |  115488 GB |
+|       from small pool |       6 MB |      35 MB |     879 GB |     879 GB |
+|---------------------------------------------------------------------------|
+| Allocations           |     945    |    1386    |   10192 K  |   10191 K  |
+|       from large pool |     186    |     493    |    5907 K  |    5907 K  |
+|       from small pool |     759    |     958    |    4284 K  |    4284 K  |
+|---------------------------------------------------------------------------|
+| Active allocs         |     945    |    1386    |   10192 K  |   10191 K  |
+|       from large pool |     186    |     493    |    5907 K  |    5907 K  |
+|       from small pool |     759    |     958    |    4284 K  |    4284 K  |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |     141    |     257    |    8761    |    8620    |
+|       from large pool |      74    |     170    |    7872    |    7798    |
+|       from small pool |      67    |      90    |     889    |     822    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |     119    |     165    |    4962 K  |    4961 K  |
+|       from large pool |      66    |     107    |    3007 K  |    3007 K  |
+|       from small pool |      53    |      83    |    1954 K  |    1954 K  |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 09:20:02 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 1                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 0            |        cudaMalloc retries: 0         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Active memory         |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Allocations           |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Active allocs         |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 09:20:02 | WARNING | fairseq.trainer | attempting to recover from OOM in forward/backward pass
+2023-05-26 09:26:46 | INFO | train_inner | epoch 001:    305 / 3198 loss=9.681, nll_loss=8.857, ppl=463.81, wps=29093.8, ups=0.24, wpb=119777, bsz=3132.5, num_updates=300, lr=7.5e-05, gnorm=0.318, clip=100, loss_scale=4, train_wall=403, wall=1524
+2023-05-26 09:33:34 | INFO | train_inner | epoch 001:    405 / 3198 loss=9.014, nll_loss=8.074, ppl=269.5, wps=29284.2, ups=0.25, wpb=119450, bsz=3102.8, num_updates=400, lr=0.0001, gnorm=0.305, clip=100, loss_scale=4, train_wall=399, wall=1932
+2023-05-26 09:40:18 | INFO | train_inner | epoch 001:    505 / 3198 loss=8.616, nll_loss=7.606, ppl=194.88, wps=29608.5, ups=0.25, wpb=119634, bsz=3110.1, num_updates=500, lr=0.000125, gnorm=0.355, clip=100, loss_scale=4, train_wall=396, wall=2336
+2023-05-26 09:40:50 | WARNING | fairseq.trainer | OOM: Ran out of memory with exception: CUDA out of memory. Tried to allocate 1.00 GiB (GPU 0; 44.37 GiB total capacity; 37.45 GiB already allocated; 424.56 MiB free; 42.69 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+2023-05-26 09:40:50 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 0                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 2            |        cudaMalloc retries: 7         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |   35275 MB |   40053 MB |  310346 GB |  310311 GB |
+|       from large pool |   35146 MB |   39925 MB |  308258 GB |  308224 GB |
+|       from small pool |     129 MB |     192 MB |    2087 GB |    2087 GB |
+|---------------------------------------------------------------------------|
+| Active memory         |   35275 MB |   40053 MB |  310346 GB |  310311 GB |
+|       from large pool |   35146 MB |   39925 MB |  308258 GB |  308224 GB |
+|       from small pool |     129 MB |     192 MB |    2087 GB |    2087 GB |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |   43710 MB |   43980 MB |  685496 MB |  641786 MB |
+|       from large pool |   43570 MB |   43804 MB |  683476 MB |  639906 MB |
+|       from small pool |     140 MB |     206 MB |    2020 MB |    1880 MB |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |    4560 MB |    8947 MB |  307257 GB |  307252 GB |
+|       from large pool |    4549 MB |    8938 MB |  305075 GB |  305071 GB |
+|       from small pool |      10 MB |      35 MB |    2181 GB |    2181 GB |
+|---------------------------------------------------------------------------|
+| Allocations           |     991    |    1386    |   25280 K  |   25279 K  |
+|       from large pool |     214    |     493    |   14653 K  |   14653 K  |
+|       from small pool |     777    |     969    |   10626 K  |   10626 K  |
+|---------------------------------------------------------------------------|
+| Active allocs         |     991    |    1386    |   25280 K  |   25279 K  |
+|       from large pool |     214    |     493    |   14653 K  |   14653 K  |
+|       from small pool |     777    |     969    |   10626 K  |   10626 K  |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |     133    |     257    |    8893    |    8760    |
+|       from large pool |      63    |     170    |    7883    |    7820    |
+|       from small pool |      70    |     103    |    1010    |     940    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |     118    |     165    |   11708 K  |   11708 K  |
+|       from large pool |      53    |     107    |    6865 K  |    6865 K  |
+|       from small pool |      65    |      83    |    4842 K  |    4842 K  |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 09:40:50 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 1                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 0            |        cudaMalloc retries: 0         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Active memory         |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Allocations           |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Active allocs         |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 09:40:50 | WARNING | fairseq.trainer | attempting to recover from OOM in forward/backward pass
+2023-05-26 09:46:56 | INFO | train_inner | epoch 001:    605 / 3198 loss=8.35, nll_loss=7.293, ppl=156.85, wps=30041.6, ups=0.25, wpb=119514, bsz=3028.2, num_updates=600, lr=0.00015, gnorm=0.361, clip=100, loss_scale=7, train_wall=389, wall=2734
+2023-05-26 09:53:40 | INFO | train_inner | epoch 001:    705 / 3198 loss=8.136, nll_loss=7.044, ppl=131.94, wps=29618.2, ups=0.25, wpb=119522, bsz=3052.5, num_updates=700, lr=0.000175, gnorm=0.368, clip=100, loss_scale=8, train_wall=395, wall=3137
+2023-05-26 09:59:14 | WARNING | fairseq.trainer | OOM: Ran out of memory with exception: CUDA out of memory. Tried to allocate 1.04 GiB (GPU 0; 44.37 GiB total capacity; 38.94 GiB already allocated; 2.56 MiB free; 43.10 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+2023-05-26 09:59:14 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 0                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 3            |        cudaMalloc retries: 9         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |   36687 MB |   40053 MB |  475921 GB |  475885 GB |
+|       from large pool |   36558 MB |   39925 MB |  472717 GB |  472682 GB |
+|       from small pool |     128 MB |     192 MB |    3203 GB |    3203 GB |
+|---------------------------------------------------------------------------|
+| Active memory         |   36687 MB |   40053 MB |  475921 GB |  475885 GB |
+|       from large pool |   36558 MB |   39925 MB |  472717 GB |  472682 GB |
+|       from small pool |     128 MB |     192 MB |    3203 GB |    3203 GB |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |   44134 MB |   44134 MB |  690454 MB |  646320 MB |
+|       from large pool |   43998 MB |   43998 MB |  688350 MB |  644352 MB |
+|       from small pool |     136 MB |     206 MB |    2104 MB |    1968 MB |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |    4256 MB |   11580 MB |  481280 GB |  481276 GB |
+|       from large pool |    4249 MB |   11567 MB |  477934 GB |  477930 GB |
+|       from small pool |       7 MB |      38 MB |    3345 GB |    3345 GB |
+|---------------------------------------------------------------------------|
+| Allocations           |     977    |    1386    |   38812 K  |   38811 K  |
+|       from large pool |     216    |     493    |   22500 K  |   22500 K  |
+|       from small pool |     761    |     969    |   16311 K  |   16310 K  |
+|---------------------------------------------------------------------------|
+| Active allocs         |     977    |    1386    |   38812 K  |   38811 K  |
+|       from large pool |     216    |     493    |   22500 K  |   22500 K  |
+|       from small pool |     761    |     969    |   16311 K  |   16310 K  |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |     127    |     257    |    8939    |    8812    |
+|       from large pool |      59    |     170    |    7887    |    7828    |
+|       from small pool |      68    |     103    |    1052    |     984    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |     101    |     165    |   17698 K  |   17698 K  |
+|       from large pool |      49    |     107    |   10280 K  |   10280 K  |
+|       from small pool |      52    |     106    |    7418 K  |    7417 K  |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 09:59:14 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 1                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 0            |        cudaMalloc retries: 0         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Active memory         |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Allocations           |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Active allocs         |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 09:59:14 | WARNING | fairseq.trainer | attempting to recover from OOM in forward/backward pass
+2023-05-26 10:00:28 | INFO | train_inner | epoch 001:    805 / 3198 loss=7.947, nll_loss=6.825, ppl=113.34, wps=29278.5, ups=0.25, wpb=119457, bsz=3071.4, num_updates=800, lr=0.0002, gnorm=0.39, clip=100, loss_scale=8, train_wall=400, wall=3545
+2023-05-26 10:02:02 | WARNING | fairseq.trainer | OOM: Ran out of memory with exception: CUDA out of memory. Tried to allocate 1.51 GiB (GPU 0; 44.37 GiB total capacity; 38.39 GiB already allocated; 96.56 MiB free; 43.01 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+2023-05-26 10:02:02 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 0                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 4            |        cudaMalloc retries: 10        |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |   34672 MB |   40053 MB |  500597 GB |  500563 GB |
+|       from large pool |   34545 MB |   39925 MB |  497224 GB |  497191 GB |
+|       from small pool |     127 MB |     192 MB |    3372 GB |    3372 GB |
+|---------------------------------------------------------------------------|
+| Active memory         |   34672 MB |   40053 MB |  500597 GB |  500563 GB |
+|       from large pool |   34545 MB |   39925 MB |  497224 GB |  497191 GB |
+|       from small pool |     127 MB |     192 MB |    3372 GB |    3372 GB |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |   44040 MB |   44134 MB |  693628 MB |  649588 MB |
+|       from large pool |   43902 MB |   43998 MB |  691444 MB |  647542 MB |
+|       from small pool |     138 MB |     206 MB |    2184 MB |    2046 MB |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |    4449 MB |   11580 MB |  507567 GB |  507563 GB |
+|       from large pool |    4438 MB |   11567 MB |  504045 GB |  504040 GB |
+|       from small pool |      10 MB |      38 MB |    3522 GB |    3522 GB |
+|---------------------------------------------------------------------------|
+| Allocations           |     907    |    1386    |   40852 K  |   40851 K  |
+|       from large pool |     156    |     493    |   23685 K  |   23685 K  |
+|       from small pool |     751    |     969    |   17166 K  |   17166 K  |
+|---------------------------------------------------------------------------|
+| Active allocs         |     907    |    1386    |   40852 K  |   40851 K  |
+|       from large pool |     156    |     493    |   23685 K  |   23685 K  |
+|       from small pool |     751    |     969    |   17166 K  |   17166 K  |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |     127    |     257    |    8981    |    8854    |
+|       from large pool |      58    |     170    |    7889    |    7831    |
+|       from small pool |      69    |     103    |    1092    |    1023    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |     113    |     165    |   18597 K  |   18597 K  |
+|       from large pool |      54    |     107    |   10787 K  |   10787 K  |
+|       from small pool |      59    |     106    |    7809 K  |    7809 K  |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 10:02:02 | WARNING | fairseq.trainer | |===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 1                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 0            |        cudaMalloc retries: 0         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Active memory         |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Non-releasable memory |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from large pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|       from small pool |       0 B  |       0 B  |       0 B  |       0 B  |
+|---------------------------------------------------------------------------|
+| Allocations           |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Active allocs         |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |       0    |       0    |       0    |       0    |
+|       from large pool |       0    |       0    |       0    |       0    |
+|       from small pool |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+2023-05-26 10:02:02 | WARNING | fairseq.trainer | attempting to recover from OOM in forward/backward pass
+2023-05-26 10:07:12 | INFO | train_inner | epoch 001:    905 / 3198 loss=7.784, nll_loss=6.635, ppl=99.41, wps=29622.2, ups=0.25, wpb=119724, bsz=3079.2, num_updates=900, lr=0.000225, gnorm=0.368, clip=100, loss_scale=8, train_wall=395, wall=3950
+2023-05-26 10:14:02 | INFO | train_inner | epoch 001:   1005 / 3198 loss=7.616, nll_loss=6.442, ppl=86.94, wps=29201.4, ups=0.24, wpb=119687, bsz=3145, num_updates=1000, lr=0.00025, gnorm=0.363, clip=100, loss_scale=8, train_wall=402, wall=4359
+2023-05-26 10:20:46 | INFO | train_inner | epoch 001:   1105 / 3198 loss=7.431, nll_loss=6.23, ppl=75.06, wps=29599.9, ups=0.25, wpb=119560, bsz=3101.1, num_updates=1100, lr=0.000275, gnorm=0.385, clip=100, loss_scale=14, train_wall=396, wall=4763
+2023-05-26 10:27:33 | INFO | train_inner | epoch 001:   1205 / 3198 loss=7.223, nll_loss=5.992, ppl=63.65, wps=29439.9, ups=0.25, wpb=119771, bsz=3095.4, num_updates=1200, lr=0.0003, gnorm=0.413, clip=100, loss_scale=16, train_wall=398, wall=5170
+2023-05-26 10:34:26 | INFO | train_inner | epoch 001:   1305 / 3198 loss=7.021, nll_loss=5.761, ppl=54.22, wps=28996.5, ups=0.24, wpb=119749, bsz=3113, num_updates=1300, lr=0.000325, gnorm=0.418, clip=100, loss_scale=16, train_wall=404, wall=5583
+2023-05-26 10:41:12 | INFO | train_inner | epoch 001:   1405 / 3198 loss=6.84, nll_loss=5.553, ppl=46.93, wps=29503.8, ups=0.25, wpb=119764, bsz=3081, num_updates=1400, lr=0.00035, gnorm=0.45, clip=100, loss_scale=16, train_wall=398, wall=5989
+2023-05-26 10:47:59 | INFO | train_inner | epoch 001:   1505 / 3198 loss=6.631, nll_loss=5.313, ppl=39.75, wps=29371.4, ups=0.25, wpb=119716, bsz=3105.5, num_updates=1500, lr=0.000375, gnorm=0.419, clip=100, loss_scale=16, train_wall=399, wall=6397
+2023-05-26 10:51:38 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-05-26 10:54:46 | INFO | train_inner | epoch 001:   1606 / 3198 loss=6.461, nll_loss=5.116, ppl=34.69, wps=29364.8, ups=0.25, wpb=119344, bsz=3100.7, num_updates=1600, lr=0.0004, gnorm=0.461, clip=100, loss_scale=18, train_wall=398, wall=6803

@@ -1,0 +1,78 @@
+2023-06-22 00:41:17,316 INFO    StreamThr :253844 [internal.py:wandb_internal():86] W&B internal server running at pid: 253844, started at: 2023-06-22 00:41:17.289998
+2023-06-22 00:41:17,317 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status
+2023-06-22 00:41:17,321 INFO    WriterThread:253844 [datastore.py:open_for_write():85] open: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/run-bx4f34gl.wandb
+2023-06-22 00:41:17,322 DEBUG   SenderThread:253844 [sender.py:send():369] send: header
+2023-06-22 00:41:17,322 DEBUG   SenderThread:253844 [sender.py:send():369] send: run
+2023-06-22 00:41:17,592 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: check_version
+2023-06-22 00:41:17,608 INFO    SenderThread:253844 [dir_watcher.py:__init__():211] watching files in: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files
+2023-06-22 00:41:17,608 INFO    SenderThread:253844 [sender.py:_start_run_threads():1100] run started: bx4f34gl with start time 1687419677.284829
+2023-06-22 00:41:17,608 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: summary_record
+2023-06-22 00:41:17,630 INFO    SenderThread:253844 [sender.py:_save_file():1354] saving file wandb-summary.json with policy end
+2023-06-22 00:41:17,631 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: check_version
+2023-06-22 00:41:18,356 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: run_start
+2023-06-22 00:41:18,361 DEBUG   HandlerThread:253844 [system_info.py:__init__():31] System info init
+2023-06-22 00:41:18,361 DEBUG   HandlerThread:253844 [system_info.py:__init__():46] System info init done
+2023-06-22 00:41:18,361 INFO    HandlerThread:253844 [system_monitor.py:start():181] Starting system monitor
+2023-06-22 00:41:18,362 INFO    SystemMonitor:253844 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-06-22 00:41:18,362 INFO    HandlerThread:253844 [system_monitor.py:probe():201] Collecting system info
+2023-06-22 00:41:18,367 INFO    SystemMonitor:253844 [interfaces.py:start():190] Started cpu monitoring
+2023-06-22 00:41:18,372 INFO    SystemMonitor:253844 [interfaces.py:start():190] Started disk monitoring
+2023-06-22 00:41:18,372 INFO    SystemMonitor:253844 [interfaces.py:start():190] Started gpu monitoring
+2023-06-22 00:41:18,373 INFO    SystemMonitor:253844 [interfaces.py:start():190] Started memory monitoring
+2023-06-22 00:41:18,373 INFO    SystemMonitor:253844 [interfaces.py:start():190] Started network monitoring
+2023-06-22 00:41:18,377 DEBUG   HandlerThread:253844 [system_info.py:probe():195] Probing system
+2023-06-22 00:41:18,377 DEBUG   HandlerThread:253844 [system_info.py:probe():240] Probing system done
+2023-06-22 00:41:18,377 DEBUG   HandlerThread:253844 [system_monitor.py:probe():210] {'os': 'Linux-3.10.0-1160.71.1.el7.x86_64-x86_64-with-glibc2.17', 'python': '3.9.15', 'heartbeatAt': '2023-06-22T07:41:18.377697', 'startedAt': '2023-06-22T07:41:17.206241', 'docker': None, 'cuda': None, 'args': ('/project/jonmay_231/linghaoj/canmt/bwb/data/bin', '--user-dir', '/project/jonmay_231/linghaoj/reproduce/concat_models', '--save-dir', '/project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]', '--task', 'document_translation', '-s', 'zh', '-t', 'en', '--arch', 'contextual_mega', '--encoder-layers', '6', '--decoder-layers', '6', '--share-decoder-input-output-embed', '--activation-fn', 'silu', '--attention-activation-fn', 'softmax', '--encoder-n-dim', '16', '--encoder-chunk-size', '-1', '--normalization-type', 'layernorm', '--ddp-backend', 'c10d', '--optimizer', 'adam', '--adam-betas', '(0.9, 0.98)', '--adam-eps', '1e-8', '--clip-norm', '0.1', '--lr', '1e-3', '--lr-scheduler', 'inverse_sqrt', '--warmup-updates', '4000', '--dropout', '0.2', '--attention-dropout', '0.0', '--hidden-dropout', '0.0', '--activation-dropout', '0.0', '--weight-decay', '0.01', '--criterion', 'label_smoothed_cross_entropy', '--label-smoothing', '0.1', '--max-tokens', '4096', '--update-freq', '16', '--seed', '42', '--max-update', '200000', '--eval-bleu', '--eval-bleu-print-samples', '--eval-bleu-remove-bpe', 'sentencepiece', '--eval-bleu-args', '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}', '--best-checkpoint-metric', 'bleu', '--maximize-best-checkpoint-metric', '--no-epoch-checkpoints', '--keep-last-epochs', '5', '--fp16', '--next-sent-ctx', '--wandb-project', 'reproduce-doc-mt'), 'state': 'running', 'program': '/home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train', 'host': 'd13-07.hpc.usc.edu', 'username': 'linghaoj', 'executable': '/home1/linghaoj/anaconda3/envs/env-mega/bin/python3.9', 'cpu_count': 32, 'cpu_count_logical': 32, 'cpu_freq': {'current': 2100.0, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}, {'current': 2100.0, 'min': 0.0, 'max': 0.0}], 'disk': {'total': 93.68971633911133, 'used': 3.0391387939453125}, 'gpu': 'Tesla V100-PCIE-32GB', 'gpu_count': 2, 'gpu_devices': [{'name': 'Tesla V100-PCIE-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-PCIE-32GB', 'memory_total': 34359738368}], 'memory': {'total': 187.37943267822266}}
+2023-06-22 00:41:18,377 INFO    HandlerThread:253844 [system_monitor.py:probe():211] Finished collecting system info
+2023-06-22 00:41:18,377 INFO    HandlerThread:253844 [system_monitor.py:probe():214] Publishing system info
+2023-06-22 00:41:18,377 DEBUG   HandlerThread:253844 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-06-22 00:41:18,404 DEBUG   HandlerThread:253844 [system_info.py:_save_pip():67] Saving pip packages done
+2023-06-22 00:41:18,404 DEBUG   HandlerThread:253844 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-06-22 00:41:18,606 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/wandb-summary.json
+2023-06-22 00:41:18,606 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/requirements.txt
+2023-06-22 00:41:18,607 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/conda-environment.yaml
+2023-06-22 00:41:21,609 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/conda-environment.yaml
+2023-06-22 00:41:21,645 DEBUG   HandlerThread:253844 [system_info.py:_save_conda():86] Saving conda packages done
+2023-06-22 00:41:21,671 INFO    HandlerThread:253844 [system_monitor.py:probe():216] Finished publishing system info
+2023-06-22 00:41:21,685 DEBUG   SenderThread:253844 [sender.py:send():369] send: files
+2023-06-22 00:41:21,686 INFO    SenderThread:253844 [sender.py:_save_file():1354] saving file wandb-metadata.json with policy now
+2023-06-22 00:41:21,694 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-22 00:41:21,695 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: stop_status
+2023-06-22 00:41:21,773 DEBUG   SenderThread:253844 [sender.py:send():369] send: telemetry
+2023-06-22 00:41:22,270 INFO    wandb-upload_0:253844 [upload_job.py:push():133] Uploaded file /tmp/SLURM_15373992/tmpbda2kiofwandb/vgrv8ir8-wandb-metadata.json
+2023-06-22 00:41:22,611 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/output.log
+2023-06-22 00:41:22,613 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/wandb-metadata.json
+2023-06-22 00:41:22,852 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:41:24,620 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/output.log
+2023-06-22 00:41:26,625 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/output.log
+2023-06-22 00:41:28,629 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/output.log
+2023-06-22 00:41:28,847 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:41:33,848 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:41:36,700 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-22 00:41:36,700 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: stop_status
+2023-06-22 00:41:39,814 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:41:44,815 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:41:49,819 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:41:50,683 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/config.yaml
+2023-06-22 00:41:51,705 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-22 00:41:51,705 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: stop_status
+2023-06-22 00:41:55,784 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:00,784 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:05,785 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:06,710 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-22 00:42:06,710 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: stop_status
+2023-06-22 00:42:10,818 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:15,819 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:18,373 DEBUG   SystemMonitor:253844 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-06-22 00:42:18,374 DEBUG   SenderThread:253844 [sender.py:send():369] send: stats
+2023-06-22 00:42:21,375 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:21,715 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-22 00:42:21,716 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: stop_status
+2023-06-22 00:42:26,782 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:31,782 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:36,720 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-22 00:42:36,721 DEBUG   SenderThread:253844 [sender.py:send_request():396] send_request: stop_status
+2023-06-22 00:42:36,791 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:41,791 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report
+2023-06-22 00:42:45,850 INFO    Thread-12 :253844 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230622_004117-bx4f34gl/files/output.log
+2023-06-22 00:42:47,741 DEBUG   HandlerThread:253844 [handler.py:handle_request():144] handle_request: status_report

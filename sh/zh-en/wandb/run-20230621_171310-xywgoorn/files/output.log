@@ -1,0 +1,429 @@
+2023-06-21 17:13:15 | INFO | fairseq_cli.train | Namespace(no_progress_bar=False, log_interval=100, log_format=None, tensorboard_logdir='', seed=42, cpu=False, tpu=False, bf16=False, fp16=True, memory_efficient_bf16=False, memory_efficient_fp16=False, fp16_no_flatten_grads=False, fp16_init_scale=128, fp16_scale_window=None, fp16_scale_tolerance=0.0, min_loss_scale=0.0001, threshold_loss_scale=None, user_dir='/project/jonmay_231/linghaoj/reproduce/concat_models', empty_cache_freq=0, all_gather_list_size=16384, model_parallel_size=1, checkpoint_suffix='', quantization_config_path=None, profile=False, wandb_project='reproduce-doc-mt', wandb_entity=None, wandb_id=None, criterion='label_smoothed_cross_entropy', tokenizer=None, bpe=None, optimizer='adam', lr_scheduler='inverse_sqrt', task='document_translation', num_workers=1, skip_invalid_size_inputs_valid_test=False, max_tokens=4096, max_sentences=None, required_batch_size_multiple=8, dataset_impl=None, data_buffer_size=10, train_subset='train', valid_subset='valid', test_subset='test', validate_interval=1, validate_interval_updates=0, validate_after_updates=0, fixed_validation_seed=None, disable_validation=False, max_tokens_valid=4096, max_sentences_valid=None, curriculum=0, distributed_world_size=1, distributed_rank=0, distributed_backend='nccl', distributed_init_method=None, distributed_port=-1, device_id=0, distributed_no_spawn=False, ddp_backend='c10d', bucket_cap_mb=25, fix_batches_to_gpus=False, find_unused_parameters=False, fast_stat_sync=False, broadcast_buffers=False, distributed_wrapper='DDP', slowmo_momentum=None, slowmo_algorithm='LocalSGD', localsgd_frequency=3, nprocs_per_node=1, arch='concat_mega', max_epoch=0, max_update=200000, stop_time_hours=0, clip_norm=0.1, clip_mode='total', sentence_avg=False, update_freq=[16], lr=[0.001], stop_min_lr=-1, use_bmuf=False, save_dir='/project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]', restore_file='checkpoint_last.pt', finetune_from_model=None, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, optimizer_overrides='{}', save_interval=1, save_interval_updates=0, keep_interval_updates=-1, keep_last_epochs=5, keep_best_checkpoints=-1, no_save=False, no_epoch_checkpoints=True, no_last_checkpoints=False, no_save_optimizer_state=False, best_checkpoint_metric='bleu', maximize_best_checkpoint_metric=True, patience=-1, rel_pos_bias='simple', coword_dropout=0.0, coword_dropout_type='sample', label_smoothing=0.1, adam_betas='(0.9, 0.98)', adam_eps=1e-08, weight_decay=0.01, use_old_adam=False, warmup_updates=4000, warmup_init_lr=-1, data='/project/jonmay_231/linghaoj/canmt/bwb/data/bin', source_lang='zh', target_lang='en', load_alignments=False, left_pad_source='True', left_pad_target='False', max_source_positions=1024, max_target_positions=1024, upsample_primary=1, truncate_source=False, num_batch_buckets=0, eval_bleu=True, eval_bleu_detok='space', eval_bleu_detok_args=None, eval_tokenized_bleu=False, eval_bleu_remove_bpe='sentencepiece', eval_bleu_args='{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}', eval_bleu_print_samples=True, source_context_size=0, target_context_size=0, sample_context_size=False, break_tag='<brk>', pos_drop_probs=None, next_sent_ctx=True, shuffle_sample=False, encoder_layers=6, decoder_layers=6, share_decoder_input_output_embed=True, activation_fn='silu', attention_activation_fn='softmax', encoder_n_dim=16, encoder_chunk_size=-1, normalization_type='layernorm', dropout=0.2, attention_dropout=0.0, hidden_dropout=0.0, activation_dropout=0.0, no_seed_provided=False, encoder_embed_path=None, encoder_embed_dim=512, encoder_hidden_dim=1024, encoder_ffn_embed_dim=1024, encoder_z_dim=128, decoder_embed_path=None, decoder_embed_dim=512, decoder_hidden_dim=1024, decoder_ffn_embed_dim=1024, decoder_z_dim=128, decoder_n_dim=16, decoder_chunk_size=-1, decoder_input_dim=512, feature_dropout=False, normalize_before=False, normalize_embedding=False, no_scale_embedding=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, share_all_embeddings=False, adaptive_input=False, truncation_length=1024, tie_adaptive_weights=False)
+2023-06-21 17:13:15 | INFO | fairseq.tasks.translation | [zh] dictionary: 36776 types
+2023-06-21 17:13:15 | INFO | fairseq.tasks.translation | [en] dictionary: 34088 types
+2023-06-21 17:13:15 | INFO | fairseq.data.data_utils | loaded 2619 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/valid.zh-en.zh
+2023-06-21 17:13:15 | INFO | fairseq.data.data_utils | loaded 2619 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/valid.zh-en.en
+2023-06-21 17:13:16 | INFO | fairseq_cli.train | ConcatMegaModel(
+  (encoder): ConcatMegaEncoder(
+    (embedding_dropout): FairseqDropout(p=0.2)
+    (embed_tokens): Embedding(36776, 512, padding_idx=1)
+    (layers): ModuleList(
+      (0): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (1): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (2): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (3): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (4): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (5): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+    )
+  )
+  (decoder): ConcatMegaDecoder(
+    (embedding_dropout): FairseqDropout(p=0.2)
+    (embed_tokens): Embedding(34088, 512, padding_idx=1)
+    (layers): ModuleList(
+      (0): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (1): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (2): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (3): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (4): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (5): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+    )
+    (output_projection): Linear(in_features=512, out_features=34088, bias=False)
+  )
+)
+2023-06-21 17:13:16 | INFO | fairseq_cli.train | task: document_translation (ConcatTranslationTask)
+2023-06-21 17:13:16 | INFO | fairseq_cli.train | model: concat_mega (ConcatMegaModel)
+2023-06-21 17:13:16 | INFO | fairseq_cli.train | criterion: label_smoothed_cross_entropy (LabelSmoothedCrossEntropyCriterion)
+2023-06-21 17:13:16 | INFO | fairseq_cli.train | num. model params: 82641902 (num. trained: 82641902)
+2023-06-21 17:13:18 | INFO | fairseq.trainer | detected shared parameter: decoder.embed_tokens.weight <- decoder.output_projection.weight
+2023-06-21 17:13:18 | INFO | fairseq.utils | ***********************CUDA enviroments for all 1 workers***********************
+2023-06-21 17:13:18 | INFO | fairseq.utils | rank   0: capabilities =  6.0  ; total memory = 15.899 GB ; name = Tesla P100-PCIE-16GB
+2023-06-21 17:13:18 | INFO | fairseq.utils | ***********************CUDA enviroments for all 1 workers***********************
+2023-06-21 17:13:18 | INFO | fairseq_cli.train | training on 1 devices (GPUs/TPUs)
+2023-06-21 17:13:18 | INFO | fairseq_cli.train | max tokens per GPU = 4096 and max sentences per GPU = None
+2023-06-21 17:13:18 | INFO | fairseq.trainer | no existing checkpoint found /project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]/checkpoint_last.pt
+2023-06-21 17:13:18 | INFO | fairseq.trainer | loading train data for epoch 1
+2023-06-21 17:13:19 | INFO | fairseq.data.data_utils | loaded 9878328 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/train.zh-en.zh

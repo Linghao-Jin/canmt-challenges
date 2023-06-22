@@ -1,0 +1,133 @@
+2023-05-25 16:16:30,956 INFO    StreamThr :22861 [internal.py:wandb_internal():87] W&B internal server running at pid: 22861, started at: 2023-05-25 16:16:30.923404
+2023-05-25 16:16:30,958 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status
+2023-05-25 16:16:30,962 INFO    WriterThread:22861 [datastore.py:open_for_write():85] open: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/run-18tvyoeo.wandb
+2023-05-25 16:16:30,984 DEBUG   SenderThread:22861 [sender.py:send():334] send: header
+2023-05-25 16:16:30,984 DEBUG   SenderThread:22861 [sender.py:send():334] send: run
+2023-05-25 16:16:31,537 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: check_version
+2023-05-25 16:16:31,540 INFO    SenderThread:22861 [dir_watcher.py:__init__():216] watching files in: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files
+2023-05-25 16:16:31,540 INFO    SenderThread:22861 [sender.py:_start_run_threads():1065] run started: 18tvyoeo with start time 1685056590.926098
+2023-05-25 16:16:31,540 DEBUG   SenderThread:22861 [sender.py:send_request():361] send_request: summary_record
+2023-05-25 16:16:31,562 INFO    SenderThread:22861 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-05-25 16:16:31,563 DEBUG   SenderThread:22861 [sender.py:send_request():361] send_request: check_version
+2023-05-25 16:16:31,751 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: run_start
+2023-05-25 16:16:31,763 DEBUG   HandlerThread:22861 [system_info.py:__init__():31] System info init
+2023-05-25 16:16:31,763 DEBUG   HandlerThread:22861 [system_info.py:__init__():46] System info init done
+2023-05-25 16:16:31,764 INFO    HandlerThread:22861 [system_monitor.py:start():151] Starting system monitor
+2023-05-25 16:16:31,764 INFO    SystemMonitor:22861 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-05-25 16:16:31,764 INFO    HandlerThread:22861 [system_monitor.py:probe():172] Collecting system info
+2023-05-25 16:16:31,773 INFO    SystemMonitor:22861 [interfaces.py:start():168] Started cpu
+2023-05-25 16:16:31,775 INFO    SystemMonitor:22861 [interfaces.py:start():168] Started disk
+2023-05-25 16:16:31,775 INFO    SystemMonitor:22861 [interfaces.py:start():168] Started gpu
+2023-05-25 16:16:31,776 INFO    SystemMonitor:22861 [interfaces.py:start():168] Started memory
+2023-05-25 16:16:31,777 INFO    SystemMonitor:22861 [interfaces.py:start():168] Started network
+2023-05-25 16:16:31,778 DEBUG   HandlerThread:22861 [system_info.py:probe():195] Probing system
+2023-05-25 16:16:31,779 DEBUG   HandlerThread:22861 [system_info.py:probe():241] Probing system done
+2023-05-25 16:16:31,779 DEBUG   HandlerThread:22861 [system_monitor.py:probe():181] {'os': 'Linux-3.10.0-1160.71.1.el7.x86_64-x86_64-with-glibc2.17', 'python': '3.9.15', 'heartbeatAt': '2023-05-25T23:16:31.779014', 'startedAt': '2023-05-25T23:16:30.846876', 'docker': None, 'cuda': None, 'args': ('/project/jonmay_231/linghaoj/canmt/bwb/data/bin', '--user-dir', '/project/jonmay_231/linghaoj/concat-src-only/concat_models', '--save-dir', '/project/jonmay_231/linghaoj/reproduce/ckpt/mega-0-0-0.2[zh-en]', '--task', 'document_translation', '-s', 'zh', '-t', 'en', '--source-context-size', '0', '--target-context-size', '0', '--arch', 'contextual_mega', '--encoder-layers', '6', '--decoder-layers', '6', '--share-decoder-input-output-embed', '--activation-fn', 'silu', '--attention-activation-fn', 'softmax', '--encoder-n-dim', '16', '--encoder-chunk-size', '-1', '--normalization-type', 'layernorm', '--ddp-backend', 'c10d', '--optimizer', 'adam', '--adam-betas', '(0.9, 0.98)', '--adam-eps', '1e-8', '--clip-norm', '0.1', '--lr', '1e-3', '--lr-scheduler', 'inverse_sqrt', '--warmup-updates', '4000', '--dropout', '0.2', '--attention-dropout', '0.0', '--hidden-dropout', '0.0', '--activation-dropout', '0.0', '--weight-decay', '0.01', '--criterion', 'label_smoothed_cross_entropy', '--label-smoothing', '0.1', '--max-tokens', '2048', '--update-freq', '4', '--seed', '42', '--max-update', '200000', '--eval-bleu', '--eval-bleu-print-samples', '--eval-bleu-remove-bpe', 'sentencepiece', '--eval-bleu-args', '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}', '--best-checkpoint-metric', 'bleu', '--maximize-best-checkpoint-metric', '--no-epoch-checkpoints', '--keep-last-epochs', '5', '--fp16', '--wandb-project', 'reproduce-doc-mt'), 'state': 'running', 'program': '/home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train', 'host': 'd23-01.hpc.usc.edu', 'username': 'linghaoj', 'executable': '/home1/linghaoj/anaconda3/envs/env-mega/bin/python3.9', 'cpu_count': 20, 'cpu_count_logical': 20, 'cpu_freq': {'current': 2394.7010000000005, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}], 'disk': {'total': 62.89754104614258, 'used': 3.023601531982422}, 'gpu': 'Tesla P100-PCIE-16GB', 'gpu_count': 1, 'gpu_devices': [{'name': 'Tesla P100-PCIE-16GB', 'memory_total': 17179869184}], 'memory': {'total': 125.79508209228516}}
+2023-05-25 16:16:31,779 INFO    HandlerThread:22861 [system_monitor.py:probe():182] Finished collecting system info
+2023-05-25 16:16:31,779 INFO    HandlerThread:22861 [system_monitor.py:probe():185] Publishing system info
+2023-05-25 16:16:31,779 DEBUG   HandlerThread:22861 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-05-25 16:16:31,803 DEBUG   HandlerThread:22861 [system_info.py:_save_pip():67] Saving pip packages done
+2023-05-25 16:16:31,803 DEBUG   HandlerThread:22861 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-05-25 16:16:32,544 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/requirements.txt
+2023-05-25 16:16:32,544 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/wandb-summary.json
+2023-05-25 16:16:32,545 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/conda-environment.yaml
+2023-05-25 16:16:35,775 DEBUG   HandlerThread:22861 [system_info.py:_save_conda():86] Saving conda packages done
+2023-05-25 16:16:35,826 INFO    HandlerThread:22861 [system_monitor.py:probe():187] Finished publishing system info
+2023-05-25 16:16:35,841 DEBUG   SenderThread:22861 [sender.py:send():334] send: files
+2023-05-25 16:16:35,841 INFO    SenderThread:22861 [sender.py:_save_file():1319] saving file wandb-metadata.json with policy now
+2023-05-25 16:16:35,883 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: stop_status
+2023-05-25 16:16:35,883 DEBUG   SenderThread:22861 [sender.py:send_request():361] send_request: stop_status
+2023-05-25 16:16:36,082 DEBUG   SenderThread:22861 [sender.py:send():334] send: telemetry
+2023-05-25 16:16:36,082 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:16:36,430 INFO    Thread-16 :22861 [upload_job.py:push():143] Uploaded file /tmp/SLURM_13450123/tmpdgqoht_fwandb/urdbrhkv-wandb-metadata.json
+2023-05-25 16:16:36,557 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/conda-environment.yaml
+2023-05-25 16:16:36,557 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/wandb-metadata.json
+2023-05-25 16:16:36,558 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_created():275] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:16:38,562 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:16:40,567 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:16:41,298 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:16:42,572 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:16:47,226 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:16:50,888 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:16:52,227 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:16:55,914 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:16:57,227 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:00,940 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:02,232 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:02,602 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/config.yaml
+2023-05-25 16:17:05,966 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:07,443 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:10,992 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:12,443 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:16,017 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:17,444 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:21,062 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:22,444 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:26,241 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:27,456 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:28,647 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:17:30,210 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:17:30,210 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:17:30,211 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:17:30,651 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:17:31,247 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:31,777 DEBUG   SystemMonitor:22861 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-05-25 16:17:31,778 DEBUG   SenderThread:22861 [sender.py:send():334] send: stats
+2023-05-25 16:17:32,779 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:34,664 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:17:36,248 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:38,001 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:41,249 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:43,002 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:46,251 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:48,005 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:51,252 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:53,006 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:17:56,253 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:17:58,010 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:01,254 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:01,779 DEBUG   SenderThread:22861 [sender.py:send():334] send: stats
+2023-05-25 16:18:03,780 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:06,254 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:08,785 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:11,255 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:13,785 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:16,255 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:18,786 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:21,256 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:23,786 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:26,256 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:28,787 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:31,257 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:31,827 DEBUG   SenderThread:22861 [sender.py:send():334] send: stats
+2023-05-25 16:18:33,831 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:36,258 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:38,412 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,413 DEBUG   SenderThread:22861 [sender.py:send():334] send: history
+2023-05-25 16:18:38,413 DEBUG   SenderThread:22861 [sender.py:send_request():361] send_request: summary_record
+2023-05-25 16:18:38,413 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,414 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,414 INFO    SenderThread:22861 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-05-25 16:18:38,414 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,415 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,415 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,415 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,416 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,416 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,416 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,416 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,417 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,417 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: partial_history
+2023-05-25 16:18:38,823 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/wandb-summary.json
+2023-05-25 16:18:39,418 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:40,826 INFO    Thread-13 :22861 [dir_watcher.py:_on_file_modified():292] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230525_161630-18tvyoeo/files/output.log
+2023-05-25 16:18:41,258 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:44,419 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:46,265 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:49,419 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:51,265 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:54,420 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:18:56,266 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:18:59,420 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: status_report
+2023-05-25 16:19:01,266 DEBUG   HandlerThread:22861 [handler.py:handle_request():144] handle_request: keepalive
+2023-05-25 16:19:01,780 DEBUG   SenderThread:22861 [sender.py:send():334] send: stats

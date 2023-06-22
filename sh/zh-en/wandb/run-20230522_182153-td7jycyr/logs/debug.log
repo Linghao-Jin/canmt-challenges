@@ -1,0 +1,26 @@
+2023-05-22 18:21:53,280 INFO    MainThread:20909 [wandb_setup.py:_flush():68] Configure stats pid to 20909
+2023-05-22 18:21:53,280 INFO    MainThread:20909 [wandb_setup.py:_flush():68] Loading settings from /home1/linghaoj/.config/wandb/settings
+2023-05-22 18:21:53,281 INFO    MainThread:20909 [wandb_setup.py:_flush():68] Loading settings from /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/settings
+2023-05-22 18:21:53,281 INFO    MainThread:20909 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2023-05-22 18:21:53,281 WARNING MainThread:20909 [wandb_setup.py:_flush():68] Could not save program above cwd: /home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train
+2023-05-22 18:21:53,281 INFO    MainThread:20909 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program_relpath': None, 'program': '/home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train'}
+2023-05-22 18:21:53,281 INFO    MainThread:20909 [wandb_init.py:_log_setup():478] Logging user logs to /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_182153-td7jycyr/logs/debug.log
+2023-05-22 18:21:53,281 INFO    MainThread:20909 [wandb_init.py:_log_setup():479] Logging internal logs to /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230522_182153-td7jycyr/logs/debug-internal.log
+2023-05-22 18:21:53,281 INFO    MainThread:20909 [wandb_init.py:init():518] calling init triggers
+2023-05-22 18:21:53,282 INFO    MainThread:20909 [wandb_init.py:init():521] wandb.init called with sweep_config: {}
+config: {}
+2023-05-22 18:21:53,282 INFO    MainThread:20909 [wandb_init.py:init():571] starting backend
+2023-05-22 18:21:53,282 INFO    MainThread:20909 [wandb_init.py:init():575] setting up manager
+2023-05-22 18:21:53,288 INFO    MainThread:20909 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-05-22 18:21:53,298 INFO    MainThread:20909 [wandb_init.py:init():582] backend started and connected
+2023-05-22 18:21:53,306 INFO    MainThread:20909 [wandb_init.py:init():670] updated telemetry
+2023-05-22 18:21:53,306 INFO    MainThread:20909 [wandb_init.py:init():710] communicating run to backend with 60.0 second timeout
+2023-05-22 18:21:53,978 INFO    MainThread:20909 [wandb_run.py:_on_init():2121] communicating current version
+2023-05-22 18:21:54,180 INFO    MainThread:20909 [wandb_run.py:_on_init():2125] got version response upgrade_message: "wandb version 0.15.3 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2023-05-22 18:21:54,180 INFO    MainThread:20909 [wandb_init.py:init():758] starting run threads in backend
+2023-05-22 18:22:00,472 INFO    MainThread:20909 [wandb_run.py:_console_start():2101] atexit reg
+2023-05-22 18:22:00,472 INFO    MainThread:20909 [wandb_run.py:_redirect():1959] redirect: SettingsConsole.WRAP_RAW
+2023-05-22 18:22:00,472 INFO    MainThread:20909 [wandb_run.py:_redirect():2024] Wrapping output streams.
+2023-05-22 18:22:00,472 INFO    MainThread:20909 [wandb_run.py:_redirect():2046] Redirects installed.
+2023-05-22 18:22:00,473 INFO    MainThread:20909 [wandb_init.py:init():798] run started, returning control to user process

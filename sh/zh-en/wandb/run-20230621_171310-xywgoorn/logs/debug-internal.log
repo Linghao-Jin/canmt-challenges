@@ -1,0 +1,78 @@
+2023-06-21 17:13:10,410 INFO    StreamThr :17537 [internal.py:wandb_internal():86] W&B internal server running at pid: 17537, started at: 2023-06-21 17:13:10.397298
+2023-06-21 17:13:10,413 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status
+2023-06-21 17:13:10,418 INFO    WriterThread:17537 [datastore.py:open_for_write():85] open: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/run-xywgoorn.wandb
+2023-06-21 17:13:10,420 DEBUG   SenderThread:17537 [sender.py:send():369] send: header
+2023-06-21 17:13:10,420 DEBUG   SenderThread:17537 [sender.py:send():369] send: run
+2023-06-21 17:13:10,926 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: check_version
+2023-06-21 17:13:10,927 INFO    SenderThread:17537 [dir_watcher.py:__init__():211] watching files in: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files
+2023-06-21 17:13:10,928 INFO    SenderThread:17537 [sender.py:_start_run_threads():1100] run started: xywgoorn with start time 1687392790.401158
+2023-06-21 17:13:10,928 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: summary_record
+2023-06-21 17:13:10,929 INFO    SenderThread:17537 [sender.py:_save_file():1354] saving file wandb-summary.json with policy end
+2023-06-21 17:13:10,930 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: check_version
+2023-06-21 17:13:11,120 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: run_start
+2023-06-21 17:13:11,133 DEBUG   HandlerThread:17537 [system_info.py:__init__():31] System info init
+2023-06-21 17:13:11,133 DEBUG   HandlerThread:17537 [system_info.py:__init__():46] System info init done
+2023-06-21 17:13:11,133 INFO    HandlerThread:17537 [system_monitor.py:start():181] Starting system monitor
+2023-06-21 17:13:11,133 INFO    SystemMonitor:17537 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-06-21 17:13:11,133 INFO    HandlerThread:17537 [system_monitor.py:probe():201] Collecting system info
+2023-06-21 17:13:11,143 INFO    SystemMonitor:17537 [interfaces.py:start():190] Started cpu monitoring
+2023-06-21 17:13:11,145 INFO    SystemMonitor:17537 [interfaces.py:start():190] Started disk monitoring
+2023-06-21 17:13:11,146 INFO    SystemMonitor:17537 [interfaces.py:start():190] Started gpu monitoring
+2023-06-21 17:13:11,147 INFO    SystemMonitor:17537 [interfaces.py:start():190] Started memory monitoring
+2023-06-21 17:13:11,149 DEBUG   HandlerThread:17537 [system_info.py:probe():195] Probing system
+2023-06-21 17:13:11,149 DEBUG   HandlerThread:17537 [system_info.py:probe():240] Probing system done
+2023-06-21 17:13:11,149 DEBUG   HandlerThread:17537 [system_monitor.py:probe():210] {'os': 'Linux-3.10.0-1160.71.1.el7.x86_64-x86_64-with-glibc2.17', 'python': '3.9.15', 'heartbeatAt': '2023-06-22T00:13:11.149422', 'startedAt': '2023-06-22T00:13:10.341976', 'docker': None, 'cuda': None, 'args': ('/project/jonmay_231/linghaoj/canmt/bwb/data/bin', '--user-dir', '/project/jonmay_231/linghaoj/reproduce/concat_models', '--save-dir', '/project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]', '--task', 'document_translation', '-s', 'zh', '-t', 'en', '--arch', 'concat_mega', '--encoder-layers', '6', '--decoder-layers', '6', '--share-decoder-input-output-embed', '--activation-fn', 'silu', '--attention-activation-fn', 'softmax', '--encoder-n-dim', '16', '--encoder-chunk-size', '-1', '--normalization-type', 'layernorm', '--ddp-backend', 'c10d', '--optimizer', 'adam', '--adam-betas', '(0.9, 0.98)', '--adam-eps', '1e-8', '--clip-norm', '0.1', '--lr', '1e-3', '--lr-scheduler', 'inverse_sqrt', '--warmup-updates', '4000', '--dropout', '0.2', '--attention-dropout', '0.0', '--hidden-dropout', '0.0', '--activation-dropout', '0.0', '--weight-decay', '0.01', '--criterion', 'label_smoothed_cross_entropy', '--label-smoothing', '0.1', '--max-tokens', '4096', '--update-freq', '16', '--seed', '42', '--max-update', '200000', '--eval-bleu', '--eval-bleu-print-samples', '--eval-bleu-remove-bpe', 'sentencepiece', '--eval-bleu-args', '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}', '--best-checkpoint-metric', 'bleu', '--maximize-best-checkpoint-metric', '--no-epoch-checkpoints', '--keep-last-epochs', '5', '--fp16', '--next-sent-ctx', '--wandb-project', 'reproduce-doc-mt'), 'state': 'running', 'program': '/home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train', 'host': 'd23-01.hpc.usc.edu', 'username': 'linghaoj', 'executable': '/home1/linghaoj/anaconda3/envs/env-mega/bin/python3.9', 'cpu_count': 20, 'cpu_count_logical': 20, 'cpu_freq': {'current': 2394.7010000000005, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}, {'current': 2394.701, 'min': 0.0, 'max': 0.0}], 'disk': {'total': 62.89754104614258, 'used': 3.0236282348632812}, 'gpu': 'Tesla P100-PCIE-16GB', 'gpu_count': 1, 'gpu_devices': [{'name': 'Tesla P100-PCIE-16GB', 'memory_total': 17179869184}], 'memory': {'total': 125.79508209228516}}
+2023-06-21 17:13:11,149 INFO    HandlerThread:17537 [system_monitor.py:probe():211] Finished collecting system info
+2023-06-21 17:13:11,149 INFO    HandlerThread:17537 [system_monitor.py:probe():214] Publishing system info
+2023-06-21 17:13:11,150 DEBUG   HandlerThread:17537 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-06-21 17:13:11,150 INFO    SystemMonitor:17537 [interfaces.py:start():190] Started network monitoring
+2023-06-21 17:13:11,156 DEBUG   HandlerThread:17537 [system_info.py:_save_pip():67] Saving pip packages done
+2023-06-21 17:13:11,157 DEBUG   HandlerThread:17537 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-06-21 17:13:11,930 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/conda-environment.yaml
+2023-06-21 17:13:11,931 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/wandb-summary.json
+2023-06-21 17:13:11,931 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/requirements.txt
+2023-06-21 17:13:15,214 DEBUG   HandlerThread:17537 [system_info.py:_save_conda():86] Saving conda packages done
+2023-06-21 17:13:15,216 INFO    HandlerThread:17537 [system_monitor.py:probe():216] Finished publishing system info
+2023-06-21 17:13:15,229 DEBUG   SenderThread:17537 [sender.py:send():369] send: files
+2023-06-21 17:13:15,229 INFO    SenderThread:17537 [sender.py:_save_file():1354] saving file wandb-metadata.json with policy now
+2023-06-21 17:13:15,235 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-21 17:13:15,266 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: stop_status
+2023-06-21 17:13:15,335 DEBUG   SenderThread:17537 [sender.py:send():369] send: telemetry
+2023-06-21 17:13:15,494 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:15,818 INFO    wandb-upload_0:17537 [upload_job.py:push():133] Uploaded file /tmp/SLURM_13853266/tmp9sq08025wandb/tphlef21-wandb-metadata.json
+2023-06-21 17:13:15,938 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/conda-environment.yaml
+2023-06-21 17:13:15,938 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/wandb-metadata.json
+2023-06-21 17:13:15,939 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_created():272] file/dir created: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/output.log
+2023-06-21 17:13:17,994 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/output.log
+2023-06-21 17:13:19,999 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/output.log
+2023-06-21 17:13:20,989 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:22,003 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/output.log
+2023-06-21 17:13:25,990 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:30,240 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-21 17:13:30,241 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: stop_status
+2023-06-21 17:13:31,320 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:36,321 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:41,325 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:42,035 INFO    Thread-12 :17537 [dir_watcher.py:_on_file_modified():289] file/dir modified: /project/jonmay_231/linghaoj/reproduce/sh/zh-en/wandb/run-20230621_171310-xywgoorn/files/config.yaml
+2023-06-21 17:13:45,246 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-21 17:13:45,246 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: stop_status
+2023-06-21 17:13:46,468 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:51,468 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:13:56,469 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:00,251 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-21 17:14:00,251 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: stop_status
+2023-06-21 17:14:02,317 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:07,317 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:11,151 DEBUG   SystemMonitor:17537 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-06-21 17:14:11,152 DEBUG   SenderThread:17537 [sender.py:send():369] send: stats
+2023-06-21 17:14:13,152 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:15,256 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-21 17:14:15,256 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: stop_status
+2023-06-21 17:14:18,334 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:23,335 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:28,335 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:30,261 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-21 17:14:30,262 DEBUG   SenderThread:17537 [sender.py:send_request():396] send_request: stop_status
+2023-06-21 17:14:34,334 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:39,334 DEBUG   HandlerThread:17537 [handler.py:handle_request():144] handle_request: status_report
+2023-06-21 17:14:41,152 DEBUG   SenderThread:17537 [sender.py:send():369] send: stats

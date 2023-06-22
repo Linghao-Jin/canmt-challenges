@@ -1,0 +1,286 @@
+{
+    "os": "Linux-3.10.0-1160.71.1.el7.x86_64-x86_64-with-glibc2.17",
+    "python": "3.9.15",
+    "heartbeatAt": "2023-05-26T16:01:17.549794",
+    "startedAt": "2023-05-26T16:01:17.049273",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "/project/jonmay_231/linghaoj/canmt/bwb/data/bin",
+        "--user-dir",
+        "/project/jonmay_231/linghaoj/concat-src-only/concat_models",
+        "--save-dir",
+        "/project/jonmay_231/linghaoj/reproduce/ckpt/mega-src3-0.2-sf[zh-en]",
+        "--task",
+        "document_translation",
+        "-s",
+        "zh",
+        "-t",
+        "en",
+        "--arch",
+        "contextual_mega",
+        "--encoder-layers",
+        "6",
+        "--decoder-layers",
+        "6",
+        "--share-decoder-input-output-embed",
+        "--activation-fn",
+        "silu",
+        "--attention-activation-fn",
+        "softmax",
+        "--encoder-n-dim",
+        "16",
+        "--encoder-chunk-size",
+        "-1",
+        "--normalization-type",
+        "layernorm",
+        "--ddp-backend",
+        "c10d",
+        "--optimizer",
+        "adam",
+        "--adam-betas",
+        "(0.9, 0.98)",
+        "--adam-eps",
+        "1e-8",
+        "--clip-norm",
+        "0.1",
+        "--lr",
+        "1e-3",
+        "--lr-scheduler",
+        "inverse_sqrt",
+        "--warmup-updates",
+        "4000",
+        "--dropout",
+        "0.2",
+        "--attention-dropout",
+        "0.0",
+        "--hidden-dropout",
+        "0.0",
+        "--activation-dropout",
+        "0.0",
+        "--weight-decay",
+        "0.01",
+        "--criterion",
+        "label_smoothed_cross_entropy",
+        "--label-smoothing",
+        "0.1",
+        "--max-tokens",
+        "4096",
+        "--update-freq",
+        "16",
+        "--seed",
+        "42",
+        "--max-update",
+        "200000",
+        "--eval-bleu",
+        "--eval-bleu-print-samples",
+        "--eval-bleu-remove-bpe",
+        "sentencepiece",
+        "--eval-bleu-args",
+        "{\"beam\": 5, \"max_len_a\": 1.2, \"max_len_b\": 10}",
+        "--best-checkpoint-metric",
+        "bleu",
+        "--maximize-best-checkpoint-metric",
+        "--no-epoch-checkpoints",
+        "--keep-last-epochs",
+        "5",
+        "--fp16",
+        "--shuffle_sample",
+        "--next-sent-ctx",
+        "--wandb-project",
+        "reproduce-doc-mt"
+    ],
+    "state": "running",
+    "program": "/home1/linghaoj/anaconda3/envs/env-mega/bin/fairseq-train",
+    "host": "a03-15.hpc.usc.edu",
+    "username": "linghaoj",
+    "executable": "/home1/linghaoj/anaconda3/envs/env-mega/bin/python3.9",
+    "cpu_count": 32,
+    "cpu_count_logical": 32,
+    "cpu_freq": {
+        "current": 2794.930999999998,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2794.931,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "total": 125.69997787475586,
+        "used": 3.0341567993164062
+    },
+    "gpu": "NVIDIA A40",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA A40",
+            "memory_total": 48305799168
+        },
+        {
+            "name": "NVIDIA A40",
+            "memory_total": 48305799168
+        }
+    ],
+    "memory": {
+        "total": 251.39995574951172
+    }
+}

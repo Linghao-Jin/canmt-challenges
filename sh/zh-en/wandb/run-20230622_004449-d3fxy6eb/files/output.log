@@ -1,0 +1,911 @@
+2023-06-22 00:44:53 | INFO | fairseq_cli.train | Namespace(no_progress_bar=False, log_interval=100, log_format=None, tensorboard_logdir='', seed=42, cpu=False, tpu=False, bf16=False, fp16=True, memory_efficient_bf16=False, memory_efficient_fp16=False, fp16_no_flatten_grads=False, fp16_init_scale=128, fp16_scale_window=None, fp16_scale_tolerance=0.0, min_loss_scale=0.0001, threshold_loss_scale=None, user_dir='/project/jonmay_231/linghaoj/reproduce/concat_models', empty_cache_freq=0, all_gather_list_size=16384, model_parallel_size=1, checkpoint_suffix='', quantization_config_path=None, profile=False, wandb_project='reproduce-doc-mt', wandb_entity=None, wandb_id=None, criterion='label_smoothed_cross_entropy', tokenizer=None, bpe=None, optimizer='adam', lr_scheduler='inverse_sqrt', task='document_translation', num_workers=1, skip_invalid_size_inputs_valid_test=False, max_tokens=4096, max_sentences=None, required_batch_size_multiple=8, dataset_impl=None, data_buffer_size=10, train_subset='train', valid_subset='valid', test_subset='test', validate_interval=1, validate_interval_updates=0, validate_after_updates=0, fixed_validation_seed=None, disable_validation=False, max_tokens_valid=4096, max_sentences_valid=None, curriculum=0, distributed_world_size=2, distributed_rank=0, distributed_backend='nccl', distributed_init_method='tcp://localhost:13612', distributed_port=-1, device_id=0, distributed_no_spawn=False, ddp_backend='c10d', bucket_cap_mb=25, fix_batches_to_gpus=False, find_unused_parameters=False, fast_stat_sync=False, broadcast_buffers=False, distributed_wrapper='DDP', slowmo_momentum=None, slowmo_algorithm='LocalSGD', localsgd_frequency=3, nprocs_per_node=2, arch='contextual_mega', max_epoch=0, max_update=200000, stop_time_hours=0, clip_norm=0.1, clip_mode='total', sentence_avg=False, update_freq=[16], lr=[0.001], stop_min_lr=-1, use_bmuf=False, save_dir='/project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]', restore_file='checkpoint_last.pt', finetune_from_model=None, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, optimizer_overrides='{}', save_interval=1, save_interval_updates=0, keep_interval_updates=-1, keep_last_epochs=5, keep_best_checkpoints=-1, no_save=False, no_epoch_checkpoints=False, no_last_checkpoints=False, no_save_optimizer_state=False, best_checkpoint_metric='bleu', maximize_best_checkpoint_metric=True, patience=-1, rel_pos_bias='simple', coword_dropout=0.0, coword_dropout_type='sample', label_smoothing=0.1, adam_betas='(0.9, 0.98)', adam_eps=1e-08, weight_decay=0.01, use_old_adam=False, warmup_updates=4000, warmup_init_lr=-1, data='/project/jonmay_231/linghaoj/canmt/bwb/data/bin', source_lang='zh', target_lang='en', load_alignments=False, left_pad_source='True', left_pad_target='False', max_source_positions=1024, max_target_positions=1024, upsample_primary=1, truncate_source=False, num_batch_buckets=0, eval_bleu=True, eval_bleu_detok='space', eval_bleu_detok_args=None, eval_tokenized_bleu=False, eval_bleu_remove_bpe='sentencepiece', eval_bleu_args='{"beam": 5}', eval_bleu_print_samples=True, source_context_size=1, target_context_size=1, sample_context_size=False, break_tag='<brk>', pos_drop_probs=None, next_sent_ctx=False, shuffle_sample=False, encoder_layers=6, decoder_layers=6, share_decoder_input_output_embed=True, activation_fn='silu', attention_activation_fn='softmax', encoder_n_dim=16, encoder_chunk_size=-1, normalization_type='layernorm', dropout=0.2, attention_dropout=0.0, hidden_dropout=0.0, activation_dropout=0.0, no_seed_provided=False, encoder_embed_path=None, encoder_embed_dim=512, encoder_hidden_dim=1024, encoder_ffn_embed_dim=1024, encoder_z_dim=128, decoder_embed_path=None, decoder_embed_dim=512, decoder_hidden_dim=1024, decoder_ffn_embed_dim=1024, decoder_z_dim=128, decoder_n_dim=16, decoder_chunk_size=-1, decoder_input_dim=512, feature_dropout=False, normalize_before=False, normalize_embedding=False, no_scale_embedding=False, adaptive_softmax_cutoff=None, adaptive_softmax_dropout=0, share_all_embeddings=False, adaptive_input=False, truncation_length=1024, tie_adaptive_weights=False)
+2023-06-22 00:44:53 | INFO | fairseq.tasks.translation | [zh] dictionary: 36776 types
+2023-06-22 00:44:53 | INFO | fairseq.tasks.translation | [en] dictionary: 34088 types
+2023-06-22 00:44:53 | INFO | fairseq.data.data_utils | loaded 2619 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/valid.zh-en.zh
+2023-06-22 00:44:53 | INFO | fairseq.data.data_utils | loaded 2619 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/valid.zh-en.en
+2023-06-22 00:44:54 | INFO | fairseq_cli.train | ConcatMegaModel(
+  (encoder): ConcatMegaEncoder(
+    (embedding_dropout): FairseqDropout(p=0.2)
+    (embed_tokens): Embedding(36776, 512, padding_idx=1)
+    (layers): ModuleList(
+      (0): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (1): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (2): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (3): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (4): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (5): MegaEncoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=True, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+    )
+  )
+  (decoder): ConcatMegaDecoder(
+    (embedding_dropout): FairseqDropout(p=0.2)
+    (embed_tokens): Embedding(34088, 512, padding_idx=1)
+    (layers): ModuleList(
+      (0): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (1): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (2): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (3): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (4): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+      (5): MegaDecoderLayer(
+        (mega_layer): MovingAverageGatedAttention(
+          edim=512, zdim=128, hdim=1024, ndim=16, chunk=-1, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (move): MultiHeadEMA(edim=512, ndim=16, bidirectional=False, trunction=1024)
+          (v_proj): Linear(in_features=512, out_features=1024, bias=True)
+          (mx_proj): Linear(in_features=512, out_features=2176, bias=True)
+          (h_proj): Linear(in_features=1024, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (cross_attn): GatedCrossAttention(
+          edim=512, zdim=128, ndim=16, attn_act=softmax, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (attention_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (k_proj): Linear(in_features=512, out_features=128, bias=True)
+          (v_proj): Linear(in_features=512, out_features=512, bias=True)
+          (q_proj): Linear(in_features=512, out_features=1152, bias=True)
+          (h_proj): Linear(in_features=512, out_features=512, bias=True)
+          (rel_pos_bias): SimpleRelativePositionalBias(max positions=1024)
+        )
+        (nffn): NormalizedFeedForwardNetwork(
+          edim=512, hdim=1024, act=silu, prenorm=False
+          (dropout): FairseqDropout(p=0.2)
+          (hidden_dropout): FairseqDropout(p=0.0)
+          (norm): SequenceNorm(
+            (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          )
+          (fc1): Linear(in_features=512, out_features=1024, bias=True)
+          (fc2): Linear(in_features=1024, out_features=512, bias=True)
+        )
+      )
+    )
+    (output_projection): Linear(in_features=512, out_features=34088, bias=False)
+  )
+)
+2023-06-22 00:44:54 | INFO | fairseq_cli.train | task: document_translation (ConcatTranslationTask)
+2023-06-22 00:44:54 | INFO | fairseq_cli.train | model: contextual_mega (ConcatMegaModel)
+2023-06-22 00:44:54 | INFO | fairseq_cli.train | criterion: label_smoothed_cross_entropy (LabelSmoothedCrossEntropyCriterion)
+2023-06-22 00:44:54 | INFO | fairseq_cli.train | num. model params: 82641902 (num. trained: 82641902)
+2023-06-22 00:44:55 | INFO | fairseq.trainer | detected shared parameter: decoder.embed_tokens.weight <- decoder.output_projection.weight
+2023-06-22 00:44:55 | INFO | fairseq.utils | ***********************CUDA enviroments for all 2 workers***********************
+2023-06-22 00:44:55 | INFO | fairseq.utils | rank   0: capabilities =  7.0  ; total memory = 31.749 GB ; name = Tesla V100-PCIE-32GB
+2023-06-22 00:44:55 | INFO | fairseq.utils | rank   1: capabilities =  7.0  ; total memory = 31.749 GB ; name = Tesla V100-PCIE-32GB
+2023-06-22 00:44:55 | INFO | fairseq.utils | ***********************CUDA enviroments for all 2 workers***********************
+2023-06-22 00:44:55 | INFO | fairseq_cli.train | training on 2 devices (GPUs/TPUs)
+2023-06-22 00:44:55 | INFO | fairseq_cli.train | max tokens per GPU = 4096 and max sentences per GPU = None
+2023-06-22 00:44:55 | INFO | fairseq.trainer | no existing checkpoint found /project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]/checkpoint_last.pt
+2023-06-22 00:44:55 | INFO | fairseq.trainer | loading train data for epoch 1
+2023-06-22 00:44:55 | INFO | fairseq.data.data_utils | loaded 9878328 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/train.zh-en.zh
+2023-06-22 00:44:57 | INFO | fairseq.data.data_utils | loaded 9878328 examples from: /project/jonmay_231/linghaoj/canmt/bwb/data/bin/train.zh-en.en
+/home1/linghaoj/anaconda3/envs/env-mega/lib/python3.9/site-packages/torch/nn/parallel/distributed.py:629: UserWarning: The `check_reduction` argument in `DistributedDataParallel` module is deprecated. Please avoid using it.
+  warnings.warn(
+2023-06-22 00:45:52 | INFO | fairseq.trainer | begin training epoch 1
+2023-06-22 00:46:02 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 64.0
+2023-06-22 00:46:02 | INFO | torch.nn.parallel.distributed | Reducer buckets have been rebuilt in this iteration.
+2023-06-22 00:46:05 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 32.0
+2023-06-22 00:46:07 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 00:48:03 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 00:49:27 | INFO | train_inner | epoch 001:    104 / 6685 loss=15.43, nll_loss=15.319, ppl=40874.1, wps=28772.7, ups=0.5, wpb=57215, bsz=1488.2, num_updates=100, lr=2.5e-05, gnorm=2.564, clip=100, loss_scale=13, train_wall=192, wall=272
+2023-06-22 00:52:40 | INFO | train_inner | epoch 001:    204 / 6685 loss=11.337, nll_loss=10.805, ppl=1789.56, wps=29596, ups=0.52, wpb=57099.3, bsz=1467.8, num_updates=200, lr=5e-05, gnorm=0.668, clip=100, loss_scale=8, train_wall=187, wall=465
+2023-06-22 00:55:50 | INFO | train_inner | epoch 001:    304 / 6685 loss=9.747, nll_loss=8.933, ppl=488.71, wps=30012.7, ups=0.53, wpb=57087.9, bsz=1484.4, num_updates=300, lr=7.5e-05, gnorm=0.321, clip=100, loss_scale=8, train_wall=185, wall=655
+2023-06-22 00:58:59 | INFO | train_inner | epoch 001:    404 / 6685 loss=9.13, nll_loss=8.209, ppl=295.85, wps=30316.2, ups=0.53, wpb=57230.8, bsz=1457.5, num_updates=400, lr=0.0001, gnorm=0.331, clip=100, loss_scale=8, train_wall=184, wall=844
+2023-06-22 01:02:08 | INFO | train_inner | epoch 001:    504 / 6685 loss=8.721, nll_loss=7.73, ppl=212.27, wps=30217.8, ups=0.53, wpb=57072, bsz=1446, num_updates=500, lr=0.000125, gnorm=0.342, clip=100, loss_scale=8, train_wall=184, wall=1033
+2023-06-22 01:05:16 | INFO | train_inner | epoch 001:    604 / 6685 loss=8.445, nll_loss=7.407, ppl=169.73, wps=30297.9, ups=0.53, wpb=57126.6, bsz=1477.5, num_updates=600, lr=0.00015, gnorm=0.368, clip=100, loss_scale=11, train_wall=184, wall=1221
+2023-06-22 01:08:25 | INFO | train_inner | epoch 001:    704 / 6685 loss=8.223, nll_loss=7.148, ppl=141.8, wps=30315.6, ups=0.53, wpb=57252.2, bsz=1488.8, num_updates=700, lr=0.000175, gnorm=0.402, clip=100, loss_scale=16, train_wall=184, wall=1410
+2023-06-22 01:11:33 | INFO | train_inner | epoch 001:    804 / 6685 loss=8.045, nll_loss=6.94, ppl=122.8, wps=30330.1, ups=0.53, wpb=57178.4, bsz=1468.4, num_updates=800, lr=0.0002, gnorm=0.395, clip=100, loss_scale=16, train_wall=184, wall=1599
+2023-06-22 01:14:42 | INFO | train_inner | epoch 001:    904 / 6685 loss=7.883, nll_loss=6.752, ppl=107.8, wps=30346.2, ups=0.53, wpb=57273.1, bsz=1473.5, num_updates=900, lr=0.000225, gnorm=0.385, clip=100, loss_scale=16, train_wall=184, wall=1788
+2023-06-22 01:17:52 | INFO | train_inner | epoch 001:   1004 / 6685 loss=7.719, nll_loss=6.563, ppl=94.57, wps=30208.5, ups=0.53, wpb=57225.5, bsz=1496, num_updates=1000, lr=0.00025, gnorm=0.385, clip=100, loss_scale=16, train_wall=185, wall=1977
+2023-06-22 01:21:01 | INFO | train_inner | epoch 001:   1104 / 6685 loss=7.549, nll_loss=6.368, ppl=82.6, wps=30210.3, ups=0.53, wpb=57271.9, bsz=1486.9, num_updates=1100, lr=0.000275, gnorm=0.391, clip=100, loss_scale=19, train_wall=185, wall=2167
+2023-06-22 01:24:10 | INFO | train_inner | epoch 001:   1204 / 6685 loss=7.368, nll_loss=6.161, ppl=71.54, wps=30436, ups=0.53, wpb=57305.8, bsz=1499.6, num_updates=1200, lr=0.0003, gnorm=0.413, clip=100, loss_scale=32, train_wall=183, wall=2355
+2023-06-22 01:27:18 | INFO | train_inner | epoch 001:   1304 / 6685 loss=7.196, nll_loss=5.962, ppl=62.35, wps=30275.4, ups=0.53, wpb=57161, bsz=1479.6, num_updates=1300, lr=0.000325, gnorm=0.436, clip=100, loss_scale=32, train_wall=184, wall=2544
+2023-06-22 01:30:27 | INFO | train_inner | epoch 001:   1404 / 6685 loss=7.017, nll_loss=5.758, ppl=54.11, wps=30322.4, ups=0.53, wpb=57244.6, bsz=1496.6, num_updates=1400, lr=0.00035, gnorm=0.423, clip=100, loss_scale=32, train_wall=184, wall=2733
+2023-06-22 01:33:36 | INFO | train_inner | epoch 001:   1504 / 6685 loss=6.859, nll_loss=5.576, ppl=47.71, wps=30210.4, ups=0.53, wpb=57054.5, bsz=1467.8, num_updates=1500, lr=0.000375, gnorm=0.438, clip=100, loss_scale=32, train_wall=184, wall=2921
+2023-06-22 01:36:45 | INFO | train_inner | epoch 001:   1604 / 6685 loss=6.666, nll_loss=5.354, ppl=40.91, wps=30151.1, ups=0.53, wpb=57012.2, bsz=1472.6, num_updates=1600, lr=0.0004, gnorm=0.425, clip=100, loss_scale=35, train_wall=184, wall=3110
+2023-06-22 01:36:47 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 32.0
+2023-06-22 01:36:47 | INFO | train_inner | epoch 001:   1605 / 6685 loss=None, nll_loss=None, ppl=0, wps=0, ups=0, wpb=None, bsz=None, num_updates=None, lr=None, gnorm=None, clip=None, loss_scale=32, train_wall=2, wall=3112
+2023-06-22 01:39:56 | INFO | train_inner | epoch 001:   1705 / 6685 loss=6.482, nll_loss=5.143, ppl=35.34, wps=30420.8, ups=0.53, wpb=57362.7, bsz=1488.9, num_updates=1700, lr=0.000425, gnorm=0.422, clip=100, loss_scale=32, train_wall=184, wall=3301
+2023-06-22 01:43:04 | INFO | train_inner | epoch 001:   1805 / 6685 loss=6.351, nll_loss=4.992, ppl=31.82, wps=30352.3, ups=0.53, wpb=57162.5, bsz=1452.2, num_updates=1800, lr=0.00045, gnorm=0.426, clip=100, loss_scale=32, train_wall=184, wall=3489
+2023-06-22 01:46:14 | INFO | train_inner | epoch 001:   1905 / 6685 loss=6.206, nll_loss=4.825, ppl=28.35, wps=30228.6, ups=0.53, wpb=57309.4, bsz=1468.9, num_updates=1900, lr=0.000475, gnorm=0.417, clip=100, loss_scale=32, train_wall=185, wall=3679
+2023-06-22 01:49:22 | INFO | train_inner | epoch 001:   2005 / 6685 loss=6.075, nll_loss=4.674, ppl=25.54, wps=30335, ups=0.53, wpb=57304.1, bsz=1508.6, num_updates=2000, lr=0.0005, gnorm=0.39, clip=100, loss_scale=32, train_wall=184, wall=3868
+2023-06-22 01:52:31 | INFO | train_inner | epoch 001:   2105 / 6685 loss=5.984, nll_loss=4.57, ppl=23.75, wps=30319.3, ups=0.53, wpb=57270.6, bsz=1477.4, num_updates=2100, lr=0.000525, gnorm=0.391, clip=100, loss_scale=32, train_wall=184, wall=4057
+2023-06-22 01:53:00 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 32.0
+2023-06-22 01:55:41 | INFO | train_inner | epoch 001:   2206 / 6685 loss=5.893, nll_loss=4.466, ppl=22.09, wps=30118.9, ups=0.53, wpb=57252.8, bsz=1483.8, num_updates=2200, lr=0.00055, gnorm=0.363, clip=100, loss_scale=33, train_wall=185, wall=4247
+2023-06-22 01:58:50 | INFO | train_inner | epoch 001:   2306 / 6685 loss=5.809, nll_loss=4.369, ppl=20.67, wps=30367.2, ups=0.53, wpb=57271, bsz=1483.2, num_updates=2300, lr=0.000575, gnorm=0.39, clip=100, loss_scale=32, train_wall=184, wall=4435
+2023-06-22 02:01:59 | INFO | train_inner | epoch 001:   2406 / 6685 loss=5.736, nll_loss=4.286, ppl=19.51, wps=30232.8, ups=0.53, wpb=57258.4, bsz=1494.2, num_updates=2400, lr=0.0006, gnorm=0.355, clip=100, loss_scale=32, train_wall=184, wall=4625
+2023-06-22 02:05:08 | INFO | train_inner | epoch 001:   2506 / 6685 loss=5.67, nll_loss=4.211, ppl=18.53, wps=30301.4, ups=0.53, wpb=57175.7, bsz=1486.2, num_updates=2500, lr=0.000625, gnorm=0.35, clip=100, loss_scale=32, train_wall=184, wall=4814
+2023-06-22 02:08:17 | INFO | train_inner | epoch 001:   2606 / 6685 loss=5.599, nll_loss=4.131, ppl=17.52, wps=30320.5, ups=0.53, wpb=57253, bsz=1496.5, num_updates=2600, lr=0.00065, gnorm=0.341, clip=100, loss_scale=32, train_wall=184, wall=5002
+2023-06-22 02:09:42 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 32.0
+2023-06-22 02:11:13 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 02:11:30 | INFO | train_inner | epoch 001:   2708 / 6685 loss=5.55, nll_loss=4.076, ppl=16.87, wps=29620, ups=0.52, wpb=57253.8, bsz=1502, num_updates=2700, lr=0.000675, gnorm=0.335, clip=100, loss_scale=36, train_wall=188, wall=5196
+2023-06-22 02:14:38 | INFO | train_inner | epoch 001:   2808 / 6685 loss=5.523, nll_loss=4.046, ppl=16.52, wps=30413.6, ups=0.53, wpb=57090.6, bsz=1444.1, num_updates=2800, lr=0.0007, gnorm=0.333, clip=100, loss_scale=16, train_wall=183, wall=5383
+2023-06-22 02:17:47 | INFO | train_inner | epoch 001:   2908 / 6685 loss=5.477, nll_loss=3.994, ppl=15.93, wps=30264.1, ups=0.53, wpb=57215.8, bsz=1460.8, num_updates=2900, lr=0.000725, gnorm=0.326, clip=100, loss_scale=16, train_wall=184, wall=5572
+2023-06-22 02:20:55 | INFO | train_inner | epoch 001:   3008 / 6685 loss=5.428, nll_loss=3.94, ppl=15.35, wps=30431.8, ups=0.53, wpb=57214.1, bsz=1479.9, num_updates=3000, lr=0.00075, gnorm=0.32, clip=100, loss_scale=16, train_wall=183, wall=5760
+2023-06-22 02:24:04 | INFO | train_inner | epoch 001:   3108 / 6685 loss=5.401, nll_loss=3.91, ppl=15.03, wps=30266.4, ups=0.53, wpb=57267, bsz=1493.4, num_updates=3100, lr=0.000775, gnorm=0.319, clip=100, loss_scale=16, train_wall=184, wall=5950
+2023-06-22 02:27:13 | INFO | train_inner | epoch 001:   3208 / 6685 loss=5.369, nll_loss=3.874, ppl=14.66, wps=30336.4, ups=0.53, wpb=57192, bsz=1466.1, num_updates=3200, lr=0.0008, gnorm=0.309, clip=100, loss_scale=16, train_wall=184, wall=6138
+2023-06-22 02:30:21 | INFO | train_inner | epoch 001:   3308 / 6685 loss=5.328, nll_loss=3.828, ppl=14.2, wps=30386.9, ups=0.53, wpb=57289.8, bsz=1475.8, num_updates=3300, lr=0.000825, gnorm=0.317, clip=100, loss_scale=32, train_wall=184, wall=6327
+2023-06-22 02:33:30 | INFO | train_inner | epoch 001:   3408 / 6685 loss=5.313, nll_loss=3.812, ppl=14.05, wps=30293, ups=0.53, wpb=57300.4, bsz=1475.6, num_updates=3400, lr=0.00085, gnorm=0.304, clip=100, loss_scale=32, train_wall=184, wall=6516
+2023-06-22 02:35:08 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 02:36:41 | INFO | train_inner | epoch 001:   3509 / 6685 loss=5.27, nll_loss=3.764, ppl=13.58, wps=30056.9, ups=0.52, wpb=57300, bsz=1465.5, num_updates=3500, lr=0.000875, gnorm=0.307, clip=100, loss_scale=24, train_wall=186, wall=6707
+2023-06-22 02:39:50 | INFO | train_inner | epoch 001:   3609 / 6685 loss=5.252, nll_loss=3.743, ppl=13.39, wps=30311.2, ups=0.53, wpb=57289.2, bsz=1464.2, num_updates=3600, lr=0.0009, gnorm=0.295, clip=100, loss_scale=16, train_wall=184, wall=6896
+2023-06-22 02:42:59 | INFO | train_inner | epoch 001:   3709 / 6685 loss=5.225, nll_loss=3.714, ppl=13.13, wps=30234.8, ups=0.53, wpb=57223.9, bsz=1491.1, num_updates=3700, lr=0.000925, gnorm=0.291, clip=100, loss_scale=16, train_wall=184, wall=7085
+2023-06-22 02:46:08 | INFO | train_inner | epoch 001:   3809 / 6685 loss=5.196, nll_loss=3.682, ppl=12.83, wps=30416.6, ups=0.53, wpb=57241.3, bsz=1459.5, num_updates=3800, lr=0.00095, gnorm=0.297, clip=100, loss_scale=16, train_wall=183, wall=7273
+2023-06-22 02:49:16 | INFO | train_inner | epoch 001:   3909 / 6685 loss=5.183, nll_loss=3.667, ppl=12.7, wps=30146.8, ups=0.53, wpb=56833.9, bsz=1468.6, num_updates=3900, lr=0.000975, gnorm=0.291, clip=100, loss_scale=16, train_wall=184, wall=7462
+2023-06-22 02:52:24 | INFO | train_inner | epoch 001:   4009 / 6685 loss=5.162, nll_loss=3.644, ppl=12.5, wps=30363.4, ups=0.53, wpb=57162.4, bsz=1444.2, num_updates=4000, lr=0.001, gnorm=0.298, clip=100, loss_scale=22, train_wall=184, wall=7650
+2023-06-22 02:52:55 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 02:55:35 | INFO | train_inner | epoch 001:   4110 / 6685 loss=5.125, nll_loss=3.603, ppl=12.15, wps=30068.1, ups=0.52, wpb=57289.7, bsz=1498.4, num_updates=4100, lr=0.00098773, gnorm=0.287, clip=100, loss_scale=18, train_wall=186, wall=7840
+2023-06-22 02:58:43 | INFO | train_inner | epoch 001:   4210 / 6685 loss=5.127, nll_loss=3.606, ppl=12.18, wps=30227.7, ups=0.53, wpb=56959.5, bsz=1483.2, num_updates=4200, lr=0.0009759, gnorm=0.288, clip=100, loss_scale=16, train_wall=184, wall=8029
+2023-06-22 03:01:52 | INFO | train_inner | epoch 001:   4310 / 6685 loss=5.095, nll_loss=3.571, ppl=11.88, wps=30310.1, ups=0.53, wpb=57139.1, bsz=1497.8, num_updates=4300, lr=0.000964486, gnorm=0.281, clip=100, loss_scale=16, train_wall=184, wall=8217
+2023-06-22 03:05:01 | INFO | train_inner | epoch 001:   4410 / 6685 loss=5.058, nll_loss=3.529, ppl=11.54, wps=30307, ups=0.53, wpb=57270.9, bsz=1484.8, num_updates=4400, lr=0.000953463, gnorm=0.28, clip=100, loss_scale=16, train_wall=184, wall=8406
+2023-06-22 03:05:55 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 03:08:11 | INFO | train_inner | epoch 001:   4511 / 6685 loss=5.045, nll_loss=3.515, ppl=11.43, wps=30001.2, ups=0.53, wpb=57090.6, bsz=1473.6, num_updates=4500, lr=0.000942809, gnorm=0.281, clip=100, loss_scale=10, train_wall=185, wall=8597
+2023-06-22 03:11:19 | INFO | train_inner | epoch 001:   4611 / 6685 loss=5.035, nll_loss=3.504, ppl=11.34, wps=30370.1, ups=0.53, wpb=57156.5, bsz=1479.1, num_updates=4600, lr=0.000932505, gnorm=0.279, clip=100, loss_scale=8, train_wall=183, wall=8785
+2023-06-22 03:14:28 | INFO | train_inner | epoch 001:   4711 / 6685 loss=5.022, nll_loss=3.49, ppl=11.24, wps=30303.2, ups=0.53, wpb=57167.8, bsz=1479.2, num_updates=4700, lr=0.000922531, gnorm=0.271, clip=100, loss_scale=8, train_wall=184, wall=8973
+2023-06-22 03:17:37 | INFO | train_inner | epoch 001:   4811 / 6685 loss=4.991, nll_loss=3.455, ppl=10.97, wps=30305.2, ups=0.53, wpb=57211.1, bsz=1476.9, num_updates=4800, lr=0.000912871, gnorm=0.272, clip=100, loss_scale=8, train_wall=184, wall=9162
+2023-06-22 03:20:45 | INFO | train_inner | epoch 001:   4911 / 6685 loss=4.979, nll_loss=3.442, ppl=10.87, wps=30413.6, ups=0.53, wpb=57216.7, bsz=1480.4, num_updates=4900, lr=0.000903508, gnorm=0.257, clip=100, loss_scale=8, train_wall=183, wall=9350
+2023-06-22 03:23:53 | INFO | train_inner | epoch 001:   5011 / 6685 loss=4.965, nll_loss=3.427, ppl=10.75, wps=30376.2, ups=0.53, wpb=57259.5, bsz=1463.8, num_updates=5000, lr=0.000894427, gnorm=0.266, clip=100, loss_scale=13, train_wall=184, wall=9539
+2023-06-22 03:27:02 | INFO | train_inner | epoch 001:   5111 / 6685 loss=4.957, nll_loss=3.419, ppl=10.69, wps=30405.5, ups=0.53, wpb=57196.1, bsz=1464.1, num_updates=5100, lr=0.000885615, gnorm=0.268, clip=100, loss_scale=16, train_wall=183, wall=9727
+2023-06-22 03:30:10 | INFO | train_inner | epoch 001:   5211 / 6685 loss=4.939, nll_loss=3.398, ppl=10.54, wps=30412.1, ups=0.53, wpb=57180.3, bsz=1483, num_updates=5200, lr=0.000877058, gnorm=0.263, clip=100, loss_scale=16, train_wall=183, wall=9915
+2023-06-22 03:33:19 | INFO | train_inner | epoch 001:   5311 / 6685 loss=4.933, nll_loss=3.392, ppl=10.5, wps=30230.6, ups=0.53, wpb=57118.6, bsz=1490, num_updates=5300, lr=0.000868744, gnorm=0.26, clip=100, loss_scale=16, train_wall=184, wall=10104
+2023-06-22 03:36:27 | INFO | train_inner | epoch 001:   5411 / 6685 loss=4.924, nll_loss=3.383, ppl=10.43, wps=30318.6, ups=0.53, wpb=57042.4, bsz=1475.6, num_updates=5400, lr=0.000860663, gnorm=0.256, clip=100, loss_scale=16, train_wall=184, wall=10292
+2023-06-22 03:38:16 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 03:39:37 | INFO | train_inner | epoch 001:   5512 / 6685 loss=4.913, nll_loss=3.37, ppl=10.34, wps=30184.7, ups=0.53, wpb=57383.6, bsz=1450.5, num_updates=5500, lr=0.000852803, gnorm=0.263, clip=100, loss_scale=17, train_wall=186, wall=10482
+2023-06-22 03:42:45 | INFO | train_inner | epoch 001:   5612 / 6685 loss=4.894, nll_loss=3.349, ppl=10.19, wps=30378.8, ups=0.53, wpb=57109.5, bsz=1458.2, num_updates=5600, lr=0.000845154, gnorm=0.251, clip=100, loss_scale=16, train_wall=183, wall=10670
+2023-06-22 03:45:54 | INFO | train_inner | epoch 001:   5712 / 6685 loss=4.887, nll_loss=3.341, ppl=10.14, wps=30318.7, ups=0.53, wpb=57214.2, bsz=1480.5, num_updates=5700, lr=0.000837708, gnorm=0.249, clip=100, loss_scale=16, train_wall=184, wall=10859
+2023-06-22 03:49:04 | INFO | train_inner | epoch 001:   5812 / 6685 loss=4.852, nll_loss=3.302, ppl=9.86, wps=30063.9, ups=0.53, wpb=57258.3, bsz=1486.2, num_updates=5800, lr=0.000830455, gnorm=0.255, clip=100, loss_scale=16, train_wall=186, wall=11049
+2023-06-22 03:52:14 | INFO | train_inner | epoch 001:   5912 / 6685 loss=4.862, nll_loss=3.314, ppl=9.94, wps=30106.7, ups=0.53, wpb=57275.5, bsz=1491.6, num_updates=5900, lr=0.000823387, gnorm=0.247, clip=100, loss_scale=16, train_wall=185, wall=11240
+2023-06-22 03:54:31 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 03:55:25 | INFO | train_inner | epoch 001:   6013 / 6685 loss=4.853, nll_loss=3.304, ppl=9.88, wps=29970.4, ups=0.52, wpb=57232.3, bsz=1475.7, num_updates=6000, lr=0.000816497, gnorm=0.243, clip=100, loss_scale=16, train_wall=186, wall=11431
+2023-06-22 03:58:34 | INFO | train_inner | epoch 001:   6113 / 6685 loss=4.848, nll_loss=3.299, ppl=9.84, wps=30245.4, ups=0.53, wpb=57203.2, bsz=1472.2, num_updates=6100, lr=0.000809776, gnorm=0.244, clip=100, loss_scale=16, train_wall=184, wall=11620
+2023-06-22 04:01:44 | INFO | train_inner | epoch 001:   6213 / 6685 loss=4.84, nll_loss=3.29, ppl=9.78, wps=30144.4, ups=0.53, wpb=57053.8, bsz=1457.2, num_updates=6200, lr=0.000803219, gnorm=0.25, clip=100, loss_scale=16, train_wall=184, wall=11809
+2023-06-22 04:02:06 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 04:04:56 | INFO | train_inner | epoch 001:   6314 / 6685 loss=4.82, nll_loss=3.268, ppl=9.63, wps=29757.1, ups=0.52, wpb=57184.1, bsz=1492.6, num_updates=6300, lr=0.000796819, gnorm=0.246, clip=100, loss_scale=9, train_wall=187, wall=12001
+2023-06-22 04:08:06 | INFO | train_inner | epoch 001:   6414 / 6685 loss=4.805, nll_loss=3.251, ppl=9.52, wps=30100, ups=0.53, wpb=57262, bsz=1500.6, num_updates=6400, lr=0.000790569, gnorm=0.247, clip=100, loss_scale=8, train_wall=185, wall=12191
+2023-06-22 04:11:16 | INFO | train_inner | epoch 001:   6514 / 6685 loss=4.83, nll_loss=3.279, ppl=9.71, wps=30091, ups=0.53, wpb=57091.5, bsz=1448.7, num_updates=6500, lr=0.000784465, gnorm=0.239, clip=100, loss_scale=8, train_wall=185, wall=12381
+2023-06-22 04:14:26 | INFO | train_inner | epoch 001:   6614 / 6685 loss=4.796, nll_loss=3.241, ppl=9.45, wps=30003.8, ups=0.53, wpb=57146.1, bsz=1498.4, num_updates=6600, lr=0.000778499, gnorm=0.246, clip=100, loss_scale=8, train_wall=186, wall=12572
+2023-06-22 04:16:42 | INFO | fairseq_cli.train | begin validation on "valid" subset
+2023-06-22 04:16:52 | INFO | fairseq.tasks.translation | example hypothesis: “He’s very strong!”
+2023-06-22 04:16:52 | INFO | fairseq.tasks.translation | example reference: “Very strong!”
+2023-06-22 04:16:55 | INFO | fairseq.tasks.translation | example hypothesis: She had said that this man wouldn’t suddenly treat her so well. However, she didn’t know how to respond to him.
+2023-06-22 04:16:55 | INFO | fairseq.tasks.translation | example reference: See, she was right! How could this man suddenly treat her so well while expecting nothing in return?
+2023-06-22 04:16:59 | INFO | fairseq.tasks.translation | example hypothesis: She took a deep breath and turned around to leave the company.
+2023-06-22 04:16:59 | INFO | fairseq.tasks.translation | example reference: She took a deep breath, turned around and left.
+2023-06-22 04:17:03 | INFO | fairseq.tasks.translation | example hypothesis: “Damn it! Emperor kid! You actually managed to get in front of me!” The old man’s eyes were filled with killing intent. His eyes were filled with killing intent, and his eyes were filled with killing intent.
+2023-06-22 04:17:03 | INFO | fairseq.tasks.translation | example reference: “So So So! Di Mo boy! It’s you who took a step ahead of Yours Truly!” Old Man Gui You bellowed in anger.
+2023-06-22 04:17:08 | INFO | fairseq.tasks.translation | example hypothesis: Just as he was cursing in his heart, he heard him speak up. “Let’s go have a meal.” He looked at the man and said, “We’re going to eat.”
+2023-06-22 04:17:08 | INFO | fairseq.tasks.translation | example reference: As she was criticised him internally, she heard him say, “We’re going to eat.”
+2023-06-22 04:17:09 | INFO | fairseq.tasks.translation | example hypothesis: She was still in shock when she heard Song Cheng’s excited voice. “Miss Qiao, why are you here?” Song Cheng’s expression changed.
+2023-06-22 04:17:09 | INFO | fairseq.tasks.translation | example reference: She was still in a state of shock, when she heard Song Cheng exclaim excitedly, “Ms. Qiao, why are you here?”
+2023-06-22 04:17:15 | INFO | fairseq.tasks.translation | example hypothesis: “You want to destroy me? It’s also up to you that... it’s not enough for you to do it!”
+2023-06-22 04:17:15 | INFO | fairseq.tasks.translation | example reference: “You want to crush me? That depends if you can meet the mark!”
+2023-06-22 04:17:19 | INFO | fairseq.tasks.translation | example hypothesis: Shen Liangchuan carried the light on his back and walked in front of her step by step. An ambiguous aura instantly enveloped her.
+2023-06-22 04:17:19 | INFO | fairseq.tasks.translation | example reference: He turned his back on the light and stood in front of her. A shady atmosphere immediately enveloped her.
+2023-06-22 04:17:20 | INFO | fairseq.tasks.translation | example hypothesis: Hearing the discussion of the crowd, the depths of Bai Li Yu Yan’s eyes were filled with jealousy. “Everyone, please take care of the others!”
+2023-06-22 04:17:20 | INFO | fairseq.tasks.translation | example reference: Hearing the conversations of the crowd, flames of envy leaped into Baili Yuyan’s eyes, “Attention whore!”
+2023-06-22 04:17:22 | INFO | fairseq.tasks.translation | example hypothesis: Xiao Hei and Xiao Bai, who had been complaining to themselves, closed their mouths after seeing Baili Hongzhuang’s insistence. However, when they saw Baili Hongzhuang’s expression, they immediately shut their mouths.
+2023-06-22 04:17:22 | INFO | fairseq.tasks.translation | example reference: When the originally complaining fluffballs saw Baili Hongzhuang unyielding back going again and again, they silently closed their mouths.
+2023-06-22 04:17:26 | INFO | fairseq.tasks.translation | example hypothesis: Gao Youming wanted to welcome people in, but when he thought of Wang Chuan’s instructions, he could only smile awkwardly and shut the door.
+2023-06-22 04:17:26 | INFO | fairseq.tasks.translation | example reference: Gao Youming truly wanted to invite them inside. However, after recalling Wang Chuan’s instructions, he could only smile awkwardly before closing the door.
+2023-06-22 04:17:33 | INFO | fairseq.tasks.translation | example hypothesis: I thought for a moment, and also, this method is indeed not bad, but I feel that something is wrong in my heart. But since it’s already like this, it’s time to apply for leave tomorrow.
+2023-06-22 04:17:33 | INFO | fairseq.tasks.translation | example reference: ‘This is really a good plan. However, I still have an inkling feeling that there is something amiss. Since it is already decided though, I’ll just take a leave of absence from the academy tomorrow.’
+2023-06-22 04:17:38 | INFO | fairseq.tasks.translation | example hypothesis: “Yes, yes, I will remember this. Please take good care of me from now on!”
+2023-06-22 04:17:38 | INFO | fairseq.tasks.translation | example reference: “Yes, yes, yes, this little girl has learnt her lesson. Dear husband, please continue to take care of me in the future!”
+2023-06-22 04:17:40 | INFO | fairseq.tasks.translation | example hypothesis: Hearing those words, Bai Li Hong Zhuang’s hand that had been rejected paused for a moment, and then took it away.
+2023-06-22 04:17:40 | INFO | fairseq.tasks.translation | example reference: Baili Hongzhaung tried to reject by pushing it away. However, she took it after listening.
+2023-06-22 04:17:43 | INFO | fairseq.tasks.translation | example hypothesis: “It shouldn’t be, it’s true.” Through the phone, she could feel the cold tone of Qiao Lian’s voice. Qiao Lian’s eyes were filled with coldness.
+2023-06-22 04:17:43 | INFO | fairseq.tasks.translation | example reference: “It’s not ‘you think’, it is you have.” Even though they were speaking through the cell phone, Qiao Lian could feel that cold tone of his.
+2023-06-22 04:17:45 | INFO | fairseq.tasks.translation | example hypothesis: Although Li Yuyue’s injury yesterday made him extremely embarrassed and angry, it just so happened that he had found a very good reason for it.
+2023-06-22 04:17:45 | INFO | fairseq.tasks.translation | example reference: Although he was ashamed and resentful about Li Yuyue getting wounded yesterday, it gave him a very good excuse for him to cover everything up.
+2023-06-22 04:17:48 | INFO | fairseq.tasks.translation | example hypothesis: She opened her mouth and opened her mouth again. She wanted to say something to reject him, but when she saw his confident expression, she couldn’t say a word that she couldn’t say. “I’m sorry, I’m sorry.”
+2023-06-22 04:17:48 | INFO | fairseq.tasks.translation | example reference: She opened and closed her mouth repeatedly, trying to find an excuse to reject him. However, after looking at the determined expression on his face, all the excuses were stuck in her mouth.
+2023-06-22 04:17:50 | INFO | fairseq.tasks.translation | example hypothesis: “You still want to ask?” Baili Hongzhuang’s expression changed as she looked at the crowd’s disdainful gazes. “I don’t have any thoughts about Di Beichen!” “Then you still want to ask?”
+2023-06-22 04:17:50 | INFO | fairseq.tasks.translation | example reference: Tl’s note: The raw actually said Baili Hongzhuang, but I believe its a typo “Then why are you still asking?” “?”
+2023-06-22 04:17:55 | INFO | fairseq.tasks.translation | example hypothesis: He cast a sidelong glance at the teachers who were standing behind him and said in a cold voice, “The power test is the weapon of which b*stard reviewed it. This disciple of mine was destroyed by this evil sword!”
+2023-06-22 04:17:55 | INFO | fairseq.tasks.translation | example reference: He narrowed his eyes at the few masters who stood behind him and berated in a cold tone: “Who the heck did not do their job to review the weapons thoroughly and almost caused the life of my disciple!”
+2023-06-22 04:17:57 | INFO | fairseq.tasks.translation | example hypothesis: “I studied medicine since I was a child. Thus, I understand it very well,” Baili Hongzhuang said with a faint smile.
+2023-06-22 04:17:57 | INFO | fairseq.tasks.translation | example reference: “I’ve been studying herbs meticulously since I was a child, so I know a lot about these kinds of stuff.” Baili Hongzhuang smiled lightly.
+2023-06-22 04:18:00 | INFO | fairseq.tasks.translation | example hypothesis: Under the heated gazes of the crowd, Baili Hongzhuang’s expression was calm as she walked into the group. Regardless of whether it was her or Di Beichen, they were all close to the court officials.
+2023-06-22 04:18:00 | INFO | fairseq.tasks.translation | example reference: Under everyone’s burning eyes, Baili Hongzhuang’s face stayed calm as she entered the line. Whether it was her or Dibei Chen, neither of them had a good relationship with the chancellors.
+2023-06-22 04:18:01 | INFO | fairseq.tasks.translation | example hypothesis: Staring at Teacher Zhen, I wanted to pounce on you.
+2023-06-22 04:18:01 | INFO | fairseq.tasks.translation | example reference: Xiao Jin glared at Teacher Zhen and got ready to attack him.
+2023-06-22 04:18:04 | INFO | fairseq.tasks.translation | example hypothesis: Before Li Yuyue could finish her sentence, Baili Hongzhuang heard a loud sound. Immediately after, she heard Li Yuyue’s crazy scream. “Who are you?”
+2023-06-22 04:18:04 | INFO | fairseq.tasks.translation | example reference: Before Li Yuyue could finish her sentence, Baili Hongzhuang heard a loud noise followed almost immediately with a mad screech from Li Yuyue.
+2023-06-22 04:18:09 | INFO | fairseq.tasks.translation | example hypothesis: The warm breath of her breath was transmitted into her ears, causing her entire body to stiffen. She felt as if there was a ball of flame in her lower abdomen, and she felt as if her throat was dry.
+2023-06-22 04:18:09 | INFO | fairseq.tasks.translation | example reference: She felt his warm breath near her ear, causing her entire body to freeze. She felt a fiery sensation near her abdomen. As the sensation worked its way up her body, she felt increasing hotter and drier.
+2023-06-22 04:18:14 | INFO | fairseq.tasks.translation | example hypothesis: Shen Liangchuan gave a faint “En” sound. Just as he was about to say something, Song Cheng’s next voice came from the other side. “But, do you think I’ve seen someone?”
+2023-06-22 04:18:14 | INFO | fairseq.tasks.translation | example reference: Shen Liangchuan silently nodded in affirmation. However, just as he was intending to speak, Song Cheng continued, “However, guess who I just saw?”
+2023-06-22 04:18:17 | INFO | fairseq.tasks.translation | example hypothesis: Ma Ke continued, “Originally, Father wanted to ask you to go together, but Teacher Di said that you are our secret weapon, so we can’t let them know about it.”
+2023-06-22 04:18:17 | INFO | fairseq.tasks.translation | example reference: Ma Ke continued to explain, “Initially, father wanted to ask you to come join them, but Teacher Di said that you’re our secret weapon and that we shouldn’t let the opposing forces know about you.”
+2023-06-22 04:18:22 | INFO | fairseq.tasks.translation | example hypothesis: "There's also a person playing with Little Qiao. His name is Little Qiao. Hehe, I'll tell you that he's an ancestor! Not to mention that he's already so powerful, Little Qiao's control is very powerful. Other than Zi Chuan, I've never seen her even more powerful!"
+2023-06-22 04:18:22 | INFO | fairseq.tasks.translation | example reference: Gao Youming delightedly said, “Of course... not! I’ve only heard of him in passing. You may not know this, but during those days, Zi Chuan’s group was practically invincible! Every member of his team was extremely good at the game. There was even one member of the group who used the nickname ‘Xiao Qiao’ after the character in the game that she often played. Heheh, let me tell you, she was a legendary player in the game! Even if we ignore how good Zi Chuan was, Xiao Qiao was also extremely proficient at the game. Other than Zi Chuan, I haven’t seen anyone who was better at the game than she was!”
+2023-06-22 04:18:28 | INFO | fairseq.tasks.translation | example hypothesis: Seeing that Baili Hongzhuang’s words were reasonable and reasonable, everyone turned to Bai Li Hongzhuang. After all, Li Yuyue had never appeared in front of everyone these few days. It was too suspicious that Li Yuyue had appeared in front of the crowd for the past few days.
+2023-06-22 04:18:28 | INFO | fairseq.tasks.translation | example reference: Seeing Baili Hongzhuang speak so reasonably, everybody was somewhat partial to Baili Hongzhuang. After all, Li Yuyue not coming today was just too suspicious.
+2023-06-22 04:18:33 | INFO | fairseq.tasks.translation | example hypothesis: The two teachers’ defensive barriers broke one after another, each using their ultimate techniques to defend against the light element attacks. Teacher Di was also using the same light star light. When he first came into contact with the defensive barriers, he had already discovered that something wasn’t right. He immediately chanted an incantation. Although he was somewhat embarrassed, he still managed to block my attack.
+2023-06-22 04:18:33 | INFO | fairseq.tasks.translation | example reference: After the two teachers’ barriers broke, they used their ultimate moves to stop the light stars attack. Teacher Di used the same Bright Star’s Shine spell. Once my light stars landed on his defensive barrier, he realized that something wasn’t right and immediately chanted the spell. Although he was in a difficult position, he completely blocked my attack.
+2023-06-22 04:18:39 | INFO | fairseq.tasks.translation | example hypothesis: Teacher Zhen said, “Actually, with your current ability, you should be able to hold on for a while longer. It’s just that you’re still lacking in magic power. Every time you use magic to defend against Lauren’s attacks, you’ll have to waste a lot of time. Since you know that you’re no match for us, you can avoid the sharpness and attack from the side. This way, you’ll be able to save a lot of magic power. However, which star magic you’re using in the morning is really not bad. It’s not bad for me and Lauren to suffer a small loss. If you don’t use it, you’ll be able to use it.”
+2023-06-22 04:18:39 | INFO | fairseq.tasks.translation | example reference: Teacher Zhen replied, “Actually, you should have been able to hold out a little longer with your current power. However, you’re not good at controlling the usage of your magic power. You’re wasting too much magic power every time you counter our attacks. Since you know we aren’t your opponent, you should avoid our attacks and only attack when you see an opportunity. You’ll be able to save lots of magic power that way. Your control in the star magic spell you used in the morning was not bad as it made Lao Lun and I suffer to counter it.”
+2023-06-22 04:18:40 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 4.735 | nll_loss 3.14 | ppl 8.82 | bleu 14.69 | wps 676.6 | wpb 2501.5 | bsz 87.3 | num_updates 6671
+2023-06-22 04:18:40 | INFO | fairseq_cli.train | begin save checkpoint
+2023-06-22 04:18:45 | INFO | fairseq.checkpoint_utils | saved checkpoint /project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]/checkpoint1.pt (epoch 1 @ 6671 updates, score 14.69) (writing took 5.179364372044802 seconds)
+2023-06-22 04:18:45 | INFO | fairseq_cli.train | end of epoch 1 (average epoch stats below)
+2023-06-22 04:18:45 | INFO | train | epoch 001 | loss 6.05 | nll_loss 4.662 | ppl 25.31 | wps 29911.2 | ups 0.52 | wpb 57198.2 | bsz 1477.7 | num_updates 6671 | lr 0.000774345 | gnorm 0.357 | clip 100 | loss_scale 19 | train_wall 12319 | wall 12830
+2023-06-22 04:18:45 | INFO | fairseq.trainer | begin training epoch 2
+2023-06-22 04:19:50 | INFO | train_inner | epoch 002:     29 / 6685 loss=4.793, nll_loss=3.238, ppl=9.43, wps=17702.5, ups=0.31, wpb=57246.3, bsz=1471.9, num_updates=6700, lr=0.000772667, gnorm=0.244, clip=100, loss_scale=8, train_wall=189, wall=12895
+2023-06-22 04:23:07 | INFO | train_inner | epoch 002:    129 / 6685 loss=4.772, nll_loss=3.214, ppl=9.28, wps=29011.7, ups=0.51, wpb=57117.9, bsz=1460.1, num_updates=6800, lr=0.000766965, gnorm=0.24, clip=100, loss_scale=14, train_wall=190, wall=13092
+2023-06-22 04:26:20 | INFO | train_inner | epoch 002:    229 / 6685 loss=4.767, nll_loss=3.209, ppl=9.24, wps=29482.1, ups=0.52, wpb=57101.9, bsz=1470.3, num_updates=6900, lr=0.000761387, gnorm=0.237, clip=100, loss_scale=16, train_wall=187, wall=13286
+2023-06-22 04:29:32 | INFO | train_inner | epoch 002:    329 / 6685 loss=4.744, nll_loss=3.183, ppl=9.08, wps=29833.3, ups=0.52, wpb=57083.2, bsz=1477.4, num_updates=7000, lr=0.000755929, gnorm=0.242, clip=100, loss_scale=16, train_wall=186, wall=13477
+2023-06-22 04:32:42 | INFO | train_inner | epoch 002:    429 / 6685 loss=4.768, nll_loss=3.21, ppl=9.25, wps=30031.9, ups=0.52, wpb=57250.8, bsz=1476.8, num_updates=7100, lr=0.000750587, gnorm=0.241, clip=100, loss_scale=16, train_wall=186, wall=13668
+2023-06-22 04:35:52 | INFO | train_inner | epoch 002:    529 / 6685 loss=4.754, nll_loss=3.194, ppl=9.15, wps=30261.5, ups=0.53, wpb=57321.5, bsz=1467.3, num_updates=7200, lr=0.000745356, gnorm=0.229, clip=100, loss_scale=16, train_wall=185, wall=13857
+2023-06-22 04:37:00 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 04:39:03 | INFO | train_inner | epoch 002:    630 / 6685 loss=4.745, nll_loss=3.185, ppl=9.09, wps=29906.8, ups=0.52, wpb=57163.2, bsz=1472.1, num_updates=7300, lr=0.000740233, gnorm=0.236, clip=100, loss_scale=16, train_wall=186, wall=14048
+2023-06-22 04:42:11 | INFO | train_inner | epoch 002:    730 / 6685 loss=4.726, nll_loss=3.164, ppl=8.96, wps=30394.2, ups=0.53, wpb=57218.1, bsz=1473.8, num_updates=7400, lr=0.000735215, gnorm=0.231, clip=100, loss_scale=16, train_wall=184, wall=14236
+2023-06-22 04:43:18 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 04:45:21 | INFO | train_inner | epoch 002:    831 / 6685 loss=4.739, nll_loss=3.178, ppl=9.05, wps=30021.5, ups=0.53, wpb=57011.4, bsz=1468, num_updates=7500, lr=0.000730297, gnorm=0.232, clip=100, loss_scale=11, train_wall=185, wall=14426
+2023-06-22 04:48:30 | INFO | train_inner | epoch 002:    931 / 6685 loss=4.726, nll_loss=3.164, ppl=8.96, wps=30400.9, ups=0.53, wpb=57344.4, bsz=1479.8, num_updates=7600, lr=0.000725476, gnorm=0.229, clip=100, loss_scale=8, train_wall=184, wall=14615
+2023-06-22 04:51:38 | INFO | train_inner | epoch 002:   1031 / 6685 loss=4.724, nll_loss=3.162, ppl=8.95, wps=30397.6, ups=0.53, wpb=57151.5, bsz=1463.9, num_updates=7700, lr=0.00072075, gnorm=0.227, clip=100, loss_scale=8, train_wall=183, wall=14803
+2023-06-22 04:54:46 | INFO | train_inner | epoch 002:   1131 / 6685 loss=4.715, nll_loss=3.151, ppl=8.88, wps=30298.9, ups=0.53, wpb=57181.4, bsz=1480.9, num_updates=7800, lr=0.000716115, gnorm=0.229, clip=100, loss_scale=8, train_wall=184, wall=14992
+2023-06-22 04:57:55 | INFO | train_inner | epoch 002:   1231 / 6685 loss=4.702, nll_loss=3.137, ppl=8.8, wps=30307, ups=0.53, wpb=57158, bsz=1489.3, num_updates=7900, lr=0.000711568, gnorm=0.23, clip=100, loss_scale=8, train_wall=184, wall=15180
+2023-06-22 05:01:03 | INFO | train_inner | epoch 002:   1331 / 6685 loss=4.704, nll_loss=3.139, ppl=8.81, wps=30405, ups=0.53, wpb=57199.2, bsz=1471.9, num_updates=8000, lr=0.000707107, gnorm=0.229, clip=100, loss_scale=12, train_wall=183, wall=15368
+2023-06-22 05:04:11 | INFO | train_inner | epoch 002:   1431 / 6685 loss=4.708, nll_loss=3.144, ppl=8.84, wps=30427.9, ups=0.53, wpb=57230.5, bsz=1468.3, num_updates=8100, lr=0.000702728, gnorm=0.228, clip=100, loss_scale=16, train_wall=183, wall=15557
+2023-06-22 05:07:19 | INFO | train_inner | epoch 002:   1531 / 6685 loss=4.704, nll_loss=3.14, ppl=8.82, wps=30351.7, ups=0.53, wpb=57010.8, bsz=1458.2, num_updates=8200, lr=0.00069843, gnorm=0.229, clip=100, loss_scale=16, train_wall=183, wall=15744
+2023-06-22 05:10:27 | INFO | train_inner | epoch 002:   1631 / 6685 loss=4.694, nll_loss=3.129, ppl=8.75, wps=30394.7, ups=0.53, wpb=57281.8, bsz=1486.8, num_updates=8300, lr=0.00069421, gnorm=0.233, clip=100, loss_scale=16, train_wall=184, wall=15933
+2023-06-22 05:13:36 | INFO | train_inner | epoch 002:   1731 / 6685 loss=4.692, nll_loss=3.127, ppl=8.73, wps=30278.5, ups=0.53, wpb=57215.5, bsz=1489, num_updates=8400, lr=0.000690066, gnorm=0.229, clip=100, loss_scale=16, train_wall=184, wall=16122
+2023-06-22 05:15:41 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 05:16:46 | INFO | train_inner | epoch 002:   1832 / 6685 loss=4.695, nll_loss=3.13, ppl=8.75, wps=30098.3, ups=0.53, wpb=57175.7, bsz=1468.6, num_updates=8500, lr=0.000685994, gnorm=0.225, clip=100, loss_scale=17, train_wall=185, wall=16312
+2023-06-22 05:19:55 | INFO | train_inner | epoch 002:   1932 / 6685 loss=4.689, nll_loss=3.123, ppl=8.71, wps=30197.4, ups=0.53, wpb=57070.9, bsz=1459.3, num_updates=8600, lr=0.000681994, gnorm=0.235, clip=100, loss_scale=16, train_wall=184, wall=16501
+2023-06-22 05:23:04 | INFO | train_inner | epoch 002:   2032 / 6685 loss=4.671, nll_loss=3.103, ppl=8.59, wps=30410, ups=0.53, wpb=57285.5, bsz=1495.5, num_updates=8700, lr=0.000678064, gnorm=0.22, clip=100, loss_scale=16, train_wall=184, wall=16689
+2023-06-22 05:24:15 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 05:26:14 | INFO | train_inner | epoch 002:   2133 / 6685 loss=4.679, nll_loss=3.113, ppl=8.65, wps=30146.5, ups=0.53, wpb=57192.7, bsz=1469.1, num_updates=8800, lr=0.0006742, gnorm=0.225, clip=100, loss_scale=11, train_wall=185, wall=16879
+2023-06-22 05:29:22 | INFO | train_inner | epoch 002:   2233 / 6685 loss=4.671, nll_loss=3.104, ppl=8.6, wps=30442, ups=0.53, wpb=57236.4, bsz=1490.4, num_updates=8900, lr=0.000670402, gnorm=0.224, clip=100, loss_scale=8, train_wall=183, wall=17067
+2023-06-22 05:32:30 | INFO | train_inner | epoch 002:   2333 / 6685 loss=4.661, nll_loss=3.092, ppl=8.53, wps=30540.8, ups=0.53, wpb=57419.5, bsz=1478.5, num_updates=9000, lr=0.000666667, gnorm=0.222, clip=100, loss_scale=8, train_wall=183, wall=17255
+2023-06-22 05:35:38 | INFO | train_inner | epoch 002:   2433 / 6685 loss=4.664, nll_loss=3.095, ppl=8.55, wps=30483.9, ups=0.53, wpb=57369.3, bsz=1475.3, num_updates=9100, lr=0.000662994, gnorm=0.22, clip=100, loss_scale=8, train_wall=184, wall=17443
+2023-06-22 05:38:46 | INFO | train_inner | epoch 002:   2533 / 6685 loss=4.648, nll_loss=3.078, ppl=8.45, wps=30428.5, ups=0.53, wpb=57153.1, bsz=1474.6, num_updates=9200, lr=0.00065938, gnorm=0.229, clip=100, loss_scale=8, train_wall=183, wall=17631
+2023-06-22 05:41:55 | INFO | train_inner | epoch 002:   2633 / 6685 loss=4.652, nll_loss=3.083, ppl=8.47, wps=30314.8, ups=0.53, wpb=57310.5, bsz=1484.4, num_updates=9300, lr=0.000655826, gnorm=0.225, clip=100, loss_scale=12, train_wall=184, wall=17820
+2023-06-22 05:45:03 | INFO | train_inner | epoch 002:   2733 / 6685 loss=4.652, nll_loss=3.083, ppl=8.48, wps=30367, ups=0.53, wpb=57238, bsz=1499.7, num_updates=9400, lr=0.000652328, gnorm=0.222, clip=100, loss_scale=16, train_wall=184, wall=18009
+2023-06-22 05:48:11 | INFO | train_inner | epoch 002:   2833 / 6685 loss=4.647, nll_loss=3.077, ppl=8.44, wps=30419, ups=0.53, wpb=57121.6, bsz=1475.1, num_updates=9500, lr=0.000648886, gnorm=0.23, clip=100, loss_scale=16, train_wall=183, wall=18196
+2023-06-22 05:51:19 | INFO | train_inner | epoch 002:   2933 / 6685 loss=4.641, nll_loss=3.07, ppl=8.4, wps=30404.1, ups=0.53, wpb=57145.5, bsz=1481.2, num_updates=9600, lr=0.000645497, gnorm=0.219, clip=100, loss_scale=16, train_wall=183, wall=18384
+2023-06-22 05:54:26 | INFO | train_inner | epoch 002:   3033 / 6685 loss=4.65, nll_loss=3.081, ppl=8.46, wps=30491.1, ups=0.53, wpb=57123.2, bsz=1479, num_updates=9700, lr=0.000642161, gnorm=0.224, clip=100, loss_scale=16, train_wall=183, wall=18572
+2023-06-22 05:56:36 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 05:57:36 | INFO | train_inner | epoch 002:   3134 / 6685 loss=4.646, nll_loss=3.076, ppl=8.43, wps=30102, ups=0.53, wpb=57178.9, bsz=1463, num_updates=9800, lr=0.000638877, gnorm=0.219, clip=100, loss_scale=17, train_wall=185, wall=18762
+2023-06-22 06:00:46 | INFO | train_inner | epoch 002:   3234 / 6685 loss=4.634, nll_loss=3.063, ppl=8.36, wps=30248, ups=0.53, wpb=57274.1, bsz=1470, num_updates=9900, lr=0.000635642, gnorm=0.221, clip=100, loss_scale=16, train_wall=185, wall=18951
+2023-06-22 06:03:55 | INFO | train_inner | epoch 002:   3334 / 6685 loss=4.627, nll_loss=3.055, ppl=8.31, wps=30174.2, ups=0.53, wpb=57113.5, bsz=1466.3, num_updates=10000, lr=0.000632456, gnorm=0.219, clip=100, loss_scale=16, train_wall=184, wall=19140
+2023-06-22 06:07:04 | INFO | train_inner | epoch 002:   3434 / 6685 loss=4.633, nll_loss=3.062, ppl=8.35, wps=30370.5, ups=0.53, wpb=57347.5, bsz=1484.7, num_updates=10100, lr=0.000629317, gnorm=0.217, clip=100, loss_scale=16, train_wall=184, wall=19329
+2023-06-22 06:10:12 | INFO | train_inner | epoch 002:   3534 / 6685 loss=4.623, nll_loss=3.05, ppl=8.28, wps=30377.6, ups=0.53, wpb=57322.3, bsz=1483, num_updates=10200, lr=0.000626224, gnorm=0.213, clip=100, loss_scale=16, train_wall=184, wall=19518
+2023-06-22 06:13:21 | INFO | train_inner | epoch 002:   3634 / 6685 loss=4.615, nll_loss=3.041, ppl=8.23, wps=30453.7, ups=0.53, wpb=57377.5, bsz=1489, num_updates=10300, lr=0.000623177, gnorm=0.222, clip=100, loss_scale=19, train_wall=184, wall=19706
+2023-06-22 06:14:15 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 06:16:31 | INFO | train_inner | epoch 002:   3735 / 6685 loss=4.634, nll_loss=3.064, ppl=8.36, wps=30033.8, ups=0.53, wpb=57091.3, bsz=1492.7, num_updates=10400, lr=0.000620174, gnorm=0.216, clip=100, loss_scale=20, train_wall=185, wall=19896
+2023-06-22 06:19:39 | INFO | train_inner | epoch 002:   3835 / 6685 loss=4.623, nll_loss=3.051, ppl=8.29, wps=30406.4, ups=0.53, wpb=57316.1, bsz=1479.1, num_updates=10500, lr=0.000617213, gnorm=0.215, clip=100, loss_scale=16, train_wall=184, wall=20085
+2023-06-22 06:22:47 | INFO | train_inner | epoch 002:   3935 / 6685 loss=4.615, nll_loss=3.043, ppl=8.24, wps=30481.3, ups=0.53, wpb=57180.2, bsz=1465.3, num_updates=10600, lr=0.000614295, gnorm=0.228, clip=100, loss_scale=16, train_wall=183, wall=20272
+2023-06-22 06:25:55 | INFO | train_inner | epoch 002:   4035 / 6685 loss=4.605, nll_loss=3.031, ppl=8.17, wps=30358, ups=0.53, wpb=57143.8, bsz=1475.6, num_updates=10700, lr=0.000611418, gnorm=0.213, clip=100, loss_scale=16, train_wall=183, wall=20461
+2023-06-22 06:29:03 | INFO | train_inner | epoch 002:   4135 / 6685 loss=4.607, nll_loss=3.034, ppl=8.19, wps=30421.4, ups=0.53, wpb=57253, bsz=1491.5, num_updates=10800, lr=0.000608581, gnorm=0.22, clip=100, loss_scale=16, train_wall=184, wall=20649
+2023-06-22 06:30:59 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 06:32:15 | INFO | train_inner | epoch 002:   4236 / 6685 loss=4.608, nll_loss=3.035, ppl=8.2, wps=29971.8, ups=0.52, wpb=57282.7, bsz=1463.8, num_updates=10900, lr=0.000605783, gnorm=0.219, clip=100, loss_scale=19, train_wall=186, wall=20840
+2023-06-22 06:35:24 | INFO | train_inner | epoch 002:   4336 / 6685 loss=4.599, nll_loss=3.025, ppl=8.14, wps=30166.9, ups=0.53, wpb=57159.2, bsz=1484.4, num_updates=11000, lr=0.000603023, gnorm=0.217, clip=100, loss_scale=16, train_wall=185, wall=21029
+2023-06-22 06:38:32 | INFO | train_inner | epoch 002:   4436 / 6685 loss=4.61, nll_loss=3.037, ppl=8.21, wps=30323.6, ups=0.53, wpb=57052.5, bsz=1466.7, num_updates=11100, lr=0.0006003, gnorm=0.215, clip=100, loss_scale=16, train_wall=184, wall=21218
+2023-06-22 06:41:41 | INFO | train_inner | epoch 002:   4536 / 6685 loss=4.594, nll_loss=3.02, ppl=8.11, wps=30299, ups=0.53, wpb=57083, bsz=1491, num_updates=11200, lr=0.000597614, gnorm=0.22, clip=100, loss_scale=16, train_wall=184, wall=21406
+2023-06-22 06:44:49 | INFO | train_inner | epoch 002:   4636 / 6685 loss=4.585, nll_loss=3.009, ppl=8.05, wps=30418.9, ups=0.53, wpb=57212.7, bsz=1481.1, num_updates=11300, lr=0.000594964, gnorm=0.21, clip=100, loss_scale=16, train_wall=183, wall=21594
+2023-06-22 06:47:21 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 06:47:59 | INFO | train_inner | epoch 002:   4737 / 6685 loss=4.586, nll_loss=3.01, ppl=8.06, wps=30086.9, ups=0.53, wpb=57170.2, bsz=1474.5, num_updates=11400, lr=0.000592349, gnorm=0.213, clip=100, loss_scale=17, train_wall=185, wall=21784
+2023-06-22 06:51:08 | INFO | train_inner | epoch 002:   4837 / 6685 loss=4.585, nll_loss=3.01, ppl=8.05, wps=30283.4, ups=0.53, wpb=57272.1, bsz=1507.5, num_updates=11500, lr=0.000589768, gnorm=0.221, clip=100, loss_scale=16, train_wall=184, wall=21973
+2023-06-22 06:54:16 | INFO | train_inner | epoch 002:   4937 / 6685 loss=4.592, nll_loss=3.017, ppl=8.09, wps=30384.4, ups=0.53, wpb=57024.6, bsz=1461.3, num_updates=11600, lr=0.00058722, gnorm=0.219, clip=100, loss_scale=16, train_wall=183, wall=22161
+2023-06-22 06:57:24 | INFO | train_inner | epoch 002:   5037 / 6685 loss=4.577, nll_loss=3, ppl=8, wps=30290.7, ups=0.53, wpb=57212.8, bsz=1505.1, num_updates=11700, lr=0.000584705, gnorm=0.211, clip=100, loss_scale=16, train_wall=184, wall=22350
+2023-06-22 07:00:33 | INFO | train_inner | epoch 002:   5137 / 6685 loss=4.584, nll_loss=3.008, ppl=8.05, wps=30371.1, ups=0.53, wpb=57187.8, bsz=1473.8, num_updates=11800, lr=0.000582223, gnorm=0.213, clip=100, loss_scale=16, train_wall=183, wall=22538
+2023-06-22 07:03:36 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 07:03:43 | INFO | train_inner | epoch 002:   5238 / 6685 loss=4.59, nll_loss=3.015, ppl=8.08, wps=30088.2, ups=0.53, wpb=57282.3, bsz=1488.2, num_updates=11900, lr=0.000579771, gnorm=0.209, clip=100, loss_scale=17, train_wall=186, wall=22729
+2023-06-22 07:06:52 | INFO | train_inner | epoch 002:   5338 / 6685 loss=4.574, nll_loss=2.997, ppl=7.98, wps=30379.2, ups=0.53, wpb=57307, bsz=1481, num_updates=12000, lr=0.00057735, gnorm=0.213, clip=100, loss_scale=16, train_wall=184, wall=22917
+2023-06-22 07:10:00 | INFO | train_inner | epoch 002:   5438 / 6685 loss=4.578, nll_loss=3.001, ppl=8.01, wps=30327.6, ups=0.53, wpb=57067.3, bsz=1460.5, num_updates=12100, lr=0.00057496, gnorm=0.212, clip=100, loss_scale=16, train_wall=184, wall=23105
+2023-06-22 07:13:08 | INFO | train_inner | epoch 002:   5538 / 6685 loss=4.566, nll_loss=2.988, ppl=7.93, wps=30443.6, ups=0.53, wpb=57305.7, bsz=1493.3, num_updates=12200, lr=0.000572598, gnorm=0.216, clip=100, loss_scale=16, train_wall=183, wall=23294
+2023-06-22 07:16:16 | INFO | train_inner | epoch 002:   5638 / 6685 loss=4.567, nll_loss=2.99, ppl=7.94, wps=30495.8, ups=0.53, wpb=57376.6, bsz=1464.4, num_updates=12300, lr=0.000570266, gnorm=0.21, clip=100, loss_scale=16, train_wall=183, wall=23482
+2023-06-22 07:18:46 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 07:19:27 | INFO | train_inner | epoch 002:   5739 / 6685 loss=4.566, nll_loss=2.989, ppl=7.94, wps=29933.1, ups=0.52, wpb=57090.6, bsz=1470.7, num_updates=12400, lr=0.000567962, gnorm=0.21, clip=100, loss_scale=14, train_wall=186, wall=23672
+2023-06-22 07:22:35 | INFO | train_inner | epoch 002:   5839 / 6685 loss=4.573, nll_loss=2.996, ppl=7.98, wps=30298.4, ups=0.53, wpb=57049.7, bsz=1474.6, num_updates=12500, lr=0.000565685, gnorm=0.211, clip=100, loss_scale=8, train_wall=184, wall=23861
+2023-06-22 07:25:44 | INFO | train_inner | epoch 002:   5939 / 6685 loss=4.559, nll_loss=2.981, ppl=7.9, wps=30308.4, ups=0.53, wpb=57293.3, bsz=1509.7, num_updates=12600, lr=0.000563436, gnorm=0.212, clip=100, loss_scale=8, train_wall=184, wall=24050
+2023-06-22 07:28:53 | INFO | train_inner | epoch 002:   6039 / 6685 loss=4.557, nll_loss=2.978, ppl=7.88, wps=30404, ups=0.53, wpb=57185.2, bsz=1476.6, num_updates=12700, lr=0.000561214, gnorm=0.211, clip=100, loss_scale=8, train_wall=183, wall=24238
+2023-06-22 07:32:01 | INFO | train_inner | epoch 002:   6139 / 6685 loss=4.57, nll_loss=2.993, ppl=7.96, wps=30268.9, ups=0.53, wpb=57004.2, bsz=1468.4, num_updates=12800, lr=0.000559017, gnorm=0.212, clip=100, loss_scale=8, train_wall=184, wall=24426
+2023-06-22 07:35:09 | INFO | train_inner | epoch 002:   6239 / 6685 loss=4.56, nll_loss=2.982, ppl=7.9, wps=30441.9, ups=0.53, wpb=57130.2, bsz=1465.4, num_updates=12900, lr=0.000556846, gnorm=0.215, clip=100, loss_scale=9, train_wall=183, wall=24614
+2023-06-22 07:38:16 | INFO | train_inner | epoch 002:   6339 / 6685 loss=4.561, nll_loss=2.983, ppl=7.91, wps=30450.3, ups=0.53, wpb=57227.8, bsz=1486.1, num_updates=13000, lr=0.0005547, gnorm=0.211, clip=100, loss_scale=16, train_wall=183, wall=24802
+2023-06-22 07:41:25 | INFO | train_inner | epoch 002:   6439 / 6685 loss=4.551, nll_loss=2.972, ppl=7.85, wps=30352.4, ups=0.53, wpb=57235.3, bsz=1481.7, num_updates=13100, lr=0.000552579, gnorm=0.209, clip=100, loss_scale=16, train_wall=184, wall=24990
+2023-06-22 07:44:33 | INFO | train_inner | epoch 002:   6539 / 6685 loss=4.551, nll_loss=2.972, ppl=7.85, wps=30375.5, ups=0.53, wpb=57201.9, bsz=1471.7, num_updates=13200, lr=0.000550482, gnorm=0.208, clip=100, loss_scale=16, train_wall=184, wall=25179
+2023-06-22 07:47:42 | INFO | train_inner | epoch 002:   6639 / 6685 loss=4.551, nll_loss=2.972, ppl=7.85, wps=30386.6, ups=0.53, wpb=57174.6, bsz=1475.4, num_updates=13300, lr=0.000548408, gnorm=0.213, clip=100, loss_scale=16, train_wall=184, wall=25367
+2023-06-22 07:49:09 | INFO | fairseq_cli.train | begin validation on "valid" subset
+2023-06-22 07:49:21 | INFO | fairseq.tasks.translation | example hypothesis: “I’m very strong!”
+2023-06-22 07:49:21 | INFO | fairseq.tasks.translation | example reference: “Very strong!”
+2023-06-22 07:49:24 | INFO | fairseq.tasks.translation | example hypothesis: She said, “How could this man suddenly treat her so well?” She didn’t know why this man would treat her so well.
+2023-06-22 07:49:24 | INFO | fairseq.tasks.translation | example reference: See, she was right! How could this man suddenly treat her so well while expecting nothing in return?
+2023-06-22 07:49:26 | INFO | fairseq.tasks.translation | example hypothesis: She took a deep breath, then turned around and left the office.
+2023-06-22 07:49:26 | INFO | fairseq.tasks.translation | example reference: She took a deep breath, turned around and left.
+2023-06-22 07:49:30 | INFO | fairseq.tasks.translation | example hypothesis: “F*ck, f*ck! F*ck you! You’re the one who got in front of this old man!” The old man’s eyes were wide open as he stared at the old man.
+2023-06-22 07:49:30 | INFO | fairseq.tasks.translation | example reference: “So So So! Di Mo boy! It’s you who took a step ahead of Yours Truly!” Old Man Gui You bellowed in anger.
+2023-06-22 07:49:35 | INFO | fairseq.tasks.translation | example hypothesis: Just as he was cursing in his heart, he heard him speak. “Let’s go eat.” He said, “Let’s have a meal. We’re going to eat.”
+2023-06-22 07:49:35 | INFO | fairseq.tasks.translation | example reference: As she was criticised him internally, she heard him say, “We’re going to eat.”
+2023-06-22 07:49:36 | INFO | fairseq.tasks.translation | example hypothesis: She was in the midst of being frightened when she heard Song Cheng’s excited voice, “Miss Qiao, why are you here?” she asked.
+2023-06-22 07:49:36 | INFO | fairseq.tasks.translation | example reference: She was still in a state of shock, when she heard Song Cheng exclaim excitedly, “Ms. Qiao, why are you here?”
+2023-06-22 07:49:42 | INFO | fairseq.tasks.translation | example hypothesis: “You want to destroy me? I’ll have to see if you’re... good enough!” Qin Chao said with a smile.
+2023-06-22 07:49:42 | INFO | fairseq.tasks.translation | example reference: “You want to crush me? That depends if you can meet the mark!”
+2023-06-22 07:49:45 | INFO | fairseq.tasks.translation | example hypothesis: Shen Liangchuan carried the light on his back and walked towards her step by step. An ambiguous aura instantly enveloped her.
+2023-06-22 07:49:45 | INFO | fairseq.tasks.translation | example reference: He turned his back on the light and stood in front of her. A shady atmosphere immediately enveloped her.
+2023-06-22 07:49:47 | INFO | fairseq.tasks.translation | example hypothesis: Listening to the discussions of the crowd, the depths of Baili Yuyan’s eyes were filled with flames of jealousy. “To show off to the public to gain favor!”
+2023-06-22 07:49:47 | INFO | fairseq.tasks.translation | example reference: Hearing the conversations of the crowd, flames of envy leaped into Baili Yuyan’s eyes, “Attention whore!”
+2023-06-22 07:49:49 | INFO | fairseq.tasks.translation | example hypothesis: Little Black and Little White, who were originally complaining, also silently closed their mouths after seeing Baili Hongzhuang’s persistence. They had no idea what Baili Hongzhuang was thinking.
+2023-06-22 07:49:49 | INFO | fairseq.tasks.translation | example reference: When the originally complaining fluffballs saw Baili Hongzhuang unyielding back going again and again, they silently closed their mouths.
+2023-06-22 07:49:52 | INFO | fairseq.tasks.translation | example hypothesis: Gao Youming wanted to welcome him in, but when he thought of the order from River of Forgetfulness, he could only smile awkwardly and shut the door.
+2023-06-22 07:49:52 | INFO | fairseq.tasks.translation | example reference: Gao Youming truly wanted to invite them inside. However, after recalling Wang Chuan’s instructions, he could only smile awkwardly before closing the door.
+2023-06-22 07:49:59 | INFO | fairseq.tasks.translation | example hypothesis: I thought for a moment, that’s right, this method is indeed not bad, but I have a faint feeling that something is wrong in my heart. But it’s already like this, I’ll take a leave tomorrow.
+2023-06-22 07:49:59 | INFO | fairseq.tasks.translation | example reference: ‘This is really a good plan. However, I still have an inkling feeling that there is something amiss. Since it is already decided though, I’ll just take a leave of absence from the academy tomorrow.’
+2023-06-22 07:50:04 | INFO | fairseq.tasks.translation | example hypothesis: “Yes, yes, I will remember. Please take care of me in the future!”
+2023-06-22 07:50:04 | INFO | fairseq.tasks.translation | example reference: “Yes, yes, yes, this little girl has learnt her lesson. Dear husband, please continue to take care of me in the future!”
+2023-06-22 07:50:06 | INFO | fairseq.tasks.translation | example hypothesis: Hearing those words, Bai Li Hong Zhuang’s hand that was rejecting her paused for a moment before she took it away.
+2023-06-22 07:50:06 | INFO | fairseq.tasks.translation | example reference: Baili Hongzhaung tried to reject by pushing it away. However, she took it after listening.
+2023-06-22 07:50:09 | INFO | fairseq.tasks.translation | example hypothesis: “It’s not supposed to be, but it’s true.” Through the phone, one could feel the cold tone of Qiao Lian’er’s voice.
+2023-06-22 07:50:09 | INFO | fairseq.tasks.translation | example reference: “It’s not ‘you think’, it is you have.” Even though they were speaking through the cell phone, Qiao Lian could feel that cold tone of his.
+2023-06-22 07:50:11 | INFO | fairseq.tasks.translation | example hypothesis: Although the matter of Li Yuyue’s injury yesterday had made him extremely angry, it just so happened that he had found an extremely good reason for it.
+2023-06-22 07:50:11 | INFO | fairseq.tasks.translation | example reference: Although he was ashamed and resentful about Li Yuyue getting wounded yesterday, it gave him a very good excuse for him to cover everything up.
+2023-06-22 07:50:14 | INFO | fairseq.tasks.translation | example hypothesis: She opened her mouth and opened her mouth once again. She wanted to say something to reject him, but looking at his confident expression, she couldn’t say anything she wanted to say. She didn’t know what to say.
+2023-06-22 07:50:14 | INFO | fairseq.tasks.translation | example reference: She opened and closed her mouth repeatedly, trying to find an excuse to reject him. However, after looking at the determined expression on his face, all the excuses were stuck in her mouth.
+2023-06-22 07:50:16 | INFO | fairseq.tasks.translation | example hypothesis: Looking at everyone’s disdainful gazes, Baili Hongzhuang’s face suddenly changed, “I don’t have any thoughts about Di Beichen!” “Then why are you still asking?” Baili Hongzhuang asked.
+2023-06-22 07:50:16 | INFO | fairseq.tasks.translation | example reference: Tl’s note: The raw actually said Baili Hongzhuang, but I believe its a typo “Then why are you still asking?” “?”
+2023-06-22 07:50:20 | INFO | fairseq.tasks.translation | example hypothesis: He cast a sidelong glance at the few teachers standing behind him and said in an ice-cold voice, “The ability test is the weapon that the bastard has tested. This old man’s disciple was destroyed by this evil sword!”
+2023-06-22 07:50:20 | INFO | fairseq.tasks.translation | example reference: He narrowed his eyes at the few masters who stood behind him and berated in a cold tone: “Who the heck did not do their job to review the weapons thoroughly and almost caused the life of my disciple!”
+2023-06-22 07:50:22 | INFO | fairseq.tasks.translation | example hypothesis: “I’ve studied medicine since I was young, so I’m very familiar with this.” Baili Hongzhuang said with a faint smile.
+2023-06-22 07:50:22 | INFO | fairseq.tasks.translation | example reference: “I’ve been studying herbs meticulously since I was a child, so I know a lot about these kinds of stuff.” Baili Hongzhuang smiled lightly.
+2023-06-22 07:50:25 | INFO | fairseq.tasks.translation | example hypothesis: Under the scorching gaze of the crowd, Baili Hongzhuang calmly walks into the group. Whether it is her or Di Beichen, both of them are very close to the ministers in the court.
+2023-06-22 07:50:25 | INFO | fairseq.tasks.translation | example reference: Under everyone’s burning eyes, Baili Hongzhuang’s face stayed calm as she entered the line. Whether it was her or Dibei Chen, neither of them had a good relationship with the chancellors.
+2023-06-22 07:50:26 | INFO | fairseq.tasks.translation | example hypothesis: Staring at Teacher Zhen, he pretended to pounce.
+2023-06-22 07:50:26 | INFO | fairseq.tasks.translation | example reference: Xiao Jin glared at Teacher Zhen and got ready to attack him.
+2023-06-22 07:50:29 | INFO | fairseq.tasks.translation | example hypothesis: Without waiting for Li Yuyue to speak, Baili Hongzhuang heard a loud sound. Soon after, she heard Li Yuyue’s frantic scream. “Ah!”
+2023-06-22 07:50:29 | INFO | fairseq.tasks.translation | example reference: Before Li Yuyue could finish her sentence, Baili Hongzhuang heard a loud noise followed almost immediately with a mad screech from Li Yuyue.
+2023-06-22 07:50:34 | INFO | fairseq.tasks.translation | example hypothesis: A warm breath sprayed into her ears, causing her entire body to freeze. She felt as if there was a ball of flame in her lower abdomen, and it bounced up, causing her to feel as if her mouth was dry.
+2023-06-22 07:50:34 | INFO | fairseq.tasks.translation | example reference: She felt his warm breath near her ear, causing her entire body to freeze. She felt a fiery sensation near her abdomen. As the sensation worked its way up her body, she felt increasing hotter and drier.
+2023-06-22 07:50:39 | INFO | fairseq.tasks.translation | example hypothesis: “En,” Shen Liangchuan replied lightly. He was about to say something when Song Cheng’s next voice came from the other side. “But, do you think I’ve seen who?”
+2023-06-22 07:50:39 | INFO | fairseq.tasks.translation | example reference: Shen Liangchuan silently nodded in affirmation. However, just as he was intending to speak, Song Cheng continued, “However, guess who I just saw?”
+2023-06-22 07:50:42 | INFO | fairseq.tasks.translation | example hypothesis: Ma Ke continued, “Originally, father wanted to ask you to go with him, but Teacher Di said that you’re our secret weapon. We can’t let the other party know about it.”
+2023-06-22 07:50:42 | INFO | fairseq.tasks.translation | example reference: Ma Ke continued to explain, “Initially, father wanted to ask you to come join them, but Teacher Di said that you’re our secret weapon and that we shouldn’t let the opposing forces know about you.”
+2023-06-22 07:50:46 | INFO | fairseq.tasks.translation | example hypothesis: "There's another person playing with Little Qiao. He named himself Little Qiao. Hehe, I'll tell you, that person is an ancestor! Not to mention that Zi Chuan is already so powerful, Little Qiao's operation is very powerful. Other than Zi Chuan, I've never seen someone more powerful than her!"
+2023-06-22 07:50:46 | INFO | fairseq.tasks.translation | example reference: Gao Youming delightedly said, “Of course... not! I’ve only heard of him in passing. You may not know this, but during those days, Zi Chuan’s group was practically invincible! Every member of his team was extremely good at the game. There was even one member of the group who used the nickname ‘Xiao Qiao’ after the character in the game that she often played. Heheh, let me tell you, she was a legendary player in the game! Even if we ignore how good Zi Chuan was, Xiao Qiao was also extremely proficient at the game. Other than Zi Chuan, I haven’t seen anyone who was better at the game than she was!”
+2023-06-22 07:50:52 | INFO | fairseq.tasks.translation | example hypothesis: Seeing that Bai Li Hongzhuang’s words were reasonable, everyone turned to Bai Li Hongzhuang. After all, Li Yuyue had never appeared in front of everyone in the past few days, so it was too suspicious. However, when Li Chengqian saw that Li Chengqian had appeared in front of everyone, they all felt that it was too suspicious.
+2023-06-22 07:50:52 | INFO | fairseq.tasks.translation | example reference: Seeing Baili Hongzhuang speak so reasonably, everybody was somewhat partial to Baili Hongzhuang. After all, Li Yuyue not coming today was just too suspicious.
+2023-06-22 07:50:57 | INFO | fairseq.tasks.translation | example hypothesis: The defensive barriers of the two teachers broke one after another. They used their ultimate techniques to defend against the light element stars’ attacks. Teacher Di also used the same light star light. When the light star touched the defensive barrier, he had already noticed that something was wrong. He immediately chanted an incantation. Although he was in a sorry state, he was still able to block my attack.
+2023-06-22 07:50:57 | INFO | fairseq.tasks.translation | example reference: After the two teachers’ barriers broke, they used their ultimate moves to stop the light stars attack. Teacher Di used the same Bright Star’s Shine spell. Once my light stars landed on his defensive barrier, he realized that something wasn’t right and immediately chanted the spell. Although he was in a difficult position, he completely blocked my attack.
+2023-06-22 07:51:02 | INFO | fairseq.tasks.translation | example hypothesis: Teacher Zhen said, “Actually, with your current ability, you should be able to hold on for a while longer. However, you are still a little lacking in the way you use magic power. Every time you use magic to block the attacks of Laurent and I, it would be a waste. Since you know that you’re no match for us, you can avoid the sharpness and attack from the side. That way, you will be able to save a lot of magic power. However, which star spell you used in the morning is really good, making both me and Laurent suffer a small loss. If you don’t have enough magic power, you’ll be able to use your magic to defend against the attacks of the two of us.”
+2023-06-22 07:51:02 | INFO | fairseq.tasks.translation | example reference: Teacher Zhen replied, “Actually, you should have been able to hold out a little longer with your current power. However, you’re not good at controlling the usage of your magic power. You’re wasting too much magic power every time you counter our attacks. Since you know we aren’t your opponent, you should avoid our attacks and only attack when you see an opportunity. You’ll be able to save lots of magic power that way. Your control in the star magic spell you used in the morning was not bad as it made Lao Lun and I suffer to counter it.”
+2023-06-22 07:51:06 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 4.58 | nll_loss 2.977 | ppl 7.87 | bleu 15.61 | wps 693.6 | wpb 2501.5 | bsz 87.3 | num_updates 13346 | best_bleu 15.61
+2023-06-22 07:51:06 | INFO | fairseq_cli.train | begin save checkpoint
+2023-06-22 07:51:12 | INFO | fairseq.checkpoint_utils | saved checkpoint /project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]/checkpoint2.pt (epoch 2 @ 13346 updates, score 15.61) (writing took 5.433576507493854 seconds)
+2023-06-22 07:51:12 | INFO | fairseq_cli.train | end of epoch 2 (average epoch stats below)
+2023-06-22 07:51:12 | INFO | train | epoch 002 | loss 4.64 | nll_loss 3.07 | ppl 8.4 | wps 29952.4 | ups 0.52 | wpb 57198.7 | bsz 1477.7 | num_updates 13346 | lr 0.000547463 | gnorm 0.221 | clip 100 | loss_scale 14 | train_wall 12297 | wall 25577
+2023-06-22 07:51:12 | INFO | fairseq.trainer | begin training epoch 3
+2023-06-22 07:53:06 | INFO | train_inner | epoch 003:     54 / 6685 loss=4.532, nll_loss=2.95, ppl=7.73, wps=17649.8, ups=0.31, wpb=57255.5, bsz=1484.3, num_updates=13400, lr=0.000546358, gnorm=0.21, clip=100, loss_scale=16, train_wall=189, wall=25691
+2023-06-22 07:53:20 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 07:56:23 | INFO | train_inner | epoch 003:    155 / 6685 loss=4.517, nll_loss=2.933, ppl=7.64, wps=29136.2, ups=0.51, wpb=57312.1, bsz=1486.7, num_updates=13500, lr=0.000544331, gnorm=0.209, clip=100, loss_scale=17, train_wall=190, wall=25888
+2023-06-22 07:59:33 | INFO | train_inner | epoch 003:    255 / 6685 loss=4.516, nll_loss=2.932, ppl=7.63, wps=29980.6, ups=0.52, wpb=57142.5, bsz=1463, num_updates=13600, lr=0.000542326, gnorm=0.214, clip=100, loss_scale=16, train_wall=185, wall=26079
+2023-06-22 08:02:12 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 08:02:44 | INFO | train_inner | epoch 003:    356 / 6685 loss=4.509, nll_loss=2.924, ppl=7.59, wps=29963.7, ups=0.52, wpb=57294.4, bsz=1507.7, num_updates=13700, lr=0.000540343, gnorm=0.214, clip=100, loss_scale=15, train_wall=186, wall=26270
+2023-06-22 08:05:54 | INFO | train_inner | epoch 003:    456 / 6685 loss=4.52, nll_loss=2.936, ppl=7.66, wps=30251.2, ups=0.53, wpb=57210.2, bsz=1465.8, num_updates=13800, lr=0.000538382, gnorm=0.211, clip=100, loss_scale=8, train_wall=184, wall=26459
+2023-06-22 08:09:03 | INFO | train_inner | epoch 003:    556 / 6685 loss=4.516, nll_loss=2.932, ppl=7.63, wps=30266.6, ups=0.53, wpb=57243.1, bsz=1477.3, num_updates=13900, lr=0.000536442, gnorm=0.207, clip=100, loss_scale=8, train_wall=184, wall=26648
+2023-06-22 08:12:11 | INFO | train_inner | epoch 003:    656 / 6685 loss=4.512, nll_loss=2.928, ppl=7.61, wps=30399.2, ups=0.53, wpb=57224.9, bsz=1459.8, num_updates=14000, lr=0.000534522, gnorm=0.208, clip=100, loss_scale=8, train_wall=184, wall=26836
+2023-06-22 08:15:19 | INFO | train_inner | epoch 003:    756 / 6685 loss=4.511, nll_loss=2.927, ppl=7.6, wps=30450, ups=0.53, wpb=57119.8, bsz=1474.5, num_updates=14100, lr=0.000532624, gnorm=0.221, clip=100, loss_scale=8, train_wall=183, wall=27024
+2023-06-22 08:18:27 | INFO | train_inner | epoch 003:    856 / 6685 loss=4.499, nll_loss=2.914, ppl=7.54, wps=30274.1, ups=0.53, wpb=57077.7, bsz=1503.8, num_updates=14200, lr=0.000530745, gnorm=0.208, clip=100, loss_scale=8, train_wall=184, wall=27212
+2023-06-22 08:21:35 | INFO | train_inner | epoch 003:    956 / 6685 loss=4.505, nll_loss=2.92, ppl=7.57, wps=30413.1, ups=0.53, wpb=57210.3, bsz=1489.5, num_updates=14300, lr=0.000528886, gnorm=0.216, clip=100, loss_scale=16, train_wall=183, wall=27401
+2023-06-22 08:24:44 | INFO | train_inner | epoch 003:   1056 / 6685 loss=4.516, nll_loss=2.932, ppl=7.63, wps=30293.4, ups=0.53, wpb=57182.1, bsz=1478.4, num_updates=14400, lr=0.000527046, gnorm=0.208, clip=100, loss_scale=16, train_wall=184, wall=27589
+2023-06-22 08:27:51 | INFO | train_inner | epoch 003:   1156 / 6685 loss=4.507, nll_loss=2.922, ppl=7.58, wps=30505, ups=0.53, wpb=57124.4, bsz=1467.9, num_updates=14500, lr=0.000525226, gnorm=0.214, clip=100, loss_scale=16, train_wall=182, wall=27777
+2023-06-22 08:30:59 | INFO | train_inner | epoch 003:   1256 / 6685 loss=4.513, nll_loss=2.929, ppl=7.62, wps=30465.7, ups=0.53, wpb=57259.9, bsz=1457.4, num_updates=14600, lr=0.000523424, gnorm=0.212, clip=100, loss_scale=16, train_wall=183, wall=27965
+2023-06-22 08:34:07 | INFO | train_inner | epoch 003:   1356 / 6685 loss=4.502, nll_loss=2.917, ppl=7.55, wps=30418.6, ups=0.53, wpb=57275.6, bsz=1480.6, num_updates=14700, lr=0.000521641, gnorm=0.212, clip=100, loss_scale=16, train_wall=184, wall=28153
+2023-06-22 08:34:30 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 08:37:17 | INFO | train_inner | epoch 003:   1457 / 6685 loss=4.503, nll_loss=2.918, ppl=7.56, wps=30044.5, ups=0.53, wpb=56970.3, bsz=1454.5, num_updates=14800, lr=0.000519875, gnorm=0.205, clip=100, loss_scale=17, train_wall=185, wall=28343
+2023-06-22 08:40:26 | INFO | train_inner | epoch 003:   1557 / 6685 loss=4.517, nll_loss=2.934, ppl=7.64, wps=30378, ups=0.53, wpb=57338.2, bsz=1471.9, num_updates=14900, lr=0.000518128, gnorm=0.207, clip=100, loss_scale=16, train_wall=184, wall=28531
+2023-06-22 08:43:35 | INFO | train_inner | epoch 003:   1657 / 6685 loss=4.509, nll_loss=2.925, ppl=7.59, wps=30340.6, ups=0.53, wpb=57305, bsz=1491.2, num_updates=15000, lr=0.000516398, gnorm=0.211, clip=100, loss_scale=16, train_wall=184, wall=28720
+2023-06-22 08:46:42 | INFO | train_inner | epoch 003:   1757 / 6685 loss=4.502, nll_loss=2.917, ppl=7.55, wps=30495.6, ups=0.53, wpb=57209.1, bsz=1458, num_updates=15100, lr=0.000514685, gnorm=0.205, clip=100, loss_scale=16, train_wall=183, wall=28908
+2023-06-22 08:47:05 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 08:49:53 | INFO | train_inner | epoch 003:   1858 / 6685 loss=4.504, nll_loss=2.92, ppl=7.57, wps=30056.2, ups=0.53, wpb=57229.8, bsz=1471.4, num_updates=15200, lr=0.000512989, gnorm=0.205, clip=100, loss_scale=9, train_wall=186, wall=29098
+2023-06-22 08:53:01 | INFO | train_inner | epoch 003:   1958 / 6685 loss=4.494, nll_loss=2.908, ppl=7.51, wps=30343.3, ups=0.53, wpb=57160.2, bsz=1509.6, num_updates=15300, lr=0.00051131, gnorm=0.211, clip=100, loss_scale=8, train_wall=183, wall=29287
+2023-06-22 08:56:09 | INFO | train_inner | epoch 003:   2058 / 6685 loss=4.509, nll_loss=2.925, ppl=7.6, wps=30479.6, ups=0.53, wpb=57305.2, bsz=1454.8, num_updates=15400, lr=0.000509647, gnorm=0.208, clip=100, loss_scale=8, train_wall=183, wall=29475
+2023-06-22 08:59:18 | INFO | train_inner | epoch 003:   2158 / 6685 loss=4.507, nll_loss=2.923, ppl=7.59, wps=30334.5, ups=0.53, wpb=57269.2, bsz=1469.2, num_updates=15500, lr=0.000508001, gnorm=0.208, clip=100, loss_scale=8, train_wall=184, wall=29663
+2023-06-22 09:02:27 | INFO | train_inner | epoch 003:   2258 / 6685 loss=4.497, nll_loss=2.912, ppl=7.53, wps=30353.7, ups=0.53, wpb=57230.7, bsz=1484.4, num_updates=15600, lr=0.00050637, gnorm=0.212, clip=100, loss_scale=8, train_wall=184, wall=29852
+2023-06-22 09:05:35 | INFO | train_inner | epoch 003:   2358 / 6685 loss=4.493, nll_loss=2.908, ppl=7.5, wps=30387.5, ups=0.53, wpb=57192.7, bsz=1485.4, num_updates=15700, lr=0.000504754, gnorm=0.207, clip=100, loss_scale=14, train_wall=184, wall=30040
+2023-06-22 09:08:43 | INFO | train_inner | epoch 003:   2458 / 6685 loss=4.491, nll_loss=2.905, ppl=7.49, wps=30364.3, ups=0.53, wpb=57140.5, bsz=1478.2, num_updates=15800, lr=0.000503155, gnorm=0.211, clip=100, loss_scale=16, train_wall=183, wall=30228
+2023-06-22 09:09:28 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 09:11:52 | INFO | train_inner | epoch 003:   2559 / 6685 loss=4.509, nll_loss=2.926, ppl=7.6, wps=30228.9, ups=0.53, wpb=57304.2, bsz=1474.2, num_updates=15900, lr=0.00050157, gnorm=0.217, clip=100, loss_scale=10, train_wall=185, wall=30418
+2023-06-22 09:15:00 | INFO | train_inner | epoch 003:   2659 / 6685 loss=4.499, nll_loss=2.915, ppl=7.54, wps=30511.3, ups=0.53, wpb=57308.5, bsz=1477.4, num_updates=16000, lr=0.0005, gnorm=0.209, clip=100, loss_scale=8, train_wall=183, wall=30606
+2023-06-22 09:18:08 | INFO | train_inner | epoch 003:   2759 / 6685 loss=4.496, nll_loss=2.911, ppl=7.52, wps=30288.8, ups=0.53, wpb=56899.4, bsz=1461.1, num_updates=16100, lr=0.000498445, gnorm=0.213, clip=100, loss_scale=8, train_wall=183, wall=30794
+2023-06-22 09:21:16 | INFO | train_inner | epoch 003:   2859 / 6685 loss=4.495, nll_loss=2.91, ppl=7.52, wps=30406.3, ups=0.53, wpb=57228.6, bsz=1475.2, num_updates=16200, lr=0.000496904, gnorm=0.206, clip=100, loss_scale=8, train_wall=184, wall=30982
+2023-06-22 09:24:25 | INFO | train_inner | epoch 003:   2959 / 6685 loss=4.482, nll_loss=2.896, ppl=7.44, wps=30407.9, ups=0.53, wpb=57333, bsz=1487.1, num_updates=16300, lr=0.000495377, gnorm=0.205, clip=100, loss_scale=8, train_wall=184, wall=31170
+2023-06-22 09:25:50 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 09:27:35 | INFO | train_inner | epoch 003:   3060 / 6685 loss=4.489, nll_loss=2.903, ppl=7.48, wps=30129.1, ups=0.53, wpb=57130.2, bsz=1485, num_updates=16400, lr=0.000493865, gnorm=0.213, clip=100, loss_scale=9, train_wall=185, wall=31360
+2023-06-22 09:30:43 | INFO | train_inner | epoch 003:   3160 / 6685 loss=4.48, nll_loss=2.893, ppl=7.43, wps=30377, ups=0.53, wpb=57216.1, bsz=1480.8, num_updates=16500, lr=0.000492366, gnorm=0.208, clip=100, loss_scale=8, train_wall=184, wall=31548
+2023-06-22 09:33:51 | INFO | train_inner | epoch 003:   3260 / 6685 loss=4.494, nll_loss=2.909, ppl=7.51, wps=30320.1, ups=0.53, wpb=57161.5, bsz=1487, num_updates=16600, lr=0.000490881, gnorm=0.205, clip=100, loss_scale=8, train_wall=184, wall=31737
+2023-06-22 09:36:59 | INFO | train_inner | epoch 003:   3360 / 6685 loss=4.487, nll_loss=2.901, ppl=7.47, wps=30470.2, ups=0.53, wpb=57066.8, bsz=1449.2, num_updates=16700, lr=0.000489409, gnorm=0.202, clip=100, loss_scale=8, train_wall=183, wall=31924
+2023-06-22 09:40:06 | INFO | train_inner | epoch 003:   3460 / 6685 loss=4.493, nll_loss=2.908, ppl=7.5, wps=30395.4, ups=0.53, wpb=57017.7, bsz=1458.9, num_updates=16800, lr=0.00048795, gnorm=0.209, clip=100, loss_scale=8, train_wall=183, wall=32112
+2023-06-22 09:43:15 | INFO | train_inner | epoch 003:   3560 / 6685 loss=4.487, nll_loss=2.901, ppl=7.47, wps=30436, ups=0.53, wpb=57317.7, bsz=1489.1, num_updates=16900, lr=0.000486504, gnorm=0.212, clip=100, loss_scale=12, train_wall=184, wall=32300
+2023-06-22 09:46:23 | INFO | train_inner | epoch 003:   3660 / 6685 loss=4.473, nll_loss=2.886, ppl=7.39, wps=30419.7, ups=0.53, wpb=57181.2, bsz=1487.5, num_updates=17000, lr=0.000485071, gnorm=0.207, clip=100, loss_scale=16, train_wall=183, wall=32488
+2023-06-22 09:48:58 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 09:49:33 | INFO | train_inner | epoch 003:   3761 / 6685 loss=4.484, nll_loss=2.897, ppl=7.45, wps=30044.2, ups=0.52, wpb=57331.7, bsz=1495.3, num_updates=17100, lr=0.000483651, gnorm=0.207, clip=100, loss_scale=14, train_wall=186, wall=32679
+2023-06-22 09:52:41 | INFO | train_inner | epoch 003:   3861 / 6685 loss=4.477, nll_loss=2.89, ppl=7.41, wps=30460.1, ups=0.53, wpb=57084.1, bsz=1486.9, num_updates=17200, lr=0.000482243, gnorm=0.206, clip=100, loss_scale=8, train_wall=183, wall=32866
+2023-06-22 09:55:49 | INFO | train_inner | epoch 003:   3961 / 6685 loss=4.486, nll_loss=2.9, ppl=7.46, wps=30336, ups=0.53, wpb=57076.6, bsz=1464.8, num_updates=17300, lr=0.000480847, gnorm=0.209, clip=100, loss_scale=8, train_wall=183, wall=33054
+2023-06-22 09:58:57 | INFO | train_inner | epoch 003:   4061 / 6685 loss=4.494, nll_loss=2.909, ppl=7.51, wps=30341.9, ups=0.53, wpb=56995.8, bsz=1458.6, num_updates=17400, lr=0.000479463, gnorm=0.207, clip=100, loss_scale=8, train_wall=183, wall=33242
+2023-06-22 10:02:05 | INFO | train_inner | epoch 003:   4161 / 6685 loss=4.484, nll_loss=2.898, ppl=7.45, wps=30532, ups=0.53, wpb=57296.2, bsz=1483.6, num_updates=17500, lr=0.000478091, gnorm=0.203, clip=100, loss_scale=8, train_wall=183, wall=33430
+2023-06-22 10:05:13 | INFO | train_inner | epoch 003:   4261 / 6685 loss=4.471, nll_loss=2.884, ppl=7.38, wps=30394.5, ups=0.53, wpb=57364.6, bsz=1481.1, num_updates=17600, lr=0.000476731, gnorm=0.209, clip=100, loss_scale=9, train_wall=184, wall=33619
+2023-06-22 10:08:22 | INFO | train_inner | epoch 003:   4361 / 6685 loss=4.481, nll_loss=2.895, ppl=7.44, wps=30423.4, ups=0.53, wpb=57294.3, bsz=1483, num_updates=17700, lr=0.000475383, gnorm=0.201, clip=100, loss_scale=16, train_wall=184, wall=33807
+2023-06-22 10:11:31 | INFO | train_inner | epoch 003:   4461 / 6685 loss=4.448, nll_loss=2.857, ppl=7.25, wps=30198.3, ups=0.53, wpb=57141.8, bsz=1507.8, num_updates=17800, lr=0.000474045, gnorm=0.203, clip=100, loss_scale=16, train_wall=184, wall=33996
+2023-06-22 10:14:40 | INFO | train_inner | epoch 003:   4561 / 6685 loss=4.474, nll_loss=2.887, ppl=7.4, wps=30314.5, ups=0.53, wpb=57261.4, bsz=1500.2, num_updates=17900, lr=0.000472719, gnorm=0.208, clip=100, loss_scale=16, train_wall=184, wall=34185
+2023-06-22 10:17:48 | INFO | train_inner | epoch 003:   4661 / 6685 loss=4.471, nll_loss=2.883, ppl=7.38, wps=30429.8, ups=0.53, wpb=57182.2, bsz=1480, num_updates=18000, lr=0.000471405, gnorm=0.199, clip=100, loss_scale=16, train_wall=183, wall=34373
+2023-06-22 10:20:57 | INFO | train_inner | epoch 003:   4761 / 6685 loss=4.458, nll_loss=2.869, ppl=7.31, wps=30211.5, ups=0.53, wpb=57132.1, bsz=1489.5, num_updates=18100, lr=0.0004701, gnorm=0.21, clip=100, loss_scale=16, train_wall=184, wall=34562
+2023-06-22 10:21:16 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 10:22:36 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 10:24:09 | INFO | train_inner | epoch 003:   4863 / 6685 loss=4.48, nll_loss=2.894, ppl=7.43, wps=29624.9, ups=0.52, wpb=56906.4, bsz=1452.4, num_updates=18200, lr=0.000468807, gnorm=0.21, clip=100, loss_scale=13, train_wall=187, wall=34754
+2023-06-22 10:27:17 | INFO | train_inner | epoch 003:   4963 / 6685 loss=4.473, nll_loss=2.886, ppl=7.39, wps=30481.5, ups=0.53, wpb=57274.5, bsz=1472.2, num_updates=18300, lr=0.000467525, gnorm=0.204, clip=100, loss_scale=8, train_wall=183, wall=34942
+2023-06-22 10:30:25 | INFO | train_inner | epoch 003:   5063 / 6685 loss=4.477, nll_loss=2.89, ppl=7.41, wps=30303.9, ups=0.53, wpb=57064, bsz=1466.2, num_updates=18400, lr=0.000466252, gnorm=0.204, clip=100, loss_scale=8, train_wall=184, wall=35131
+2023-06-22 10:33:34 | INFO | train_inner | epoch 003:   5163 / 6685 loss=4.457, nll_loss=2.868, ppl=7.3, wps=30410, ups=0.53, wpb=57452.5, bsz=1501.9, num_updates=18500, lr=0.000464991, gnorm=0.204, clip=100, loss_scale=8, train_wall=184, wall=35319
+2023-06-22 10:36:42 | INFO | train_inner | epoch 003:   5263 / 6685 loss=4.474, nll_loss=2.887, ppl=7.4, wps=30396.2, ups=0.53, wpb=57129.2, bsz=1457.4, num_updates=18600, lr=0.000463739, gnorm=0.205, clip=100, loss_scale=8, train_wall=183, wall=35507
+2023-06-22 10:39:51 | INFO | train_inner | epoch 003:   5363 / 6685 loss=4.464, nll_loss=2.876, ppl=7.34, wps=30296.1, ups=0.53, wpb=57120.9, bsz=1477.5, num_updates=18700, lr=0.000462497, gnorm=0.204, clip=100, loss_scale=11, train_wall=184, wall=35696
+2023-06-22 10:41:38 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 10:43:02 | INFO | train_inner | epoch 003:   5464 / 6685 loss=4.451, nll_loss=2.862, ppl=7.27, wps=29976.6, ups=0.52, wpb=57332.1, bsz=1504.8, num_updates=18800, lr=0.000461266, gnorm=0.202, clip=100, loss_scale=12, train_wall=186, wall=35887
+2023-06-22 10:46:11 | INFO | train_inner | epoch 003:   5564 / 6685 loss=4.466, nll_loss=2.878, ppl=7.35, wps=30320.4, ups=0.53, wpb=57248.4, bsz=1475.6, num_updates=18900, lr=0.000460044, gnorm=0.206, clip=100, loss_scale=8, train_wall=184, wall=36076
+2023-06-22 10:49:19 | INFO | train_inner | epoch 003:   5664 / 6685 loss=4.459, nll_loss=2.87, ppl=7.31, wps=30361.8, ups=0.53, wpb=57167.2, bsz=1496.2, num_updates=19000, lr=0.000458831, gnorm=0.207, clip=100, loss_scale=8, train_wall=183, wall=36264
+2023-06-22 10:52:27 | INFO | train_inner | epoch 003:   5764 / 6685 loss=4.457, nll_loss=2.868, ppl=7.3, wps=30362, ups=0.53, wpb=57113.8, bsz=1465, num_updates=19100, lr=0.000457629, gnorm=0.21, clip=100, loss_scale=8, train_wall=183, wall=36452
+2023-06-22 10:55:36 | INFO | train_inner | epoch 003:   5864 / 6685 loss=4.456, nll_loss=2.867, ppl=7.3, wps=30404.2, ups=0.53, wpb=57320.7, bsz=1471.7, num_updates=19200, lr=0.000456435, gnorm=0.2, clip=100, loss_scale=8, train_wall=184, wall=36641
+2023-06-22 10:58:44 | INFO | train_inner | epoch 003:   5964 / 6685 loss=4.454, nll_loss=2.866, ppl=7.29, wps=30415.8, ups=0.53, wpb=57262.5, bsz=1502.6, num_updates=19300, lr=0.000455251, gnorm=0.207, clip=100, loss_scale=11, train_wall=183, wall=36829
+2023-06-22 11:01:52 | INFO | train_inner | epoch 003:   6064 / 6685 loss=4.46, nll_loss=2.872, ppl=7.32, wps=30415.5, ups=0.53, wpb=57332.4, bsz=1488.3, num_updates=19400, lr=0.000454077, gnorm=0.212, clip=100, loss_scale=16, train_wall=184, wall=37018
+2023-06-22 11:05:00 | INFO | train_inner | epoch 003:   6164 / 6685 loss=4.464, nll_loss=2.876, ppl=7.34, wps=30342.3, ups=0.53, wpb=57022.9, bsz=1467.2, num_updates=19500, lr=0.000452911, gnorm=0.203, clip=100, loss_scale=16, train_wall=183, wall=37206
+2023-06-22 11:08:08 | INFO | train_inner | epoch 003:   6264 / 6685 loss=4.457, nll_loss=2.868, ppl=7.3, wps=30470.3, ups=0.53, wpb=57281.8, bsz=1486.2, num_updates=19600, lr=0.000451754, gnorm=0.199, clip=100, loss_scale=16, train_wall=183, wall=37394
+2023-06-22 11:11:16 | INFO | train_inner | epoch 003:   6364 / 6685 loss=4.452, nll_loss=2.863, ppl=7.28, wps=30557.6, ups=0.53, wpb=57402.8, bsz=1450.7, num_updates=19700, lr=0.000450606, gnorm=0.21, clip=100, loss_scale=16, train_wall=183, wall=37582
+2023-06-22 11:12:12 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 11:14:27 | INFO | train_inner | epoch 003:   6465 / 6685 loss=4.45, nll_loss=2.861, ppl=7.26, wps=30034.6, ups=0.53, wpb=57166.4, bsz=1486.6, num_updates=19800, lr=0.000449467, gnorm=0.21, clip=100, loss_scale=10, train_wall=185, wall=37772
+2023-06-22 11:17:34 | INFO | train_inner | epoch 003:   6565 / 6685 loss=4.467, nll_loss=2.88, ppl=7.36, wps=30387.8, ups=0.53, wpb=56926.4, bsz=1448.4, num_updates=19900, lr=0.000448336, gnorm=0.204, clip=100, loss_scale=8, train_wall=183, wall=37959
+2023-06-22 11:20:42 | INFO | train_inner | epoch 003:   6665 / 6685 loss=4.454, nll_loss=2.865, ppl=7.29, wps=30372.4, ups=0.53, wpb=57208.1, bsz=1471.3, num_updates=20000, lr=0.000447214, gnorm=0.211, clip=100, loss_scale=8, train_wall=184, wall=38148
+2023-06-22 11:21:20 | INFO | fairseq_cli.train | begin validation on "valid" subset
+2023-06-22 11:21:32 | INFO | fairseq.tasks.translation | example hypothesis: “I’m very strong!”
+2023-06-22 11:21:32 | INFO | fairseq.tasks.translation | example reference: “Very strong!”
+2023-06-22 11:21:35 | INFO | fairseq.tasks.translation | example hypothesis: She had said that this man wouldn’t suddenly treat her so well. However, she didn’t know how he would treat her so well.
+2023-06-22 11:21:35 | INFO | fairseq.tasks.translation | example reference: See, she was right! How could this man suddenly treat her so well while expecting nothing in return?
+2023-06-22 11:21:36 | INFO | fairseq.tasks.translation | example hypothesis: She took a deep breath, then turned around and walked away.
+2023-06-22 11:21:36 | INFO | fairseq.tasks.translation | example reference: She took a deep breath, turned around and left.
+2023-06-22 11:21:39 | INFO | fairseq.tasks.translation | example hypothesis: “F*ck! F*ck! F*ck! F*ck! F*ck! F*ck! F*ck! F*ck! F*ck! F*ck! F*ck you!”
+2023-06-22 11:21:39 | INFO | fairseq.tasks.translation | example reference: “So So So! Di Mo boy! It’s you who took a step ahead of Yours Truly!” Old Man Gui You bellowed in anger.
+2023-06-22 11:21:45 | INFO | fairseq.tasks.translation | example hypothesis: Just as he was cursing in his heart, he heard him say, “Let’s go have dinner.” He was about to say something when he saw that the two of them were about to leave.
+2023-06-22 11:21:45 | INFO | fairseq.tasks.translation | example reference: As she was criticised him internally, she heard him say, “We’re going to eat.”
+2023-06-22 11:21:46 | INFO | fairseq.tasks.translation | example hypothesis: Just as she was in the midst of being frightened, she heard Song Cheng open his mouth excitedly. “Miss Qiao, why are you here?”
+2023-06-22 11:21:46 | INFO | fairseq.tasks.translation | example reference: She was still in a state of shock, when she heard Song Cheng exclaim excitedly, “Ms. Qiao, why are you here?”
+2023-06-22 11:21:50 | INFO | fairseq.tasks.translation | example hypothesis: “You want to destroy me? I’ll have to see if you’re qualified enough!” The old man’s tone was cold.
+2023-06-22 11:21:50 | INFO | fairseq.tasks.translation | example reference: “You want to crush me? That depends if you can meet the mark!”
+2023-06-22 11:21:52 | INFO | fairseq.tasks.translation | example hypothesis: Shen Liangchuan carried light on his back and walked step by step in front of her. An ambiguous aura instantly enveloped her.
+2023-06-22 11:21:52 | INFO | fairseq.tasks.translation | example reference: He turned his back on the light and stood in front of her. A shady atmosphere immediately enveloped her.
+2023-06-22 11:21:54 | INFO | fairseq.tasks.translation | example hypothesis: Listening to the discussions of the crowd, the depths of Bai Li Yu Yan’s eyes began to burn with jealousy. “Pretending to be a fan of the public!”
+2023-06-22 11:21:54 | INFO | fairseq.tasks.translation | example reference: Hearing the conversations of the crowd, flames of envy leaped into Baili Yuyan’s eyes, “Attention whore!”
+2023-06-22 11:21:55 | INFO | fairseq.tasks.translation | example hypothesis: Little Black and Little White, who were originally complaining, also silently shut their mouths when they saw Baili Hongzhuang’s persistence. They didn’t know what to say.
+2023-06-22 11:21:55 | INFO | fairseq.tasks.translation | example reference: When the originally complaining fluffballs saw Baili Hongzhuang unyielding back going again and again, they silently closed their mouths.
+2023-06-22 11:21:58 | INFO | fairseq.tasks.translation | example hypothesis: Gao Youming wanted to welcome him in, but thinking of the instructions of the River of Forgetfulness, he could only smile awkwardly and close the door.
+2023-06-22 11:21:58 | INFO | fairseq.tasks.translation | example reference: Gao Youming truly wanted to invite them inside. However, after recalling Wang Chuan’s instructions, he could only smile awkwardly before closing the door.
+2023-06-22 11:22:05 | INFO | fairseq.tasks.translation | example hypothesis: I thought about it. That’s true, this method is indeed not bad, but I have a faint feeling that it’s not right. But it’s already like this, I’ll ask for leave tomorrow.
+2023-06-22 11:22:05 | INFO | fairseq.tasks.translation | example reference: ‘This is really a good plan. However, I still have an inkling feeling that there is something amiss. Since it is already decided though, I’ll just take a leave of absence from the academy tomorrow.’
+2023-06-22 11:22:09 | INFO | fairseq.tasks.translation | example hypothesis: “Yes, yes, yes, I will remember this. Please take care of me in the future!”
+2023-06-22 11:22:09 | INFO | fairseq.tasks.translation | example reference: “Yes, yes, yes, this little girl has learnt her lesson. Dear husband, please continue to take care of me in the future!”
+2023-06-22 11:22:11 | INFO | fairseq.tasks.translation | example hypothesis: Hearing this, Bai Li Hongzhuang’s hand, which was pushed back, paused for a moment and then took it away.
+2023-06-22 11:22:11 | INFO | fairseq.tasks.translation | example reference: Baili Hongzhaung tried to reject by pushing it away. However, she took it after listening.
+2023-06-22 11:22:14 | INFO | fairseq.tasks.translation | example hypothesis: “It’s not supposed to be, but it’s true.” Even through the phone, she could feel the cold tone of Qiao Lian’s voice.
+2023-06-22 11:22:14 | INFO | fairseq.tasks.translation | example reference: “It’s not ‘you think’, it is you have.” Even though they were speaking through the cell phone, Qiao Lian could feel that cold tone of his.
+2023-06-22 11:22:16 | INFO | fairseq.tasks.translation | example hypothesis: Although the incident of Li Yuyue’s injury yesterday had made him extremely ashamed and angry, it just so happened that he had found a good reason.
+2023-06-22 11:22:16 | INFO | fairseq.tasks.translation | example reference: Although he was ashamed and resentful about Li Yuyue getting wounded yesterday, it gave him a very good excuse for him to cover everything up.
+2023-06-22 11:22:19 | INFO | fairseq.tasks.translation | example hypothesis: She opened her mouth and opened her mouth again. She wanted to say something to reject him, but when she saw his confident expression, she couldn’t say a word of refusal. Shen Liangchuan’s face turned pale.
+2023-06-22 11:22:19 | INFO | fairseq.tasks.translation | example reference: She opened and closed her mouth repeatedly, trying to find an excuse to reject him. However, after looking at the determined expression on his face, all the excuses were stuck in her mouth.
+2023-06-22 11:22:21 | INFO | fairseq.tasks.translation | example hypothesis: Looking at everyone’s disdainful gazes, Baili Hongzhuang’s expression suddenly changed. “I don’t have any thoughts about Di Beichen!” “Then why are you still asking?” Baili Hongzhuang asked.
+2023-06-22 11:22:21 | INFO | fairseq.tasks.translation | example reference: Tl’s note: The raw actually said Baili Hongzhuang, but I believe its a typo “Then why are you still asking?” “?”
+2023-06-22 11:22:25 | INFO | fairseq.tasks.translation | example hypothesis: He cast a sidelong glance at the few teachers who were standing behind him and said in a cold voice, “The ability assessment is the weapon that those bastards have inspected. This old man’s disciple was destroyed by this evil sword!”
+2023-06-22 11:22:25 | INFO | fairseq.tasks.translation | example reference: He narrowed his eyes at the few masters who stood behind him and berated in a cold tone: “Who the heck did not do their job to review the weapons thoroughly and almost caused the life of my disciple!”
+2023-06-22 11:22:28 | INFO | fairseq.tasks.translation | example hypothesis: “I’ve been studying pharmacy since I was a child, so I know this very well,” Baili Hongzhuang said with a faint smile.
+2023-06-22 11:22:28 | INFO | fairseq.tasks.translation | example reference: “I’ve been studying herbs meticulously since I was a child, so I know a lot about these kinds of stuff.” Baili Hongzhuang smiled lightly.
+2023-06-22 11:22:30 | INFO | fairseq.tasks.translation | example hypothesis: Under everyone’s fiery gaze, Baili Hongzhuang calmly walked into the group. Regardless of whether it was her or Di Beichen, both of them were very close to the officials in the imperial court.
+2023-06-22 11:22:30 | INFO | fairseq.tasks.translation | example reference: Under everyone’s burning eyes, Baili Hongzhuang’s face stayed calm as she entered the line. Whether it was her or Dibei Chen, neither of them had a good relationship with the chancellors.
+2023-06-22 11:22:32 | INFO | fairseq.tasks.translation | example hypothesis: He glared at Teacher Zhen, ready to pounce.
+2023-06-22 11:22:32 | INFO | fairseq.tasks.translation | example reference: Xiao Jin glared at Teacher Zhen and got ready to attack him.
+2023-06-22 11:22:35 | INFO | fairseq.tasks.translation | example hypothesis: Without waiting for Li Yuyue to speak, Bai Li Hongzhuang heard a loud sound. Immediately after, he heard Li Yuyue’s frantic scream.
+2023-06-22 11:22:35 | INFO | fairseq.tasks.translation | example reference: Before Li Yuyue could finish her sentence, Baili Hongzhuang heard a loud noise followed almost immediately with a mad screech from Li Yuyue.
+2023-06-22 11:22:39 | INFO | fairseq.tasks.translation | example hypothesis: The warm breath sprayed into her ears, causing her entire body to freeze. She felt as if there was a ball of flame burning in her lower abdomen, causing her to feel as if her mouth and tongue were dry.
+2023-06-22 11:22:39 | INFO | fairseq.tasks.translation | example reference: She felt his warm breath near her ear, causing her entire body to freeze. She felt a fiery sensation near her abdomen. As the sensation worked its way up her body, she felt increasing hotter and drier.
+2023-06-22 11:22:46 | INFO | fairseq.tasks.translation | example hypothesis: Shen Liangchuan replied indifferently. He was about to say something when Song Cheng’s next voice came from the opposite side. “But, do you know who I’ve seen?”
+2023-06-22 11:22:46 | INFO | fairseq.tasks.translation | example reference: Shen Liangchuan silently nodded in affirmation. However, just as he was intending to speak, Song Cheng continued, “However, guess who I just saw?”
+2023-06-22 11:22:48 | INFO | fairseq.tasks.translation | example hypothesis: Mark continued, “Originally, my father wanted to ask you to go with him, but Teacher Di said that you’re our secret weapon, so we can’t let them know about it.”
+2023-06-22 11:22:48 | INFO | fairseq.tasks.translation | example reference: Ma Ke continued to explain, “Initially, father wanted to ask you to come join them, but Teacher Di said that you’re our secret weapon and that we shouldn’t let the opposing forces know about you.”
+2023-06-22 11:22:52 | INFO | fairseq.tasks.translation | example hypothesis: "There's another person playing with Little Qiao, and he named himself Little Qiao. Hehe, I'll tell you, he's an ancestor! Not to mention that Zi Chuan is already powerful to the point of defying the heavens, Little Qiao's operation is very powerful.
+2023-06-22 11:22:52 | INFO | fairseq.tasks.translation | example reference: Gao Youming delightedly said, “Of course... not! I’ve only heard of him in passing. You may not know this, but during those days, Zi Chuan’s group was practically invincible! Every member of his team was extremely good at the game. There was even one member of the group who used the nickname ‘Xiao Qiao’ after the character in the game that she often played. Heheh, let me tell you, she was a legendary player in the game! Even if we ignore how good Zi Chuan was, Xiao Qiao was also extremely proficient at the game. Other than Zi Chuan, I haven’t seen anyone who was better at the game than she was!”
+2023-06-22 11:22:59 | INFO | fairseq.tasks.translation | example hypothesis: Seeing that Bai Li Hongzhuang’s words were reasonable and reasonable, everyone shifted their attention to Bai Li Hongzhuang. After all, Li Yuyue had not appeared in front of everyone for the past few days, and it was too suspicious of her to appear in front of everyone.
+2023-06-22 11:22:59 | INFO | fairseq.tasks.translation | example reference: Seeing Baili Hongzhuang speak so reasonably, everybody was somewhat partial to Baili Hongzhuang. After all, Li Yuyue not coming today was just too suspicious.
+2023-06-22 11:23:04 | INFO | fairseq.tasks.translation | example hypothesis: The two teachers’ defensive barriers broke one after another and each of them used their ultimate techniques to resist the attack of the light element stars. Teacher Di was also using the same light star stars. When the light star had just touched the defensive barrier, he had already noticed that something was wrong and immediately chanted an incantation. Although he was in a sorry state, he was still able to block my attack.
+2023-06-22 11:23:04 | INFO | fairseq.tasks.translation | example reference: After the two teachers’ barriers broke, they used their ultimate moves to stop the light stars attack. Teacher Di used the same Bright Star’s Shine spell. Once my light stars landed on his defensive barrier, he realized that something wasn’t right and immediately chanted the spell. Although he was in a difficult position, he completely blocked my attack.
+2023-06-22 11:23:09 | INFO | fairseq.tasks.translation | example hypothesis: Teacher Zhen said, “Actually, with your current abilities, you should still be able to hold on for a period of time. However, your method of using magic is still lacking. Every time you use magic to resist my and Lawrence’s attacks, it would be a waste. Since you know that you’re no match for us, you can avoid the sharpness and attack from the side. That way, you’ll be able to save a lot of magic power. However, which star magic you used in the morning is really not bad, making both me and Lawrence suffer a small loss. If you don’t use magic, you’ll be able to use a lot of magic.”
+2023-06-22 11:23:09 | INFO | fairseq.tasks.translation | example reference: Teacher Zhen replied, “Actually, you should have been able to hold out a little longer with your current power. However, you’re not good at controlling the usage of your magic power. You’re wasting too much magic power every time you counter our attacks. Since you know we aren’t your opponent, you should avoid our attacks and only attack when you see an opportunity. You’ll be able to save lots of magic power that way. Your control in the star magic spell you used in the morning was not bad as it made Lao Lun and I suffer to counter it.”
+2023-06-22 11:23:13 | INFO | valid | epoch 003 | valid on 'valid' subset | loss 4.521 | nll_loss 2.904 | ppl 7.48 | bleu 16.16 | wps 718 | wpb 2501.5 | bsz 87.3 | num_updates 20020 | best_bleu 16.16
+2023-06-22 11:23:13 | INFO | fairseq_cli.train | begin save checkpoint
+2023-06-22 11:23:18 | INFO | fairseq.checkpoint_utils | saved checkpoint /project/jonmay_231/linghaoj/reproduce/ckpt/mega-1-1-0.2[zh-en][new]/checkpoint3.pt (epoch 3 @ 20020 updates, score 16.16) (writing took 5.195895390585065 seconds)
+2023-06-22 11:23:18 | INFO | fairseq_cli.train | end of epoch 3 (average epoch stats below)
+2023-06-22 11:23:18 | INFO | train | epoch 003 | loss 4.486 | nll_loss 2.9 | ppl 7.46 | wps 29995.3 | ups 0.52 | wpb 57198.7 | bsz 1477.6 | num_updates 20020 | lr 0.00044699 | gnorm 0.208 | clip 100 | loss_scale 11 | train_wall 12281 | wall 38304
+2023-06-22 11:23:18 | INFO | fairseq.trainer | begin training epoch 4
+2023-06-22 11:26:04 | INFO | train_inner | epoch 004:     80 / 6685 loss=4.425, nll_loss=2.831, ppl=7.12, wps=17802.7, ups=0.31, wpb=57253.9, bsz=1489.3, num_updates=20100, lr=0.0004461, gnorm=0.204, clip=100, loss_scale=8, train_wall=191, wall=38469
+2023-06-22 11:29:18 | INFO | train_inner | epoch 004:    180 / 6685 loss=4.425, nll_loss=2.831, ppl=7.12, wps=29491.3, ups=0.52, wpb=57213.3, bsz=1468.6, num_updates=20200, lr=0.000444994, gnorm=0.207, clip=100, loss_scale=8, train_wall=188, wall=38663
+2023-06-22 11:32:29 | INFO | train_inner | epoch 004:    280 / 6685 loss=4.417, nll_loss=2.822, ppl=7.07, wps=29866.4, ups=0.52, wpb=57131.7, bsz=1489.4, num_updates=20300, lr=0.000443897, gnorm=0.199, clip=100, loss_scale=13, train_wall=185, wall=38855
+2023-06-22 11:35:39 | INFO | train_inner | epoch 004:    380 / 6685 loss=4.419, nll_loss=2.825, ppl=7.08, wps=30141.7, ups=0.53, wpb=57285.5, bsz=1444.1, num_updates=20400, lr=0.000442807, gnorm=0.197, clip=100, loss_scale=16, train_wall=185, wall=39045
+2023-06-22 11:38:28 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 11:38:51 | INFO | train_inner | epoch 004:    481 / 6685 loss=4.426, nll_loss=2.833, ppl=7.12, wps=29871.9, ups=0.52, wpb=57233.9, bsz=1479.7, num_updates=20500, lr=0.000441726, gnorm=0.206, clip=100, loss_scale=15, train_wall=187, wall=39236
+2023-06-22 11:42:00 | INFO | train_inner | epoch 004:    581 / 6685 loss=4.419, nll_loss=2.825, ppl=7.09, wps=30198.7, ups=0.53, wpb=57201.3, bsz=1489.3, num_updates=20600, lr=0.000440653, gnorm=0.204, clip=100, loss_scale=8, train_wall=184, wall=39426
+2023-06-22 11:45:09 | INFO | train_inner | epoch 004:    681 / 6685 loss=4.421, nll_loss=2.827, ppl=7.1, wps=30328.9, ups=0.53, wpb=57145.2, bsz=1483, num_updates=20700, lr=0.000439587, gnorm=0.206, clip=100, loss_scale=8, train_wall=183, wall=39614
+2023-06-22 11:48:17 | INFO | train_inner | epoch 004:    781 / 6685 loss=4.426, nll_loss=2.833, ppl=7.12, wps=30396.6, ups=0.53, wpb=57362, bsz=1488.6, num_updates=20800, lr=0.000438529, gnorm=0.203, clip=100, loss_scale=8, train_wall=184, wall=39803
+2023-06-22 11:51:25 | INFO | train_inner | epoch 004:    881 / 6685 loss=4.421, nll_loss=2.827, ppl=7.1, wps=30483, ups=0.53, wpb=57338.8, bsz=1468.7, num_updates=20900, lr=0.000437479, gnorm=0.206, clip=100, loss_scale=8, train_wall=183, wall=39991
+2023-06-22 11:54:34 | INFO | train_inner | epoch 004:    981 / 6685 loss=4.424, nll_loss=2.831, ppl=7.12, wps=30261.2, ups=0.53, wpb=57119.2, bsz=1468.8, num_updates=21000, lr=0.000436436, gnorm=0.211, clip=100, loss_scale=8, train_wall=184, wall=40180
+2023-06-22 11:57:43 | INFO | train_inner | epoch 004:   1081 / 6685 loss=4.431, nll_loss=2.84, ppl=7.16, wps=30357, ups=0.53, wpb=57221.6, bsz=1463.4, num_updates=21100, lr=0.0004354, gnorm=0.21, clip=100, loss_scale=16, train_wall=184, wall=40368
+2023-06-22 12:00:50 | INFO | train_inner | epoch 004:   1181 / 6685 loss=4.421, nll_loss=2.827, ppl=7.1, wps=30390.1, ups=0.53, wpb=57056.5, bsz=1448.1, num_updates=21200, lr=0.000434372, gnorm=0.203, clip=100, loss_scale=16, train_wall=183, wall=40556
+2023-06-22 12:03:59 | INFO | train_inner | epoch 004:   1281 / 6685 loss=4.427, nll_loss=2.835, ppl=7.13, wps=30271.6, ups=0.53, wpb=57131.8, bsz=1469.4, num_updates=21300, lr=0.000433351, gnorm=0.212, clip=100, loss_scale=16, train_wall=184, wall=40745
+2023-06-22 12:07:08 | INFO | train_inner | epoch 004:   1381 / 6685 loss=4.426, nll_loss=2.834, ppl=7.13, wps=30331.4, ups=0.53, wpb=57154.8, bsz=1481.1, num_updates=21400, lr=0.000432338, gnorm=0.204, clip=100, loss_scale=16, train_wall=184, wall=40933
+2023-06-22 12:09:34 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 12:10:17 | INFO | train_inner | epoch 004:   1482 / 6685 loss=4.413, nll_loss=2.819, ppl=7.05, wps=30123.3, ups=0.53, wpb=57134, bsz=1462.7, num_updates=21500, lr=0.000431331, gnorm=0.205, clip=100, loss_scale=14, train_wall=185, wall=41123
+2023-06-22 12:13:26 | INFO | train_inner | epoch 004:   1582 / 6685 loss=4.44, nll_loss=2.849, ppl=7.21, wps=30304.8, ups=0.53, wpb=57150.5, bsz=1465.3, num_updates=21600, lr=0.000430331, gnorm=0.21, clip=100, loss_scale=8, train_wall=184, wall=41311
+2023-06-22 12:16:34 | INFO | train_inner | epoch 004:   1682 / 6685 loss=4.414, nll_loss=2.82, ppl=7.06, wps=30482.6, ups=0.53, wpb=57346.5, bsz=1493.1, num_updates=21700, lr=0.000429339, gnorm=0.208, clip=100, loss_scale=8, train_wall=183, wall=41499
+2023-06-22 12:19:42 | INFO | train_inner | epoch 004:   1782 / 6685 loss=4.419, nll_loss=2.826, ppl=7.09, wps=30379.2, ups=0.53, wpb=57128.2, bsz=1475.4, num_updates=21800, lr=0.000428353, gnorm=0.206, clip=100, loss_scale=8, train_wall=183, wall=41687
+2023-06-22 12:22:51 | INFO | train_inner | epoch 004:   1882 / 6685 loss=4.412, nll_loss=2.818, ppl=7.05, wps=30297, ups=0.53, wpb=57293.2, bsz=1502.2, num_updates=21900, lr=0.000427374, gnorm=0.201, clip=100, loss_scale=8, train_wall=184, wall=41877
+2023-06-22 12:26:00 | INFO | train_inner | epoch 004:   1982 / 6685 loss=4.42, nll_loss=2.827, ppl=7.09, wps=30370.3, ups=0.53, wpb=57325.1, bsz=1494.1, num_updates=22000, lr=0.000426401, gnorm=0.205, clip=100, loss_scale=9, train_wall=184, wall=42065
+2023-06-22 12:29:08 | INFO | train_inner | epoch 004:   2082 / 6685 loss=4.421, nll_loss=2.827, ppl=7.1, wps=30432.6, ups=0.53, wpb=57196.1, bsz=1472.1, num_updates=22100, lr=0.000425436, gnorm=0.214, clip=100, loss_scale=16, train_wall=183, wall=42253
+2023-06-22 12:32:17 | INFO | train_inner | epoch 004:   2182 / 6685 loss=4.406, nll_loss=2.811, ppl=7.02, wps=30258, ups=0.53, wpb=57180, bsz=1492.1, num_updates=22200, lr=0.000424476, gnorm=0.208, clip=100, loss_scale=16, train_wall=184, wall=42442
+2023-06-22 12:35:24 | INFO | train_inner | epoch 004:   2282 / 6685 loss=4.428, nll_loss=2.835, ppl=7.14, wps=30505.7, ups=0.53, wpb=57200.8, bsz=1448.8, num_updates=22300, lr=0.000423524, gnorm=0.206, clip=100, loss_scale=16, train_wall=183, wall=42630
+2023-06-22 12:38:33 | INFO | train_inner | epoch 004:   2382 / 6685 loss=4.421, nll_loss=2.828, ppl=7.1, wps=30372.4, ups=0.53, wpb=57255.2, bsz=1460, num_updates=22400, lr=0.000422577, gnorm=0.206, clip=100, loss_scale=16, train_wall=184, wall=42818
+2023-06-22 12:41:42 | INFO | train_inner | epoch 004:   2482 / 6685 loss=4.4, nll_loss=2.805, ppl=6.99, wps=30422, ups=0.53, wpb=57402.7, bsz=1480.6, num_updates=22500, lr=0.000421637, gnorm=0.2, clip=100, loss_scale=16, train_wall=184, wall=43007
+2023-06-22 12:41:59 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 16.0
+2023-06-22 12:44:52 | INFO | train_inner | epoch 004:   2583 / 6685 loss=4.419, nll_loss=2.827, ppl=7.09, wps=30143.8, ups=0.53, wpb=57369.6, bsz=1470.8, num_updates=22600, lr=0.000420703, gnorm=0.209, clip=100, loss_scale=17, train_wall=185, wall=43197
+2023-06-22 12:48:00 | INFO | train_inner | epoch 004:   2683 / 6685 loss=4.421, nll_loss=2.828, ppl=7.1, wps=30383.4, ups=0.53, wpb=57200, bsz=1469, num_updates=22700, lr=0.000419775, gnorm=0.207, clip=100, loss_scale=16, train_wall=183, wall=43386
+2023-06-22 12:48:23 | INFO | fairseq.trainer | NOTE: overflow detected, setting loss scale to: 8.0
+2023-06-22 12:51:10 | INFO | train_inner | epoch 004:   2784 / 6685 loss=4.417, nll_loss=2.824, ppl=7.08, wps=30092.6, ups=0.53, wpb=57070, bsz=1474.7, num_updates=22800, lr=0.000418854, gnorm=0.212, clip=100, loss_scale=9, train_wall=185, wall=43575
+2023-06-22 12:54:18 | INFO | train_inner | epoch 004:   2884 / 6685 loss=4.409, nll_loss=2.815, ppl=7.04, wps=30248.1, ups=0.53, wpb=57018.3, bsz=1491.1, num_updates=22900, lr=0.000417938, gnorm=0.208, clip=100, loss_scale=8, train_wall=184, wall=43764
+2023-06-22 12:57:27 | INFO | train_inner | epoch 004:   2984 / 6685 loss=4.414, nll_loss=2.821, ppl=7.07, wps=30270.6, ups=0.53, wpb=57206.2, bsz=1487.8, num_updates=23000, lr=0.000417029, gnorm=0.215, clip=100, loss_scale=8, train_wall=184, wall=43953
+2023-06-22 13:00:36 | INFO | train_inner | epoch 004:   3084 / 6685 loss=4.407, nll_loss=2.813, ppl=7.03, wps=30357.8, ups=0.53, wpb=57178.9, bsz=1494.3, num_updates=23100, lr=0.000416125, gnorm=0.205, clip=100, loss_scale=8, train_wall=184, wall=44141
+2023-06-22 13:03:44 | INFO | train_inner | epoch 004:   3184 / 6685 loss=4.417, nll_loss=2.823, ppl=7.08, wps=30259.9, ups=0.53, wpb=57010.9, bsz=1466.6, num_updates=23200, lr=0.000415227, gnorm=0.207, clip=100, loss_scale=8, train_wall=184, wall=44330
+2023-06-22 13:06:52 | INFO | train_inner | epoch 004:   3284 / 6685 loss=4.398, nll_loss=2.802, ppl=6.97, wps=30367.9, ups=0.53, wpb=57115, bsz=1478.6, num_updates=23300, lr=0.000414335, gnorm=0.214, clip=100, loss_scale=14, train_wall=183, wall=44518
+2023-06-22 13:10:01 | INFO | train_inner | epoch 004:   3384 / 6685 loss=4.425, nll_loss=2.833, ppl=7.13, wps=30286.7, ups=0.53, wpb=57073.8, bsz=1468.6, num_updates=23400, lr=0.000413449, gnorm=0.201, clip=100, loss_scale=16, train_wall=184, wall=44706
+2023-06-22 13:13:09 | INFO | train_inner | epoch 004:   3484 / 6685 loss=4.417, nll_loss=2.824, ppl=7.08, wps=30236.9, ups=0.53, wpb=57084, bsz=1491.8, num_updates=23500, lr=0.000412568, gnorm=0.203, clip=100, loss_scale=16, train_wall=184, wall=44895
