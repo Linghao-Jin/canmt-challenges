@@ -34,7 +34,7 @@ done
 # Model
 if [ -n "$a" ]; then a=$a ; else a=concat ; fi
 if [ -n "$t" ]; then t=$t ; else t=reg ; fi
-if [ -n "$s" ]; then s=$s ; else s=sf ; fi
+if [ -n "$s" ]; then s=$s ; else s=nonsf ; fi
 if [ -n "$dropout" ]; then dropout=$dropout ; else dropout=0.2; fi
 if [ -n "$activation_dropout" ]; then activation_dropout=$activation_dropout ; else activation_dropout=0.0 ; fi
 if [ -n "$attention_dropout" ]; then attention_dropout=$attention_dropout ; else attention_dropout=0.0 ; fi
@@ -59,7 +59,7 @@ if [ -n "$warmup_updates" ]; then warmup_updates=$$warmup_updates ; else warmup_
 # if [ -n "$warmup_init_lr" ]; then warmup_init_lr=$warmup_init_lr ; else warmup_init_lr=1e-07 ; fi
 # if [ -n "$end_learning_rate" ]; then end_learning_rate=$end_learning_rate ; else end_learning_rate=1e-09 ; fi
 
-if [ -n "$src" ]; then src=$src ; else src=zh ; fi
+if [ -n "$src" ]; then src=$src ; else src=fr ; fi
 if [ -n "$tgt" ]; then tgt=$tgt ; else tgt=en ; fi
 if [ -n "$seed" ]; then seed=$seed ; else seed=42 ; fi
 if [ -n "$wandb_project" ]; then wandb_project=$wandb_project ; else wandb_project=reproduce-doc-mt-$src ; fi
@@ -80,108 +80,52 @@ then
 
     if [ $t = "src3" ]
     then
-        if [ $s = "sf" ]
-        then
-            srun --label fairseq-train ${bin} \
-                --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt} \
-                --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
-                --activation-fn silu --attention-activation-fn softmax \
-                --encoder-n-dim 16 --encoder-chunk-size -1 \
-                --normalization-type layernorm \
-                --ddp-backend c10d \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout 0.0 --activation-dropout $activation_dropout \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --num-workers $num_workers \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --eval-bleu --eval-bleu-print-samples --eval-bleu-remove-bpe sentencepiece \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --next-sent-ctx \
-                --shuffle_sample \
-                --wandb-project $wandb_project
-
-        elif [ $s = "nonsf" ]
-        then 
-            srun --label fairseq-train ${bin} \
-                --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt} \
-                --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
-                --activation-fn silu --attention-activation-fn softmax \
-                --encoder-n-dim 16 --encoder-chunk-size -1 \
-                --normalization-type layernorm \
-                --num-workers $num_workers \
-                --ddp-backend c10d \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout 0.0 --activation-dropout $activation_dropout \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --eval-bleu --eval-bleu-print-samples --eval-bleu-remove-bpe sentencepiece \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --next-sent-ctx \
-                --wandb-project $wandb_project
-        fi
+        srun --label fairseq-train ${bin} \
+            --user-dir ${repo} --save-dir ${ckpt} \
+            --task document_translation -s ${src} -t ${tgt} \
+            --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
+            --activation-fn silu --attention-activation-fn softmax \
+            --encoder-n-dim 16 --encoder-chunk-size -1 \
+            --normalization-type layernorm \
+            --ddp-backend c10d \
+            --num-workers $num_workers \
+            --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
+            --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
+            --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout 0.0 --activation-dropout $activation_dropout \
+            --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
+            --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
+            --eval-bleu  --eval-bleu-remove-bpe sentencepiece \
+            --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
+            --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
+            --keep-last-epochs 5 \
+            --fp16 \
+            --next-sent-ctx \
+            --wandb-project $wandb_project
 
     elif [ $t = "reg" ]
     then 
-        if [ $s = "sf" ]
-        then
-            srun --label fairseq-train ${bin} \
-                --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt} \
-                --source-context-size $n --target-context-size $m \
-                --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
-                --activation-fn silu --attention-activation-fn softmax \
-                --encoder-n-dim 16 --encoder-chunk-size -1 \
-                --normalization-type layernorm \
-                --num-workers $num_workers \
-                --ddp-backend c10d \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout 0.0 --activation-dropout $activation_dropout \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --eval-bleu --eval-bleu-print-samples --eval-bleu-remove-bpe sentencepiece \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --shuffle_sample \
-                --wandb-project $wandb_project
-
-        elif [ $s = "nonsf" ]
-        then 
-            srun --label fairseq-train ${bin} \
-                --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt} \
-                --source-context-size $n --target-context-size $m \
-                --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
-                --activation-fn silu --attention-activation-fn softmax \
-                --encoder-n-dim 16 --encoder-chunk-size -1 \
-                --normalization-type layernorm \
-                --num-workers $num_workers \
-                --ddp-backend c10d \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout 0.0 --activation-dropout $activation_dropout \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --eval-bleu --eval-bleu-print-samples --eval-bleu-remove-bpe sentencepiece \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --shuffle_sample \
-                --wandb-project $wandb_project
-        fi
+        srun --label fairseq-train ${bin} \
+            --user-dir ${repo} --save-dir ${ckpt} \
+            --task document_translation -s ${src} -t ${tgt} \
+            --source-context-size $n --target-context-size $m \
+            --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
+            --activation-fn silu --attention-activation-fn softmax \
+            --encoder-n-dim 16 --encoder-chunk-size -1 \
+            --normalization-type layernorm \
+            --num-workers $num_workers \
+            --ddp-backend c10d \
+            --optimizer adam --adam-betas '(0.9, 0.98)'  --clip-norm $clip_norm \
+            --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
+            --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout 0.0 --activation-dropout $activation_dropout \
+            --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
+            --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
+            --eval-bleu  --eval-bleu-remove-bpe sentencepiece \
+            --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
+            --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
+            --keep-last-epochs 5 \
+            --fp16 \
+            --shuffle_sample \
+            --wandb-project $wandb_project
     fi
 
 ###############################################################################
@@ -199,95 +143,46 @@ then
 
     if [ $t = "src3" ]
     then
-        if [ $s = "sf" ]
-        then
-            srun --label fairseq-train ${bin} \
-                --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt} \
-                --arch $arch --share-decoder-input-output-embed \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --dropout $dropout \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --num-workers $num_workers \
-                --eval-bleu \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --eval-bleu-remove-bpe sentencepiece \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --shuffle_sample \
-                --next-sent-ctx \
-                --wandb-project $wandb_project
-
-        elif [ $s = "nonsf" ]
-        then
-            srun --label fairseq-train ${bin} \
-                --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt} \
-                --arch $arch --share-decoder-input-output-embed \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --dropout $dropout \
-                --num-workers $num_workers \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --eval-bleu \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --eval-bleu-remove-bpe sentencepiece \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --next-sent-ctx \
-                --wandb-project $wandb_project
-        fi
+        srun --label fairseq-train ${bin} \
+            --user-dir ${repo} --save-dir ${ckpt} \
+            --task document_translation -s ${src} -t ${tgt} \
+            --arch $arch --share-decoder-input-output-embed \
+            --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
+            --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
+            --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
+            --dropout $dropout \
+            --num-workers $num_workers \
+            --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
+            --eval-bleu \
+            --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
+            --eval-bleu-remove-bpe sentencepiece \
+            --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
+            --keep-last-epochs 5 \
+            --fp16 \
+            --next-sent-ctx \
+            --wandb-project $wandb_project
 
     elif [ $t = "reg" ]
     then
-        if [ $s = "sf" ]
-        then
-            srun --label fairseq-train \
-                ${bin} --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt}\
-                --arch $arch --share-decoder-input-output-embed \
-                --source-context-size $n --target-context-size $m \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --dropout $dropout --coword-dropout $coword_dropout \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --num-workers $num_workers \
-                --eval-bleu \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --eval-bleu-remove-bpe sentencepiece \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --shuffle_sample \
-                --wandb-project $wandb_project
-
-        elif [ $s = "nonsf" ]
-        then 
-            srun --label fairseq-train \
-                ${bin} --user-dir ${repo} --save-dir ${ckpt} \
-                --task document_translation -s ${src} -t ${tgt}\
-                --arch $arch --share-decoder-input-output-embed \
-                --source-context-size $n --target-context-size $m \
-                --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
-                --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
-                --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
-                --dropout $dropout --coword-dropout $coword_dropout \
-                --num-workers $num_workers \
-                --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
-                --eval-bleu \
-                --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
-                --eval-bleu-remove-bpe sentencepiece \
-                --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-                --keep-last-epochs 5 \
-                --fp16 \
-                --wandb-project $wandb_project
-        fi
+        
+        srun --label fairseq-train \
+            ${bin} --user-dir ${repo} --save-dir ${ckpt} \
+            --task document_translation -s ${src} -t ${tgt}\
+            --arch $arch --share-decoder-input-output-embed \
+            --source-context-size $n --target-context-size $m \
+            --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
+            --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
+            --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
+            --dropout $dropout --coword-dropout 0 \
+            --num-workers $num_workers \
+            --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \
+            --eval-bleu \
+            --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
+            --eval-bleu-remove-bpe sentencepiece \
+            --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
+            --keep-last-epochs 5 \
+            --fp16 \
+            --wandb-project $wandb_project
     fi
 
 ###############################################################################
@@ -308,7 +203,7 @@ then
     --save-dir ${ckpt} \
 	--task translation -s ${src} -t ${tgt} \
     --arch $arch --share-decoder-input-output-embed \
-    --optimizer adam --adam-betas '(0.9, 0.98)' --adam-eps 1e-8 --clip-norm $clip_norm \
+    --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
     --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
     --criterion $criterion --label-smoothing $label_smoothing --dropout $dropout --weight-decay $weight_decay \
     --max-tokens $max_tokens --update-freq $update_freq --seed $seed --max-update $total_num_update \

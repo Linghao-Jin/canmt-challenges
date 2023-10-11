@@ -174,7 +174,7 @@ class ContextualDataset(FairseqDataset):
             np.random.shuffle(combination)
             self.src, self.tgt, src_sizes, tgt_sizes, self.contextual_ids = zip(*combination)
 
-        # recompute sizes  based on context size and special tokens
+        # recompute sizes based on context size and special tokens
         full_src_sizes, full_tgt_sizes = [], []
         
         if not self.next_sent_ctx:
@@ -194,16 +194,12 @@ class ContextualDataset(FairseqDataset):
         else: # src3 model
             for i, size in enumerate(src_sizes):
                 if i > 0 and (self.contextual_ids[i - 1] == self.contextual_ids[i] or self.shuffle_sample):
-                    size += src_sizes[i - 1] + 1
+                    size += src_sizes[i - 1]
                 if i < len(self.src) - 1 and (self.contextual_ids[i + 1] == self.contextual_ids[i] or self.shuffle_sample):
-                    size += src_sizes[i + 1] + 1
-                full_src_sizes.append(size + 1)
+                    size += src_sizes[i + 1]
+                full_src_sizes.append(size)
             for i, size in enumerate(tgt_sizes):
-                if i > 0 and (self.contextual_ids[i - 1] == self.contextual_ids[i] or self.shuffle_sample):
-                    size += tgt_sizes[i - 1] + 1
-                if i < len(self.src) - 1 and (self.contextual_ids[i + 1] == self.contextual_ids[i] or self.shuffle_sample):
-                    size += tgt_sizes[i + 1] + 1
-                full_tgt_sizes.append(size + 1)
+                full_tgt_sizes.append(size)
 
         self.src_sizes = np.array(full_src_sizes)
         self.tgt_sizes = np.array(full_tgt_sizes)
@@ -240,8 +236,10 @@ class ContextualDataset(FairseqDataset):
                 or self.shuffle_sample):
                 after_ctx_item = self.src[index + 1][:-1]
             
-            prev_ctx_item = torch.cat([prev_ctx_item, src_break_id])
-            after_ctx_item = torch.cat([src_break_id, after_ctx_item])
+            print(self.break_tag)
+            if self.break_tag is not None:
+                prev_ctx_item = torch.cat([prev_ctx_item, src_break_id])
+                after_ctx_item = torch.cat([src_break_id, after_ctx_item])
             src_item = torch.cat([prev_ctx_item, src_item, after_ctx_item])
 
         else: 
@@ -288,6 +286,7 @@ class ContextualDataset(FairseqDataset):
             "target": tgt_item,
         }
 
+        print(src_item.size(), self.src_sizes[index], tgt_item.size(), self.tgt_sizes[index])
         if self.src_pos_tags is not None and self.pos_drop_probs is not None:
             probs = []
             for pos in self.src_pos_tags[index]:
