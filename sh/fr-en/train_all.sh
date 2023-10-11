@@ -45,6 +45,7 @@ do
         --src=$src --tgt=$tgt \
         --bin=$bin --repo=$repo --ckpt=$ckpt \
         --total_num_update=$total_num_update \
+        --seed=$seed \
         --wandb_project=$wandb_project
 
     # concat / mega
@@ -77,6 +78,7 @@ do
                         --attention-dropout=$attention_dropout \
                         --activation_dropout=$activation_dropout \
                         --update_freq=$update_freq \
+                        --seed=$seed \
                         --wandb_project=$wandb_project
                 fi
             done
@@ -97,6 +99,7 @@ do
             --attention-dropout=$attention_dropout \
             --activation_dropout=$activation_dropout \
             --update_freq=$update_freq \
+            --seed=$seed \
             --wandb_project=$wandb_project
 
     done

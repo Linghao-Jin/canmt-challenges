@@ -21,7 +21,7 @@ cd $root
 for seed in 42 22 73
 do
     ## xfmr 
-    ckpt=${ckpt_path}/xfmr-${dropout}[${lang}]
+    ckpt=${ckpt_path}/xfmr-${dropout}-${seed}[${lang}]
     echo $ckpt
     mkdir -p $ckpt
     sbatch sh/${lang}/train.sh \
@@ -30,6 +30,7 @@ do
         --src=$src --tgt=$tgt \
         --bin=$bin --repo=$repo --ckpt=$ckpt \
         --total_num_update=$total_num_update \
+        --seed=$seed \
         --wandb_project=$wandb_project
 
     # concat / mega
@@ -41,7 +42,7 @@ do
             do
                 if [ "$n" -ne 0 ] || [ "$m" -ne 0 ]; 
                 then
-                    ckpt=${ckpt_path}/${a}-${n}-${m}-${dropout}[${lang}]
+                    ckpt=${ckpt_path}/${a}-${n}-${m}-${dropout}-${seed}[${lang}]
                     echo $ckpt
                     mkdir -p $ckpt
                     sbatch sh/${lang}/train.sh \
@@ -53,12 +54,13 @@ do
                         --model_size=$model_size \
                         --bin=$bin --repo=$repo --ckpt=$ckpt \
                         --total_num_update=$total_num_update \
+                        --seed=$seed \
                         --wandb_project=$wandb_project
                 fi
             done
         done
 
-    ckpt=${ckpt_path}/${a}-src3-${dropout}[${lang}]
+    ckpt=${ckpt_path}/${a}-src3-${dropout}-${seed}[${lang}]
     echo $ckpt
     mkdir -p $ckpt
     sbatch sh/${lang}/train.sh \
@@ -69,6 +71,7 @@ do
         --model_size=$model_size \
         --bin=$bin --repo=$repo --ckpt=$ckpt \
         --total_num_update=$total_num_update \
+        --seed=$seed \
         --wandb_project=$wandb_project
 
     done
