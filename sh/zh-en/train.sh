@@ -95,6 +95,7 @@ then
             --eval-bleu --eval-bleu-remove-bpe sentencepiece --eval-bleu-args '{"beam": 5}' \
             --best-checkpoint-metric bleu --maximize-best-checkpoint-metric --keep-last-epochs 5 \
             --fp16 \
+            --log-interval 1000 \
             --next-sent-ctx \
             --wandb-project $wandb_project
 
@@ -118,6 +119,7 @@ then
             --eval-bleu --eval-bleu-remove-bpe sentencepiece --eval-bleu-args '{"beam": 5}' \
             --best-checkpoint-metric bleu --maximize-best-checkpoint-metric --keep-last-epochs 5 \
             --fp16 \
+            --log-interval 1000 \
             --wandb-project $wandb_project
     fi
 
@@ -150,6 +152,7 @@ then
             --eval-bleu --eval-bleu-args '{"beam": 5}' --eval-bleu-remove-bpe sentencepiece \
             --best-checkpoint-metric bleu --maximize-best-checkpoint-metric --keep-last-epochs 5 \
             --fp16 \
+            --log-interval 1000 \
             --next-sent-ctx \
             --wandb-project $wandb_project
 
@@ -170,6 +173,7 @@ then
             --eval-bleu --eval-bleu-args '{"beam": 5}' --eval-bleu-remove-bpe sentencepiece \
             --best-checkpoint-metric bleu --maximize-best-checkpoint-metric --keep-last-epochs 5 \
             --fp16 \
+            --log-interval 1000 \
             --wandb-project $wandb_project
     fi
 
@@ -198,6 +202,7 @@ then
     --eval-bleu --eval-bleu-args '{"beam": 5}' --eval-bleu-remove-bpe sentencepiece \
     --best-checkpoint-metric bleu --maximize-best-checkpoint-metric --keep-last-epochs 5 \
     --fp16 \
+    --log-interval 1000 \
     --wandb-project $wandb_project
 
 ###############################################################################

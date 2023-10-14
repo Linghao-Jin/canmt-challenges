@@ -4,10 +4,10 @@
 #SBATCH --error=/project/jonmay_231/linghaoj/reproduce/slurm/debug-fr.err
 #SBATCH --job-name=fr-base
 #SBATCH --nodes=1
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:a40:2
 #SBATCH --mem=128G
 #SBATCH --cpus-per-task=8
-#SBATCH --partition=isi
+#SBATCH --partition=gpu
 ##SBATCH --signal=B:USR1@60 #Signal is sent to batch script itself
 #SBATCH --open-mode=append
 #SBATCH --time=2-00:00:00

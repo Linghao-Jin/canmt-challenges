@@ -31,6 +31,9 @@ def main():
     parser.add_argument(
         "--path", required=True, metavar="FILE", help="path to model file"
     )
+    parser.add_argument(
+        "--checkpoint_file", default="checkpoint_best.pt", type=str, help="name of the model file"
+    )
     parser.add_argument("--beam", default=5, type=int, metavar="N", help="beam size")
     parser.add_argument(
         "--max-len-a",
@@ -93,7 +96,7 @@ def main():
 
     # load pretrained model, set eval and send to cuda
     pretrained = hub_utils.from_pretrained(
-        args.path
+        args.path, checkpoint_file=args.checkpoint_file
     )
     models = pretrained["models"]
     for model in models:

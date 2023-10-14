@@ -21,7 +21,7 @@ if [ -n "$checkpoint" ]; then checkpoint=$checkpoint ; else checkpoint=checkpoin
 if [ -n "$batch_size" ]; then batch_size=$batch_size ; else batch_size=128 ; fi
 if [ -n "$beam" ]; then beam=$beam ; else beam=5 ; fi
 if [ -n "$remove_bpe" ]; then remove_bpe=$remove_bpe ; else remove_bpe=sentencepiece ; fi
-if [ -n "$script_path" ]; then script_path=$script_path ; else script_path=/project/jonmay_231/linghaoj/concat-src-only/scripts ; fi
+if [ -n "$script_path" ]; then script_path=$script_path ; else script_path=$root/scripts ; fi
 if [ -n "$split" ]; then split=$split ; else split=test ; fi
 if [ -n "$sf" ]; then sf=$sf ; else sf=no ; fi
 
@@ -42,8 +42,7 @@ fi
 
 if [[ $a = "xfmr" ]]
 then
-
-    fairseq-generate ${bin} \
+    fairseq-generate $bin \
         --user-dir ${model} \
         --path ${ckpt}/${checkpoint} \
         --batch-size ${batch_size} \
@@ -52,15 +51,13 @@ then
         --scoring sacrebleu \
         > ${pred}/${testlog}.log
 
-    grep ^T ${pred}/${testlog}.log | sed 's/^T-//g' | sort -nk 1 | cut -f2- > ${pred}/${testlog}.ref
-    grep ^H ${pred}/${testlog}.log | sed 's/^H-//g' | sort -nk 1 | cut -f3- > ${pred}/${testlog}.sys
-    grep ^S ${pred}/${testlog}.log | sed 's/^S-//g' | sort -nk 1 | cut -f2- > ${pred}/${testlog}.src
+    grep ^T ${pred}/${testlog}.log | sed 's/^T-//g' | sort -nk 1 | cut -f2- | sacremoses detokenize > ${pred}/${testlog}.ref.detok
+    grep ^H ${pred}/${testlog}.log | sed 's/^H-//g' | sort -nk 1 | cut -f3- | sacremoses detokenize > ${pred}/${testlog}.sys.detok
+    grep ^S ${pred}/${testlog}.log | sed 's/^S-//g' | sort -nk 1 | cut -f2- | sacremoses detokenize > ${pred}/${testlog}.src.detok
 
-    python ${script_path}/score.py \
-        ${pred}/${testlog}.sys ${pred}/${testlog}.ref \
-        --src ${pred}/${testlog}.src \
-        --comet-model wmt20-comet-da \
-        --comet-path ${COMET} > ${pred}/${testlog}.score
+    sacrebleu ${pred}/$testlog.ref.detok < ${pred}/$testlog.sys.detok > ${pred}/${testlog}.score.detok
+    blonde -r ${pred}/$testlog.ref.detok -s ${pred}/$testlog.sys.detok >> ${pred}/${testlog}.score.detok
+    comet-score -s ${pred}/$testlog.src.detok -t ${pred}/$testlog.sys.detok -r ${pred}/$testlog.ref.detok >> ${pred}/${testlog}.score.detok # reference-based
 
 elif [[ $a = "concat" ]]
 then
@@ -68,6 +65,7 @@ then
     then
         python ${repo}/docmt_translate.py \
         --path ${ckpt} \
+        --checkpoint_file ${checkpoint} \
         --source-lang ${src} --target-lang ${tgt} \
         --next-sent-ctx \
         --source-file $source_file \
@@ -79,6 +77,7 @@ then
     then
         python ${repo}/docmt_translate.py \
         --path ${ckpt} \
+        --checkpoint_file ${checkpoint} \
         --source-lang ${src} --target-lang ${tgt} \
         --source-file $source_file \
         --predictions-file ${pred}/${testlog}.sys \
@@ -87,11 +86,14 @@ then
     
     fi
 
-    python ${script_path}/score.py ${pred}/${testlog}.sys $target_file \
-        --src $source_file \
-        --comet-model wmt20-comet-da \
-        --comet-model wmt20-comet-da \
-        --comet-path ${COMET} > ${pred}/${testlog}.score
+    cat ${pred}/${testlog}.sys | sacremoses detokenize > ${pred}/${testlog}.sys.detok
+    cat $source_file | sacremoses detokenize > ${pred}/${testlog}.src.detok
+    cat $target_file | sacremoses detokenize > ${pred}/${testlog}.ref.detok
+    
+    sacrebleu ${pred}/$testlog.ref.detok < ${pred}/$testlog.sys.detok > ${pred}/${testlog}.score.detok
+    blonde -r ${pred}/$testlog.ref.detok -s ${pred}/$testlog.sys.detok >> ${pred}/${testlog}.score.detok
+    comet-score -s ${pred}/$testlog.src.detok -t ${pred}/$testlog.sys.detok -r ${pred}/$testlog.ref.detok >> ${pred}/${testlog}.score.detok # reference-based
+
 
 elif [[ $a = "mega" ]]
 then
@@ -99,6 +101,7 @@ then
     then
         python ${repo}/docmt_translate.py \
         --path ${ckpt} \
+        --checkpoint_file ${checkpoint} \
         --source-lang ${src} --target-lang ${tgt} \
         --next-sent-ctx \
         --source-file $source_file \
@@ -110,6 +113,7 @@ then
     then
         python ${repo}/docmt_translate.py \
         --path ${ckpt} \
+        --checkpoint_file ${checkpoint} \
         --source-lang ${src} --target-lang ${tgt} \
         --source-file $source_file \
         --predictions-file ${pred}/${testlog}.sys \
@@ -118,11 +122,13 @@ then
     
     fi
 
-    python ${script_path}/score.py ${pred}/${testlog}.sys $target_file \
-        --src $source_file \
-        --comet-model wmt20-comet-da \
-        --comet-model wmt20-comet-da \
-        --comet-path ${COMET} > ${pred}/${testlog}.score
+    cat ${pred}/${testlog}.sys | sacremoses detokenize > ${pred}/${testlog}.sys.detok
+    cat $source_file | sacremoses detokenize > ${pred}/${testlog}.src.detok
+    cat $target_file | sacremoses detokenize > ${pred}/${testlog}.ref.detok
+    
+    sacrebleu ${pred}/$testlog.ref.detok < ${pred}/$testlog.sys.detok > ${pred}/${testlog}.score.detok
+    blonde -r ${pred}/$testlog.ref.detok -s ${pred}/$testlog.sys.detok >> ${pred}/${testlog}.score.detok
+    comet-score -s ${pred}/$testlog.src.detok -t ${pred}/$testlog.sys.detok -r ${pred}/$testlog.ref.detok >> ${pred}/${testlog}.score.detok # reference-based
 
 else
     echo "Argument a is not valid."
