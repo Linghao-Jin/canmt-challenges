@@ -22,7 +22,13 @@ This repository contains the code for our EMNLP 2023 paper, ["Challenges in Cont
 
 ## Quick Start
 
-Note: we use  `fairseq 0.9.0`, so as to be compatible with Mega. To download the official version:
+```bash
+conda create -n canmt python=3.8
+conda activate canmt
+pip install -r requirements.txt
+```
+
+Note: We use `fairseq 0.9.0`, so as to be compatible with the [Mega](https://arxiv.org/abs/2209.10655) (Ma et al., 2022) architecture. To download the official version:
 
 ```python
 git clone https://github.com/facebookresearch/mega.git && cd mega
