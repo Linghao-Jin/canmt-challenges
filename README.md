@@ -1,21 +1,26 @@
 
 ## Challenges in Context-Aware Neural Machine Translation
 
-Authors: [Linghao Jin](https://xiamengzhou.github.io/), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/directory/jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
+Authors: [Linghao Jin](), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/~jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
 
 This repository contains the code for our EMNLP 2023 paper, ["Challenges in Context-Aware Neural Machine Translation"](https://arxiv.org/pdf/2210.14975.pdf). 
+
+Context-aware neural machine translation, a paradigm that involves leveraging information beyond sentence-level context to resolve inter-sentential discourse dependencies and improve document-level translation quality, has given rise to a number of recent techniques. 
+However, despite well-reasoned intuitions, most context-aware translation models yield only modest improvements over sentence-level systems. 
+In this work, we investigate and present several core challenges, relating to discourse phenomena, context usage, model architectures, and document-level evaluation, that impede progress within the field. 
+To address these problems, we propose a more realistic setting for document-level translation, called paragraph-to-paragraph (Para2Para) translation, and collect a new dataset of Chinese-English novels to promote future research.
 
 
 ## Table of Contents
   * [Quick Start](#quick-start)
   * [Context-aware NMT](#context-aware)
-	+ [Data](#context-data)
+	  + [Data](#context-data)
     + [Training](#context-training)
     + [Evaluation](#context-evaluation)
   * [P2P NMT](#p2p)
-    + [Data](#context-data)
-    + [Pre-training](#pretraining)
-    + [Fine-tuning](#finetuning)
+    + [Data](#p2p-data)
+    + [Pre-training](#p2p-pretraining)
+    + [Fine-tuning](#p2p-finetuning)
     + [Evaluation](#p2p-evaluation)
   * [Code Acknowledgements](#code-acknowledgements)
   * [Citation](#citation)
@@ -47,13 +52,8 @@ pip install --editable ./
 
 ### Training
 
-**1. Install package dependencies**
 
-```bash
-pip install -r requirements.txt
-```
-
-**2. Run training script**
+**1. Run training script**
 Train all models for lg. pair *zh->en* implemented in the paper, you can run the following script
 ```bash
 cd sh/zh-en
@@ -103,3 +103,11 @@ chmod +x train_mega.sh
 
 
 ## Citation
+```bibtex
+@inproceedings{jin2023challenges,
+   title={Challenges in Context-Aware Neural Machine Translation},
+   author={Jin, Linghao and He, Jacqueline and May, Jonathan and Ma, Xuezhe},
+   booktitle={Empirical Methods in Natural Language Processing (EMNLP)},
+   year={2023}
+}
+```
