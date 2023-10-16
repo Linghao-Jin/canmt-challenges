@@ -32,7 +32,10 @@ def main():
         "--path", required=True, metavar="FILE", help="path to model file"
     )
     parser.add_argument(
-        "--checkpoint_file", default="checkpoint_best.pt", type=str, help="name of the model file"
+        "--checkpoint_file",
+        default="checkpoint_best.pt",
+        type=str,
+        help="name of the model file",
     )
     parser.add_argument("--beam", default=5, type=int, metavar="N", help="beam size")
     parser.add_argument(
@@ -177,7 +180,7 @@ def main():
                 else:
                     current_docs[idx] = None
                     continue
-            
+
             src_l, tgt_l = current_docs[idx][current_docs_pos[idx]]
 
             # this is need to be able to remap to
@@ -209,17 +212,24 @@ def main():
                 prev_noeos = torch.tensor([]).long()
                 after_noeos = torch.tensor([]).long()
                 if current_docs_pos[idx] > 1:
-                    prev_l, _ = current_docs[idx][current_docs_pos[idx]-1]
+                    prev_l, _ = current_docs[idx][current_docs_pos[idx] - 1]
                     prev_noeos = encode(prev_l, src_spm, src_dict)
 
-                if current_docs_pos[idx] < len(current_docs[idx])-1:
-                    after_l, _ = current_docs[idx][current_docs_pos[idx]+1]
+                if current_docs_pos[idx] < len(current_docs[idx]) - 1:
+                    after_l, _ = current_docs[idx][current_docs_pos[idx] + 1]
                     after_noeos = encode(after_l, src_spm, src_dict)
-                
-                source = torch.stack([*prev_noeos, torch.tensor(src_dict.index("<brk>")), \
-                        *source_noeos, torch.tensor(src_dict.index("<brk>")), \
-                        *after_noeos, torch.tensor(src_dict.eos())])
-            
+
+                source = torch.stack(
+                    [
+                        *prev_noeos,
+                        torch.tensor(src_dict.index("<brk>")),
+                        *source_noeos,
+                        torch.tensor(src_dict.index("<brk>")),
+                        *after_noeos,
+                        torch.tensor(src_dict.eos()),
+                    ]
+                )
+
             samples.append(
                 {
                     "id": 0,

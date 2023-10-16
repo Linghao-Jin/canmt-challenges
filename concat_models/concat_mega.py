@@ -21,13 +21,14 @@ from fairseq.models.mega import (
     transformer_vaswani_wmt_en_de_big,
 )
 
+
 @register_model("concat_mega")
 class ConcatMegaModel(MegaModel):
     @staticmethod
     def add_args(parser):
         """Add model-specific arguments to the parser."""
         MegaModel.add_args(parser)
-        
+
         parser.add_argument(
             "--coword-dropout",
             default=0.0,
@@ -62,7 +63,6 @@ class ConcatMegaModel(MegaModel):
             embed_tokens,
         )
 
-
     # TorchScript doesn't support optional arguments with variable length (**kwargs).
     # Current workaround is to add union of all arguments in child classes.
     def forward(
@@ -77,9 +77,8 @@ class ConcatMegaModel(MegaModel):
         prev_output_tokens=None,
         return_all_hiddens: bool = True,
         features_only: bool = False,
-        alignment_layer: Optional[int] = None
-    ): 
-
+        alignment_layer: Optional[int] = None,
+    ):
         encoder_out = self.encoder(
             src_tokens=src_tokens,
             src_lengths=src_lengths,
@@ -88,7 +87,7 @@ class ConcatMegaModel(MegaModel):
             src_sample_probs=src_sample_probs,
             return_all_hiddens=return_all_hiddens,
         )
-   
+
         decoder_out = self.decoder(
             prev_output_tokens,
             context_tokens=tgt_ctx_tokens,
@@ -97,7 +96,7 @@ class ConcatMegaModel(MegaModel):
             alignment_layer=alignment_layer,
             src_lengths=src_lengths,
             return_all_hiddens=return_all_hiddens,
-        )   
+        )
 
         return decoder_out
 
@@ -118,9 +117,6 @@ class ConcatMegaEncoder(MegaEncoder):
         self.mask_id = dictionary.index("<mask>")
         self.args = args
         self.num_layers = len(self.layers)
-
-
-
 
     def forward(
         self,
@@ -174,18 +170,18 @@ class ConcatMegaEncoder(MegaEncoder):
             input_tokens = torch.cat([src_ctx_tokens, src_tokens], axis=1)
         else:
             input_tokens = src_tokens
-        
+
         # print(f'input toks: {input_tokens}')
         # print(f'embed scale: {self.embed_scale}')
         # print(f'embed tokens: {self.embed_tokens}')
-        
-        x = encoder_embedding =  self.embed_scale * self.embed_tokens(input_tokens) # forward_embedding - TODO might
+
+        x = encoder_embedding = self.embed_scale * self.embed_tokens(
+            input_tokens
+        )  # forward_embedding - TODO might
         # print(f'embed: {x}')
         if self.embed_norm is not None:
             x = self.embed_norm(x)
         x = self.embedding_dropout(x)
-
-
 
         # account for padding while computing the representation
         padding_mask = input_tokens.eq(self.padding_idx)
@@ -193,19 +189,15 @@ class ConcatMegaEncoder(MegaEncoder):
         if not padding_mask.any():
             padding_mask = None
 
-
-
         if padding_mask is not None:
             # B x T aka 4 x 41
-            inverse_mask = 1.0 - padding_mask.type_as(x) 
-            x =x * inverse_mask.unsqueeze(-1)
+            inverse_mask = 1.0 - padding_mask.type_as(x)
+            x = x * inverse_mask.unsqueeze(-1)
         else:
-            inverse_mask = None   
-          
-        
-        # B x T x C -> T x B x C
-        x = x.transpose(0, 1)  
+            inverse_mask = None
 
+        # B x T x C -> T x B x C
+        x = x.transpose(0, 1)
 
         x_encoder_states = [] if return_all_hiddens else None
         for layer in self.layers:
@@ -214,13 +206,11 @@ class ConcatMegaEncoder(MegaEncoder):
                 assert x_encoder_states is not None
                 x_encoder_states.append(x)
 
-        
         if self.final_norm is not None:
             x = self.final_norm(x)
 
         if inverse_mask is not None:
             x = x * inverse_mask.transpose(0, 1).unsqueeze(-1)
-
 
         return EncoderOut(
             encoder_out=x,
@@ -233,11 +223,8 @@ class ConcatMegaEncoder(MegaEncoder):
 
 
 class ConcatMegaDecoder(MegaDecoder):
-    def __init__(
-        self, args, dictionary, embed_tokens
-    ):
-        super().__init__(args, dictionary, embed_tokens) 
-
+    def __init__(self, args, dictionary, embed_tokens):
+        super().__init__(args, dictionary, embed_tokens)
 
     def forward(
         self,
@@ -248,7 +235,7 @@ class ConcatMegaDecoder(MegaDecoder):
         features_only: bool = False,
         full_context_alignment: bool = False,
         alignment_layer: Optional[int] = None,
-        #alignment_heads: Optional[int] = None,
+        # alignment_heads: Optional[int] = None,
         src_lengths: Optional[Any] = None,
         return_all_hiddens: bool = False,
     ):
@@ -294,13 +281,12 @@ class ConcatMegaDecoder(MegaDecoder):
     ):
         return self.extract_features_scriptable(
             prev_output_tokens,
-            context_tokens, # new
+            context_tokens,  # new
             encoder_out,
             incremental_state,
             full_context_alignment,
             alignment_layer,
         )
-
 
     def extract_features_scriptable(
         self,
@@ -328,18 +314,18 @@ class ConcatMegaDecoder(MegaDecoder):
                 - a dictionary with any model-specific outputs
         """
         if alignment_layer is None:
-            alignment_layer =  self.num_layers - 1
+            alignment_layer = self.num_layers - 1
 
         if self.args.target_context_size > 0:
             input_tokens = torch.cat([context_tokens, prev_output_tokens], axis=1)
-            context_end_id = context_tokens.size(1) # where targ context stops
+            context_end_id = context_tokens.size(1)  # where targ context stops
         else:
-            input_tokens = prev_output_tokens  
+            input_tokens = prev_output_tokens
 
         # if self.embed_positions is not None:
         #     positions = self.embed_positions(
         #         input_tokens, incremental_state=incremental_state
-        #     )   
+        #     )
         # else:
         #     positions = None
 
@@ -348,9 +334,8 @@ class ConcatMegaDecoder(MegaDecoder):
             context_end_id = 0
             # if positions is not None:
             #     positions = positions[:, -1:]
-       
+
         bsz, seq_len = input_tokens.size()
-       
 
         x = self.embed_scale * self.embed_tokens(input_tokens)
 
@@ -363,7 +348,7 @@ class ConcatMegaDecoder(MegaDecoder):
         x = self.embedding_dropout(x)
 
         decoder_padding_mask = input_tokens.eq(self.padding_idx)
-        
+
         if not decoder_padding_mask.any():
             decoder_padding_mask = None
 
@@ -382,29 +367,27 @@ class ConcatMegaDecoder(MegaDecoder):
         attn: Optional[Tensor] = None
         inner_states: List[Optional[Tensor]] = [x]
         for idx, layer in enumerate(self.layers):
-            if (
-                incremental_state is None 
-            ) and not full_context_alignment:
+            if (incremental_state is None) and not full_context_alignment:
                 self_attn_mask = self.buffered_future_mask(x)
             else:
                 self_attn_mask = None
             x, layer_attn, _ = layer(
-                x=x, # input to the layer 
-                encoder_out=encoder_out.encoder_out,  
-                encoder_padding_mask=encoder_out.encoder_padding_mask, # encodier padding mask
+                x=x,  # input to the layer
+                encoder_out=encoder_out.encoder_out,
+                encoder_padding_mask=encoder_out.encoder_padding_mask,  # encodier padding mask
                 incremental_state=incremental_state,
-                attn_mask = self_attn_mask, 
+                attn_mask=self_attn_mask,
                 need_attn=bool((idx == alignment_layer)),
-                decoder_padding_mask = decoder_padding_mask,
+                decoder_padding_mask=decoder_padding_mask,
             )
             inner_states.append(x)
             if layer_attn is not None and idx == alignment_layer:
-                attn = layer_attn.float().to(x)   
+                attn = layer_attn.float().to(x)
 
         # change: final norm after removing context
         if self.final_norm is not None:
             x = self.final_norm(x)
-    
+
         if inverse_mask is not None:
             x = x * inverse_mask.transpose(0, 1).unsqueeze(-1)
 
@@ -413,26 +396,29 @@ class ConcatMegaDecoder(MegaDecoder):
         if self.args.target_context_size > 0:
             x = x[context_end_id:]
 
-
         # T x B x C -> B x T x C
         x = x.transpose(0, 1)
 
         return x, {"attn": [attn], "inner_states": inner_states}
 
+
 @register_model_architecture("concat_mega", "concat_mega")
 def concat_mega_base_architecture(args):
-    mega_base_architecture(args) # from mega
+    mega_base_architecture(args)  # from mega
+
 
 # @register_model_architecture("concat_transformer", "concat_transformer")
 # def concat_transformer_base_architecture(args):
-    # transformer_base_architecture(args)
-# 
-# 
+# transformer_base_architecture(args)
+#
+#
 @register_model_architecture("concat_mega", "concat_mega_iwslt")
 def concat_mega_iwslt_architecture(args):
     mega_wmt_en_de(args)
-# 
-# 
+
+
+#
+#
 @register_model_architecture("concat_mega", "concat_mega_big")
 def concat_mega_big_architecture(args):
     transformer_vaswani_wmt_en_de_big(args)

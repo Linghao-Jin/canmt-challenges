@@ -117,9 +117,7 @@ def main():
         comet_input = [
             {"src": src, "mt": mt, "ref": ref} for src, mt, ref in zip(srcs, hyps, refs)
         ]
-        seg_scores, sys_score = comet_model.predict(
-            comet_input, gpus=1, batch_size=8
-        )
+        seg_scores, sys_score = comet_model.predict(comet_input, gpus=1, batch_size=8)
         print(sys_score)
         print(f"COMET = {sum(seg_scores)/len(seg_scores):.4f}")
 

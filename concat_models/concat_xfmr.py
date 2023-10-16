@@ -54,7 +54,7 @@ class ContextualTransformerModel(TransformerModel):
             action="store_true",
             help="whether to use multi-encoder in the source side",
         )
-    
+
     @classmethod
     def build_encoder(cls, args, src_dict, embed_tokens):
         return ContextualTransformerEncoder(

@@ -370,7 +370,6 @@ class ContextualMegaDecoder(MegaDecoder):
             else:
                 input_tokens = prev_output_tokens
                 context_end_id = 0
-            
 
         # embed positions
         # if self.embed_positions is not None:
@@ -400,9 +399,9 @@ class ContextualMegaDecoder(MegaDecoder):
         x = self.embedding_dropout(x)
 
         decoder_padding_mask = input_tokens.eq(self.padding_idx)
-        if not decoder_padding_mask.any():	
+        if not decoder_padding_mask.any():
             decoder_padding_mask = None
-            
+
         if decoder_padding_mask is not None:
             # B x T
             inverse_mask = 1.0 - decoder_padding_mask.type_as(x)

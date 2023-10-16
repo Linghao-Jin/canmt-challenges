@@ -50,15 +50,14 @@ class ConcatTranslationTask(TranslationTask):
             "--next-sent-ctx",
             default=False,
             action="store_true",
-            help="whether to use 3-1 model to append one previous and one next sentence as context "
+            help="whether to use 3-1 model to append one previous and one next sentence as context ",
         )
         parser.add_argument(
             "--shuffle_sample",
             default=False,
-            action='store_true',
+            action="store_true",
             help="True if samples should be shuffled, default False",
         )
-
 
     def build_model(self, args):
         model = super().build_model(args)

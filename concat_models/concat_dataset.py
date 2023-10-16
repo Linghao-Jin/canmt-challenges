@@ -172,30 +172,44 @@ class ContextualDataset(FairseqDataset):
         if self.shuffle_sample:
             combination = list(zip(src, tgt, src_sizes, tgt_sizes, contextual_ids))
             np.random.shuffle(combination)
-            self.src, self.tgt, src_sizes, tgt_sizes, self.contextual_ids = zip(*combination)
+            self.src, self.tgt, src_sizes, tgt_sizes, self.contextual_ids = zip(
+                *combination
+            )
 
         # recompute sizes based on context size and special tokens
         full_src_sizes, full_tgt_sizes = [], []
-        
+
         if not self.next_sent_ctx:
             for i, size in enumerate(src_sizes):
                 for j in range(1, self.src_ctx_size + 1):
-                    if self.contextual_ids[i - j] != self.contextual_ids[i] and not self.shuffle_sample:
+                    if (
+                        self.contextual_ids[i - j] != self.contextual_ids[i]
+                        and not self.shuffle_sample
+                    ):
                         break
                     size += src_sizes[i - j] + 1
                 full_src_sizes.append(size + 1)
             # FIXME: if target context is part of input, this needs to be rethinked
             for i, size in enumerate(tgt_sizes):
                 for j in range(1, self.tgt_ctx_size + 1):
-                    if self.contextual_ids[i - j] != self.contextual_ids[i] and not self.shuffle_sample:
+                    if (
+                        self.contextual_ids[i - j] != self.contextual_ids[i]
+                        and not self.shuffle_sample
+                    ):
                         break
                     size += tgt_sizes[i - j] + 1
                 full_tgt_sizes.append(size + 1)
-        else: # src3 model
+        else:  # src3 model
             for i, size in enumerate(src_sizes):
-                if i > 0 and (self.contextual_ids[i - 1] == self.contextual_ids[i] or self.shuffle_sample):
+                if i > 0 and (
+                    self.contextual_ids[i - 1] == self.contextual_ids[i]
+                    or self.shuffle_sample
+                ):
                     size += src_sizes[i - 1]
-                if i < len(self.src) - 1 and (self.contextual_ids[i + 1] == self.contextual_ids[i] or self.shuffle_sample):
+                if i < len(self.src) - 1 and (
+                    self.contextual_ids[i + 1] == self.contextual_ids[i]
+                    or self.shuffle_sample
+                ):
                     size += src_sizes[i + 1]
                 full_src_sizes.append(size)
             for i, size in enumerate(tgt_sizes):
@@ -223,25 +237,29 @@ class ContextualDataset(FairseqDataset):
         tgt_break_id = torch.tensor([self.tgt_dict.index(self.break_tag)])
         src_eos_id = torch.Tensor([self.src_dict.eos()]).long()
         tgt_eos_id = torch.Tensor([self.tgt_dict.eos()]).long()
-        
+
         # 3-1 Model: concat (k-1) and (k+1) sentences
         if self.next_sent_ctx:
             prev_ctx_item = torch.tensor([]).long()
             after_ctx_item = torch.tensor([]).long()
-            
-            if index > 1 and (self.contextual_ids[index - 1] == self.contextual_ids[index] \
-                or self.shuffle_sample):
+
+            if index > 1 and (
+                self.contextual_ids[index - 1] == self.contextual_ids[index]
+                or self.shuffle_sample
+            ):
                 prev_ctx_item = self.src[index - 1][:-1]
-            if index < len(self.src) - 1 and (self.contextual_ids[index] == self.contextual_ids[index + 1] \
-                or self.shuffle_sample):
+            if index < len(self.src) - 1 and (
+                self.contextual_ids[index] == self.contextual_ids[index + 1]
+                or self.shuffle_sample
+            ):
                 after_ctx_item = self.src[index + 1][:-1]
-            
+
             if self.break_tag is not None:
                 prev_ctx_item = torch.cat([prev_ctx_item, src_break_id])
                 after_ctx_item = torch.cat([src_break_id, after_ctx_item])
             src_item = torch.cat([prev_ctx_item, src_item, after_ctx_item])
 
-        else: 
+        else:
             if self.src_ctx_size > 0:
                 if self.sample_context_size:
                     src_context_size = np.random.randint(0, self.src_ctx_size + 1)
@@ -250,7 +268,10 @@ class ContextualDataset(FairseqDataset):
 
                 for i in range(1, src_context_size + 1):
                     # break if previous sample is from a different context (doc/chat)
-                    if self.contextual_ids[index - i] != self.contextual_ids[index] and not self.shuffle_sample:
+                    if (
+                        self.contextual_ids[index - i] != self.contextual_ids[index]
+                        and not self.shuffle_sample
+                    ):
                         break
                     # add break tag if passed
                     if len(src_ctx_item) > 0 and self.break_tag is not None:
@@ -265,7 +286,10 @@ class ContextualDataset(FairseqDataset):
                     tgt_context_size = self.tgt_ctx_size
 
                 for i in range(1, tgt_context_size + 1):
-                    if self.contextual_ids[index - i] != self.contextual_ids[index] and not self.shuffle_sample:
+                    if (
+                        self.contextual_ids[index - i] != self.contextual_ids[index]
+                        and not self.shuffle_sample
+                    ):
                         break
                     if len(tgt_ctx_item) > 0 and self.break_tag is not None:
                         tgt_ctx_item = torch.cat([tgt_break_id, tgt_ctx_item])

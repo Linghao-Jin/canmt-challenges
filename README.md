@@ -13,11 +13,11 @@ To address these problems, we propose a more realistic setting for document-leve
 
 ## Table of Contents
   * [Quick Start](#quick-start)
-  * [Context-aware NMT](#context-aware)
+  * [Context-Aware NMT](#context-aware-nmt)
 	  + [Data](#context-data)
     + [Training](#context-training)
     + [Evaluation](#context-evaluation)
-  * [P2P NMT](#p2p)
+  * [P2P NMT](#p2p-nmt)
     + [Data](#p2p-data)
     + [Pre-training](#p2p-pretraining)
     + [Fine-tuning](#p2p-finetuning)
@@ -40,15 +40,17 @@ git clone https://github.com/facebookresearch/mega.git && cd mega
 pip install --editable ./
 ```
 
-## Context-aware NMT
+## Context-Aware NMT
 
 ### Data
-| Dataset | Lg. pair | Train    | Valid | Test |
+We provide sentence counts for the train/valid/test splits on the datasets used in this paper below:
+
+| Dataset | Lg. Pair | Train    | Valid | Test |
 |---------|----------|----------|-------|------|
-| BWB     | Zh->En   | 9576566  | 2632  | 2618 |
-| WMT17   | Zh->En   | 25134743 | 2002  | 2001 |
-| IWSLT17 | En<->Fr  | 232825   | 5819  | 1210 |
-| IWSLT17 | En<->De  | 206112   | 5431  | 1080 |
+| BWB [(Jiang et al., 2022)](https://arxiv.org/abs/2210.14667)     | Zh->En   | 9576566  | 2632  | 2618 |
+| WMT17 [(Bojar et al., 2017)](https://aclanthology.org/W17-4717/) | Zh->En   | 25134743 | 2002  | 2001 |
+| IWSLT17 [(Cettolo et al., 2012)](https://aclanthology.org/2017.iwslt-1.1/) | En<->Fr  | 232825   | 5819  | 1210 |
+| IWSLT17 [(Cettolo et al., 2012)](https://aclanthology.org/2017.iwslt-1.1/) | En<->De  | 206112   | 5431  | 1080 |
 
 ### Training
 
