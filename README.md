@@ -8,15 +8,15 @@ This repository contains the code for our EMNLP 2023 paper, ["Challenges in Cont
 
 ## Table of Contents
   * [Quick Start](#quick-start)
-  * [Context-aware NMT](#context-aware)
-	+ [Data](#context-data)
-    + [Training](#context-training)
-    + [Evaluation](#context-evaluation)
-  * [P2P NMT](#p2p)
-    + [Data](#context-data)
-    + [Pre-training](#pretraining)
-    + [Fine-tuning](#finetuning)
-    + [Evaluation](#p2p-evaluation)
+  * [Context-aware NMT](#context-aware-nmt)
+	+ [Data](#data)
+    + [Training](#training)
+    + [Evaluation](#evaluation)
+  * [P2P NMT](#p2p-nmt)
+    + [P2P Data](#p2p-data)
+    + [Pre-training](#pre-training)
+    + [Fine-tuning](#fine-tuning)
+    + [P2P Evaluation](#p2p-evaluation)
   * [Code Acknowledgements](#code-acknowledgements)
   * [Citation](#citation)
 
@@ -47,13 +47,7 @@ pip install --editable ./
 
 ### Training
 
-**1. Install package dependencies**
-
-```bash
-pip install -r requirements.txt
-```
-
-**2. Run training script**
+**Run training script**
 Train all models for lg. pair *zh->en* implemented in the paper, you can run the following script
 ```bash
 cd sh/zh-en
@@ -89,7 +83,7 @@ chmod +x generate_all.sh
 
 ## P2P NMT
 
-### Data
+### P2P Data
 | Title | Pub. Year | Pub. Year | Avg. Para. Length |
 |------------------------------------|-----|----|--------------|
 | *Gone with the Wind* (Margaret Mitchell) | 1936 | 3556 | 143 |
@@ -103,8 +97,8 @@ chmod +x generate_all.sh
 
 We use the following backbone architectures for pre-training before fine-tuning on Para2Para dataset:
 
-- **XFMR** (Vaswani et al., 2017), the standard Transformer
-- **LIGHTCONV**  (Wu et al., 2019), which replaces the self-attention modules in the Transformer with fixed convolutions
+- **XFMR** (Vaswani et al., 2017), the Transformer-BIG model
+- **LIGHTCONV**  (Wu et al., 2019), which replaces the self-attention modules in the Transformer-BIG with fixed convolutions
 - **MBART25** (Liu et al., 2020), which is pre-trained on 25 languages at the document level
 
 ### Fine-tuning
@@ -113,7 +107,7 @@ cd sh/p2p
 chmod +x train_all.sh
 ./train_all.sh
 ```
-### Evaluation
+### P2P Evaluation
 We provide the scripts to evaluate the pre-trained models on Para2Para without fine-tuning:
 ```bash
 cd sh/p2p
@@ -129,23 +123,7 @@ chmod +x generate_finetuned.sh
 ```
 
 **Collective results:**
-
-| Domain | Pre-training |  BLEU | BLONDE (all) | BLONDE (pron.) | BLONDE (entity) | BLONDE (tense) | BLONDE (d.m.) |  COMET |
-|:------:|:------------:|:-----:|:------------:|:--------------:|:---------------:|:--------------:|:-------------:|:------:|
-| Closed |     None     |  1.37 |     8.44     |      47.98     |      18.73      |      41.22     |     16.87     | 0.3949 |
-|        |     XFMR     |  7.30 |     25.42    |      67.41     |      37.24      |      60.82     |     54.06     | 0.6662 |
-|        | +Fine-tuning | 16.00 |     35.36    |      79.16     |      52.33      |      72.47     |     60.63     | 0.7339 |
-|        |   Lightconv  |  6.30 |     23.30    |      58.19     |      34.32      |      56.16     |     47.57     | 0.6487 |
-|        | +Fine-tuning | 16.87 |     36.70    |      79.28     |      55.38      |      72.80     |     61.66     | 0.7409 |
-|        |     mBart    |  6.70 |     21.35    |      63.56     |      22.10      |      60.96     |     47.52     | 0.6699 |
-|        | +Fine-tuning | 15.63 |     35.37    |      78.72     |      54.04      |      72.01     |     60.59     | 0.7385 |
-|  Open  |     None     |  0.73 |     1.82     |      48.12     |       0.00      |      39.27     |     13.91     | 0.3587 |
-|        |     XFMR     |  4.70 |     21.22    |      59.81     |      35.45      |      54.31     |     44.12     | 0.6342 |
-|        | +Fine-tuning |  9.17 |     25.35    |      72.20     |      32.54      |      67.17     |     51.83     | 0.7003 |
-|        |   Lightconv  |  4.20 |     20.78    |      53.35     |      38.94      |      49.80     |     39.96     | 0.6160 |
-|        | +Fine-tuning |  8.60 |     25.48    |      72.50     |      38.83      |      67.40     |     51.79     | 0.7027 |
-|        |     mBart    |  4.10 |     18.61    |      55.89     |      26.27      |      54.39     |     39.35     | 0.6407 |
-|        | +Fine-tuning |  7.97 |     22.41    |      72.24     |      20.07      |      67.25     |     50.52     | 0.7012 |
+![p2p results](p2p_results.png)
 
 ## Code Acknowledgements
 
