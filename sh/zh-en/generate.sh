@@ -142,3 +142,5 @@ then
 else
     echo "Argument a is not valid."
 fi
+
+rm $ckpt/dict.*txt $ckpt/spm*

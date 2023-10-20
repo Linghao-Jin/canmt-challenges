@@ -1,3 +1,7 @@
 data
 ckpt
+ckpt-p2p
 wandb
+sh/zh-en/wandb
+sh/p2p/run/wandb
+slurm

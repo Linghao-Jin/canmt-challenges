@@ -40,7 +40,7 @@ else
     docids_file=${data}/raw/${split}.${src}-${tgt}.docids
 fi
 
-if [[ $a = "xfmr" ]]
+if [ "$a" = "xfmr" ] || [ "$a" = "mega" ]; 
 then
     fairseq-generate $bin \
         --user-dir ${model} \
@@ -95,7 +95,7 @@ then
     comet-score -s ${pred}/$testlog.src.detok -t ${pred}/$testlog.sys.detok -r ${pred}/$testlog.ref.detok >> ${pred}/${testlog}.score.detok # reference-based
 
 
-elif [[ $a = "mega" ]]
+elif [[ $a = "concat-mega" ]]
 then
     if [[ $t = "src3" ]]
     then
