@@ -1,15 +1,15 @@
 #!/bin/bash
 
-#SBATCH --output=/project/jonmay_231/linghaoj/reproduce/slurm/test.out
-#SBATCH --error=/project/jonmay_231/linghaoj/reproduce/slurm/test.err
+#SBATCH --output=/project/jonmay_231/linghaoj/canmt-challenges/slurm/test.out
+#SBATCH --error=/project/jonmay_231/linghaoj/canmt-challenges/slurm/test.err
 #SBATCH --job-name=mega-src3-zh
 #SBATCH --nodes=1
-#SBATCH --gres=gpu:a40:2
+#SBATCH --gres=gpu:a40:8
 #SBATCH --mem=128G
 #SBATCH --cpus-per-task=8
 #SBATCH --partition=isi
 ##SBATCH --signal=B:USR1@60 #Signal is sent to batch script itself
-#SBATCH --open-mode=append
+#SBATCH --open-mode=truncate
 #SBATCH --time=4-00:00:00
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=linghaojin@gmail.com
@@ -64,16 +64,16 @@ if [ -n "$wandb_project" ]; then wandb_project=$wandb_project ; else wandb_proje
 
 #########################################################################################################################
 
-if [ $a = "mega" ]
+if [ $a = "concat-mega" ]
 then
     if [ $model_size = "base" ] 
     then
-        arch="contextual_mega"
+        arch="concat_mega"
     elif [ $model_size = "small" ] 
     then
-        arch="contextual_mega_iwslt"
+        arch="concat_mega_iwslt"
     else
-        arch="contextual_mega_big"
+        arch="concat_mega_big"
     fi
 
     if [ $t = "src3" ]
@@ -206,6 +206,40 @@ then
     --wandb-project $wandb_project
 
 ###############################################################################
+elif [ $a = "mega" ]
+then
+    if [ $model_size = "base" ] 
+    then
+        arch="mega"
+    elif [ $model_size = "small" ] 
+    then
+        arch="mega_wmt_en_de"
+    else
+        arch="mega_wmt_en_de_big"
+    fi
+
+    srun --label fairseq-train ${bin} \
+        --save-dir ${ckpt} \
+        --task translation -s ${src} -t ${tgt} \
+        --arch $arch --encoder-layers 6 --decoder-layers 6 --share-decoder-input-output-embed \
+        --activation-fn silu --attention-activation-fn softmax \
+        --encoder-n-dim 16 --encoder-chunk-size -1 \
+        --normalization-type layernorm \
+        --ddp-backend c10d \
+        --num-workers $num_workers \
+        --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm $clip_norm \
+        --lr $lr --lr-scheduler $lr_scheduler  --warmup-updates $warmup_updates \
+        --dropout $dropout --attention-dropout $attention_dropout --hidden-dropout $hidden_dropout --activation-dropout $activation_dropout \
+        --weight-decay $weight_decay --criterion $criterion --label-smoothing $label_smoothing \
+        --max-tokens 4096 --update-freq 8 --seed $seed --max-update $total_num_update \
+        --eval-bleu  --eval-bleu-remove-bpe sentencepiece \
+        --eval-bleu-args '{"beam": 5}' \
+        --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
+        --keep-last-epochs 5 \
+        --fp16 \
+        --wandb-project $wandb_project
+
+#########################################################################################################################
 else
     echo "Argument a is not valid."
 fi

@@ -1,9 +1,17 @@
+<div align="center">
 
-## Challenges in Context-Aware Neural Machine Translation
+# Challenges in Context-Aware Neural Machine Translation
+</div>
+<p align="center">
+<a href="LICENSE" alt="MIT License"><img src="https://img.shields.io/badge/license-MIT-FAD689.svg" /></a>
+<a href="https://arxiv.org/abs/2305.13751" alt="Paper Link"><img src="https://img.shields.io/badge/paper-link-D9AB42" /></a>
+<a href="https://www.clsp.jhu.edu/" alt="jhu"><img src="https://img.shields.io/badge/University_of_Southern_California-BEC23H" /></a>
+<a href="https://www.clsp.jhu.edu/" alt="jhu"><img src="https://img.shields.io/badge/University_of_Washington-BEC23H" /></a>
+</p>
 
 Authors: [Linghao Jin](https://xiamengzhou.github.io/), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/directory/jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
 
-This repository contains the code for our EMNLP 2023 paper, ["Challenges in Context-Aware Neural Machine Translation"](https://arxiv.org/pdf/2210.14975.pdf). 
+This repository contains the code for our EMNLP 2023 paper, ["Challenges in Context-Aware Neural Machine Translation"](https://arxiv.org/abs/2305.13751.pdf). 
 
 
 ## Table of Contents
