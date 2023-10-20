@@ -9,7 +9,7 @@
 <a href="https://www.clsp.jhu.edu/" alt="jhu"><img src="https://img.shields.io/badge/University_of_Washington-BEC23H" /></a>
 </p>
 
-Authors: [Linghao Jin](https://xiamengzhou.github.io/), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/directory/jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
+Authors: [Linghao Jin](), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/directory/jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
 
 This repository contains the code for our EMNLP 2023 paper, ["Challenges in Context-Aware Neural Machine Translation"](https://arxiv.org/abs/2305.13751.pdf). 
 
