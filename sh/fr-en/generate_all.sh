@@ -18,7 +18,7 @@ src=fr
 tgt=en
 lang=${src}-${tgt}
 dropout=0.2
-model_size=small
+model_size=base
 
 root=/project/jonmay_231/linghaoj/canmt-challenges
 model=${root}/concat_models
@@ -37,20 +37,20 @@ do
     # baselines
 
     # xfmr 
-    # ckpt=${ckpt_path}/xfmr-${dropout}-${model_size}-${seed}[${lang}]
-    # echo "loaded $ckpt"
-    # pred=$ckpt/result
-    # mkdir -p $pred
-    # bash sh/${lang}/generate.sh \
-    #     --a=xfmr \
-    #     --bin=$bin \
-    #     --data=$data \
-    #     --src=${src} --tgt=${tgt} \
-    #     --model=$model \
-    #     --ckpt=$ckpt \
-    #     --pred=$pred \
-    #     --checkpoint=$ckpt_name \
-    #     --COMET=$COMET
+    ckpt=${ckpt_path}/xfmr-${dropout}-${model_size}-${seed}[${lang}]
+    echo "loaded $ckpt"
+    pred=$ckpt/result
+    mkdir -p $pred
+    bash sh/${lang}/generate.sh \
+        --a=xfmr \
+        --bin=$bin \
+        --data=$data \
+        --src=${src} --tgt=${tgt} \
+        --model=$model \
+        --ckpt=$ckpt \
+        --pred=$pred \
+        --checkpoint=$ckpt_name \
+        --COMET=$COMET
 
     # mega 
     ckpt=${ckpt_path}/mega-${dropout}-${model_size}-${seed}[${lang}]
@@ -71,7 +71,7 @@ do
     ###############################################################################
 
     # concat / concat-mega
-    for a in concat-mega
+    for a in concat concat-mega
     do
         ckpt=${ckpt_path}/${a}-src3-${dropout}-${model_size}-${seed}[${lang}]
         echo "loaded $ckpt"

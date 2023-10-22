@@ -25,7 +25,18 @@ if [ -n "$script_path" ]; then script_path=$script_path ; else script_path=$root
 if [ -n "$split" ]; then split=$split ; else split=test ; fi
 if [ -n "$sf" ]; then sf=$sf ; else sf=no ; fi
 
-testlog=best
+if [[ $checkpoint = "checkpoint_best.pt" ]]
+then
+    testlog=best
+elif [[ $checkpoint = "checkpoint_last.pt" ]]
+then
+    testlog=last
+else
+    testlog=last5
+    checkpoint=checkpoint_last5_avg.pt
+    python /project/jonmay_231/linghaoj/canmt-challenges/scripts/average_checkpoints.py --inputs $ckpt \
+        --num-epoch-checkpoints 5 --output "${ckpt}/checkpoint_last5_avg.pt"
+fi
 
 cp ${data}/prep/dict.*txt ${data}/prep/spm* $ckpt
 

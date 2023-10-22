@@ -1,5 +1,18 @@
 #!/bin/bash
 
+#SBATCH --output=/project/jonmay_231/linghaoj/canmt-challenges/slurm/generate_zh.out
+#SBATCH --error=/project/jonmay_231/linghaoj/canmt-challenges/slurm/generate_zh.err
+#SBATCH --job-name=gen-zh
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:a40:1
+#SBATCH --mem=128G
+#SBATCH --cpus-per-task=2
+#SBATCH --partition=isi
+##SBATCH --signal=B:USR1@60 #Signal is sent to batch script itself
+#SBATCH --open-mode=truncate
+#SBATCH --time=1-00:00:00
+#SBATCH --mail-type=FAIL,END
+#SBATCH --mail-user=linghaojin@gmail.com
 set -e
 
 src=zh
@@ -14,6 +27,7 @@ data=${root}/data/${lang}
 bin=${data}/bin
 ckpt_path=${root}/ckpt
 ckpt_name=checkpoint_best.pt
+# ckpt_name=checkpoint_last5_avg.pt
 script_path=${root}/scripts
 COMET=/project/jonmay_231/jacqueline/contextual-mt/preds/comet
 
@@ -41,8 +55,8 @@ do
 
     ###############################################################################
 
-    # concat / mega
-    for a in concat
+    # concat / concat-mega
+    for a in concat-mega
     do
         for n in 0 1
         do

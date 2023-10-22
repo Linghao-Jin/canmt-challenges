@@ -33,6 +33,9 @@ then
     testlog=last
 else
     testlog=last5
+    checkpoint=checkpoint_last5_avg.pt
+    python /project/jonmay_231/linghaoj/canmt-challenges/scripts/average_checkpoints.py --inputs $ckpt \
+        --num-epoch-checkpoints 5 --output "${ckpt}/checkpoint_last5_avg.pt"
 fi
 
 cp ${bin}/dict.*txt ${data}/spm/spm* $ckpt
@@ -48,7 +51,7 @@ else
     docids_file=${data}/raw/${split}.${src}-${tgt}.docids
 fi
 
-if [[ $a = "xfmr" ]]
+if [ "$a" = "xfmr" ] || [ "$a" = "mega" ]; 
 then
 
     fairseq-generate ${bin} \
@@ -104,7 +107,7 @@ then
     comet-score -s ${pred}/$testlog.src.detok -t ${pred}/$testlog.sys.detok -r ${pred}/$testlog.ref.detok >> ${pred}/${testlog}.score.detok # reference-based
 
 
-elif [[ $a = "mega" ]]
+elif [[ $a = "concat-mega" ]]
 then
     if [[ $t = "src3" ]]
     then
@@ -142,5 +145,3 @@ then
 else
     echo "Argument a is not valid."
 fi
-
-rm $ckpt/dict.*txt $ckpt/spm*

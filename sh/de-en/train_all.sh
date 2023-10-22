@@ -23,9 +23,9 @@ bin=${root}/data/$lang/bin
 repo=${root}/concat_models
 ckpt_path=${root}/ckpt
 dropout=0.2
-total_num_update=10000
+total_num_update=20000
 wandb_project=test
-model_size=small
+model_size=base
 
 cd $root
 

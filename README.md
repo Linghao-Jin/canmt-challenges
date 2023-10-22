@@ -11,7 +11,12 @@
 
 Authors: [Linghao Jin](), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/directory/jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
 
-This repository contains the code for our EMNLP 2023 paper, ["Challenges in Context-Aware Neural Machine Translation"](https://arxiv.org/abs/2305.13751.pdf). 
+This repository contains the code for our EMNLP 2023 paper, ["Challenges in Context-Aware Neural Machine Translation"](https://arxiv.org/pdf/2210.14975.pdf). 
+
+Context-aware neural machine translation, a paradigm that involves leveraging information beyond sentence-level context to resolve inter-sentential discourse dependencies and improve document-level translation quality, has given rise to a number of recent techniques. 
+However, despite well-reasoned intuitions, most context-aware translation models yield only modest improvements over sentence-level systems. 
+In this work, we investigate and present several core challenges, relating to discourse phenomena, context usage, model architectures, and document-level evaluation, that impede progress within the field. 
+To address these problems, we propose a more realistic setting for document-level translation, called paragraph-to-paragraph (Para2Para) translation, and collect a new dataset of Chinese-English novels to promote future research.
 
 
 ## Table of Contents
@@ -46,12 +51,16 @@ pip install --editable ./
 ## Context-aware NMT
 
 ### Data
-| Dataset | Lg. pair | Train    | Valid | Test |
+We provide sentence counts for the train/valid/test splits on the datasets used in this paper below:
+
+| Dataset | Lg. Pair | Train    | Valid | Test |
 |---------|----------|----------|-------|------|
-| BWB     | Zh->En   | 9576566  | 2632  | 2618 |
-| WMT17   | Zh->En   | 25134743 | 2002  | 2001 |
-| IWSLT17 | En<->Fr  | 232825   | 5819  | 1210 |
-| IWSLT17 | En<->De  | 206112   | 5431  | 1080 |
+| BWB [(Jiang et al., 2022)](https://arxiv.org/abs/2210.14667)     | Zh->En   | 9576566  | 2632  | 2618 |
+| WMT17 [(Bojar et al., 2017)](https://aclanthology.org/W17-4717/) | Zh->En   | 25134743 | 2002  | 2001 |
+| IWSLT17 [(Cettolo et al., 2012)](https://aclanthology.org/2017.iwslt-1.1/) | En<->Fr  | 232825   | 5819  | 1210 |
+| IWSLT17 [(Cettolo et al., 2012)](https://aclanthology.org/2017.iwslt-1.1/) | En<->De  | 206112   | 5431  | 1080 |
+
+Please refer to `canmt-data/README.md` for details on downloading and processing the datasets.
 
 ### Training
 
@@ -137,3 +146,11 @@ chmod +x generate_finetuned.sh
 
 
 ## Citation
+```bibtex
+@inproceedings{jin2023challenges,
+   title={Challenges in Context-Aware Neural Machine Translation},
+   author={Jin, Linghao and He, Jacqueline and May, Jonathan and Ma, Xuezhe},
+   booktitle={Empirical Methods in Natural Language Processing (EMNLP)},
+   year={2023}
+}
+```

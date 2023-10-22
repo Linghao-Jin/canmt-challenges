@@ -27,90 +27,90 @@ do
         ##################################################
         # scratch 
 
-        # src=zh
-        # tgt=en
-        # bin_name=bin-wmt17
-        # ckpt=$root/ckpt-p2p/$book/xfmr-scratch-p2p-$seed
+        src=zh
+        tgt=en
+        bin_name=bin-wmt17
+        ckpt=$root/ckpt-p2p/$book/xfmr-scratch-p2p-$seed
 
-        # bin=$root/data/p2p/$book/$bin_name
-        # resfile=$ckpt/result
-        # mkdir -p $resfile
+        bin=$root/data/p2p/$book/$bin_name
+        resfile=$ckpt/result
+        mkdir -p $resfile
 
-        # fairseq-generate $bin \
-        #     --path $ckpt/$ckpt_name \
-        #     --task translation \
-        #     --remove-bpe \
-        #     --sacrebleu \
-        #     --skip-invalid-size-inputs-valid-test \
-        #     > $resfile/$testlog.txt
+        fairseq-generate $bin \
+            --path $ckpt/$ckpt_name \
+            --task translation \
+            --remove-bpe \
+            --sacrebleu \
+            --skip-invalid-size-inputs-valid-test \
+            > $resfile/$testlog.txt
 
-        # bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
+        bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
 
-        # ##################################################
-        # # custom lightconv(wmt17)
+        ##################################################
+        # custom lightconv(wmt17)
 
-        # src=zh
-        # tgt=en
-        # bin_name=bin-custom-wmt17
-        # ckpt=$root/ckpt-p2p/$book/lightconv-wmt17-p2p-$seed
+        src=zh
+        tgt=en
+        bin_name=bin-custom-wmt17
+        ckpt=$root/ckpt-p2p/$book/lightconv-wmt17-p2p-$seed
 
-        # bin=$root/data/p2p/$book/$bin_name
-        # resfile=$ckpt/result
-        # mkdir -p $resfile
+        bin=$root/data/p2p/$book/$bin_name
+        resfile=$ckpt/result
+        mkdir -p $resfile
 
-        # fairseq-generate $bin \
-        #     --path $ckpt/$ckpt_name \
-        #     --task translation \
-        #     --remove-bpe \
-        #     --sacrebleu \
-        #     --skip-invalid-size-inputs-valid-test \
-        #     > $resfile/$testlog.txt
+        fairseq-generate $bin \
+            --path $ckpt/$ckpt_name \
+            --task translation \
+            --remove-bpe \
+            --sacrebleu \
+            --skip-invalid-size-inputs-valid-test \
+            > $resfile/$testlog.txt
 
-        # bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
+        bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
 
-        # ##################################################
-        # # xfmr-wmt17
+        ##################################################
+        # xfmr-wmt17
 
-        # src=zh
-        # tgt=en
-        # bin_name=bin-custom-wmt17
-        # ckpt=$root/ckpt-p2p/$book/xfmr-wmt17-p2p-$seed
+        src=zh
+        tgt=en
+        bin_name=bin-custom-wmt17
+        ckpt=$root/ckpt-p2p/$book/xfmr-wmt17-p2p-$seed
 
-        # bin=$root/data/p2p/$book/$bin_name
-        # resfile=$ckpt/result
-        # mkdir -p $resfile
+        bin=$root/data/p2p/$book/$bin_name
+        resfile=$ckpt/result
+        mkdir -p $resfile
 
-        # fairseq-generate $bin \
-        #     --path $ckpt/$ckpt_name \
-        #     --task translation \
-        #     --remove-bpe \
-        #     --sacrebleu \
-        #     --skip-invalid-size-inputs-valid-test \
-        #     > $resfile/$testlog.txt
+        fairseq-generate $bin \
+            --path $ckpt/$ckpt_name \
+            --task translation \
+            --remove-bpe \
+            --sacrebleu \
+            --skip-invalid-size-inputs-valid-test \
+            > $resfile/$testlog.txt
 
-        # bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
+        bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
 
-        # ##################################################
-        # # xfmr-big-wmt17
+        ##################################################
+        # xfmr-big-wmt17
 
-        # src=zh
-        # tgt=en
-        # bin_name=bin-custom-wmt17
-        # ckpt=$root/ckpt-p2p/$book/xfmr-big-wmt17-p2p-$seed
+        src=zh
+        tgt=en
+        bin_name=bin-custom-wmt17
+        ckpt=$root/ckpt-p2p/$book/xfmr-big-wmt17-p2p-$seed
 
-        # bin=$root/data/p2p/$book/$bin_name
-        # resfile=$ckpt/result
-        # mkdir -p $resfile
+        bin=$root/data/p2p/$book/$bin_name
+        resfile=$ckpt/result
+        mkdir -p $resfile
 
-        # fairseq-generate $bin \
-        #     --path $ckpt/$ckpt_name \
-        #     --task translation \
-        #     --remove-bpe \
-        #     --sacrebleu \
-        #     --skip-invalid-size-inputs-valid-test \
-        #     > $resfile/$testlog.txt
+        fairseq-generate $bin \
+            --path $ckpt/$ckpt_name \
+            --task translation \
+            --remove-bpe \
+            --sacrebleu \
+            --skip-invalid-size-inputs-valid-test \
+            > $resfile/$testlog.txt
 
-        # bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
+        bash sh/p2p/run/score.sh --RESFILE=$resfile --testlog=$testlog
 
         ##################################################
         # mbart-wmt17
