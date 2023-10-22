@@ -1,0 +1,6 @@
+gdown
+xmltodict
+scikit-learn
+numpy==1.23.3
+sacrebleu==1.5.1
+git+https://github.com/EleanorJiang/BlonDe

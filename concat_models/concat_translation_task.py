@@ -120,20 +120,6 @@ class ConcatTranslationTask(TranslationTask):
         with open(prefix + "docids", "r") as f:
             doc_ids = [int(idx) for idx in f]
 
-        # checks for POS tags for every token in the training set
-        # so we can have specific probabilites per POS
-        # NOTE: not used during the paper
-        pos_tags = None
-        if split == "train" and os.path.exists(f"{prefix}pos.{src}"):
-            with open(f"{prefix}pos.{src}", "r") as f:
-                pos_tags = [line.strip().split(" ") for line in f]
-        pos_drop_probs = None
-        if self.args.pos_drop_probs is not None:
-            pos_drop_probs = {
-                p.split(":")[0]: float(p.split(":")[1])
-                for p in self.args.pos_drop_probs
-            }
-
         self.datasets[split] = ContextualDataset(
             src_dataset,
             src_dataset.sizes,
@@ -144,8 +130,8 @@ class ConcatTranslationTask(TranslationTask):
             doc_ids,
             self.args.source_context_size,
             self.args.target_context_size,
-            src_pos_tags=pos_tags,
-            pos_drop_probs=pos_drop_probs,
+            src_pos_tags=None,
+            pos_drop_probs=None,
             break_tag=self.args.break_tag,
             sample_context_size=self.args.sample_context_size,
             next_sent_ctx=self.args.next_sent_ctx,

@@ -12,7 +12,7 @@ do
         v="${key/--/}"
         v="${v/-/_}"
         declare $v="${value}" 
-   fi
+fi
 done
 
 src=de

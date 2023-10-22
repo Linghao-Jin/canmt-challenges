@@ -7,11 +7,11 @@ import torch
 from fairseq import utils, hub_utils
 import sentencepiece as sp
 
-sys.path.append("/project/jonmay_231/linghaoj/reproduce/concat_models")
+sys.path.append("/gscratch/zlab/jyyh/canmt-challenges")
 import concat_models  # noqa: F401
-from concat_dataset import collate
-from concat_sequence_generator import ConcatSequenceGenerator
-from utils import encode, decode, create_context, parse_documents
+from concat_models.concat_dataset import collate
+from concat_models.concat_sequence_generator import ConcatSequenceGenerator
+from concat_models.utils import encode, decode, create_context, parse_documents
 
 
 def main():
@@ -273,6 +273,7 @@ def main():
     assert len(preds) == len(ids)
     _, preds = zip(*sorted(zip(ids, preds)))
 
+    # os.makedirs(args.predictions_file)
     with open(args.predictions_file, "w", encoding="utf-8") as f:
         for pred in preds:
             print(pred, file=f)

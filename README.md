@@ -52,6 +52,8 @@ We provide sentence counts for the train/valid/test splits on the datasets used 
 | IWSLT17 [(Cettolo et al., 2012)](https://aclanthology.org/2017.iwslt-1.1/) | En<->Fr  | 232825   | 5819  | 1210 |
 | IWSLT17 [(Cettolo et al., 2012)](https://aclanthology.org/2017.iwslt-1.1/) | En<->De  | 206112   | 5431  | 1080 |
 
+Please refer to `canmt-data/README.md` for details on downloading and processing the datasets.
+
 ### Training
 
 
