@@ -5,8 +5,6 @@
 <p align="center">
 <a href="LICENSE" alt="MIT License"><img src="https://img.shields.io/badge/license-MIT-FAD689.svg" /></a>
 <a href="https://arxiv.org/abs/2305.13751" alt="Paper Link"><img src="https://img.shields.io/badge/paper-link-D9AB42" /></a>
-<a href="https://www.clsp.jhu.edu/" alt="jhu"><img src="https://img.shields.io/badge/University_of_Southern_California-BEC23H" /></a>
-<a href="https://www.clsp.jhu.edu/" alt="jhu"><img src="https://img.shields.io/badge/University_of_Washington-BEC23H" /></a>
 </p>
 
 Authors: [Linghao Jin](), [Jacqueline He](https://jacqueline-he.github.io/), [Jonathan May](https://www.isi.edu/directory/jonmay/), [Xuezhe Ma](https://xuezhemax.github.io/)
@@ -34,7 +32,6 @@ To address these problems, we propose a more realistic setting for document-leve
   * [Citation](#citation)
 
 ## Quick Start
-
 ```bash
 conda create -n canmt python=3.8
 conda activate canmt
@@ -65,7 +62,7 @@ Please refer to `canmt-data/README.md` for details on downloading and processing
 ### Training
 
 **Run training script**
-Train all models for lg. pair *zh->en* implemented in the paper, you can run the following script
+Train all models for lg. pair *zh->en* implemented in the paper, you can run the following script:
 ```bash
 cd sh/zh-en
 chmod +x train_all.sh 
@@ -74,7 +71,7 @@ chmod +x train_all.sh
 You can configure the hyper-parameters in `train_all.sh` accordingly. Models are saved to `ckpt/`. 
 
 You can also train each model and setting separatively using the following scripts! 
-Note: N, M are source and target context sizes, respectively. Following Fernandes et al., our settings are 0-1 (representing the 1-2 in the paper) , and 1-1 (representing the 2-2 in the paper).
+Note: N, M are source and target context sizes, respectively. Following Fernandes et al., 2021, our settings are 0-1 (denoted as 1-2 in the paper) , and 1-1 (denoted as 2-2 in the paper).
 
 **XFMR-based context-aware *concatenation* baseline** (`concat_models`).
 ```bash
@@ -90,7 +87,7 @@ chmod +x train_mega.sh
 ```
 
 ### Evaluation
-Evaluate all trained models for lg. pair *zh->en* with commonly used NMT metrics as BLEU, COMET and BlonDe, you can run the following script
+To evaluate all trained models with the lg. pair *zh->en* on BLEU, COMET and BlonDe, you can run the following script
 ```bash
 cd sh/zh-en
 chmod +x generate_all.sh 
@@ -132,7 +129,7 @@ chmod +x generate_pretrained.sh
 ./generate_pretrained.sh
 ```
 
-Evaluate the fine-tuned models on Para2Para:
+To evaluate the fine-tuned models on Para2Para:
 ```bash
 cd sh/p2p
 chmod +x generate_finetuned.sh
@@ -143,7 +140,9 @@ chmod +x generate_finetuned.sh
 ![p2p results](p2p_results.png)
 
 ## Code Acknowledgements
-
+- [contextual_mt](https://github.com/neulab/contextual-mt) package from Fernandes et al., 2021
+- [BlonDe](https://github.com/EleanorJiang/BlonDe) package from Jiang et al., 2022
+- [MEGA](https://github.com/facebookresearch/mega) package from Ma et al., 2023
 
 ## Citation
 ```bibtex
