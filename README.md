@@ -62,7 +62,8 @@ Pre-processed data for BWB and IWSLT-17 can be found [here](https://drive.google
 ### Training
 
 **Run training script**
-Train all models for lg. pair *zh->en* implemented in the paper, you can run the following script:
+
+To train all models for lg. pair *zh->en* implemented in the paper, you can run the following script:
 ```bash
 cd sh/zh-en
 chmod +x train_all.sh 
@@ -73,13 +74,13 @@ You can configure the hyper-parameters in `train_all.sh` accordingly. Models are
 You can also train each model and setting separatively using the following scripts! 
 Note: N, M are source and target context sizes, respectively. Following Fernandes et al., 2021, our settings are 0-1 (denoted as 1-2 in the paper) , and 1-1 (denoted as 2-2 in the paper).
 
-**XFMR-based context-aware *concatenation* baseline** (`concat_models`).
+**Concatenation-based XFMR baseline** (in `concat_models`)
 ```bash
 cd sh/zh-en
 chmod +x train_concat.sh
 ./train_concat.sh
 ```
-**Mega-based context-aware *concatenation* baseline** (`concat_models`)
+**Concatenation-based MEGA baseline** (in `concat_models`)
 ```bash
 cd sh/zh-en
 chmod +x train_mega.sh
@@ -87,7 +88,7 @@ chmod +x train_mega.sh
 ```
 
 ### Evaluation
-To evaluate all trained models with the lg. pair *zh->en* on BLEU, COMET and BlonDe, you can run the following script
+To evaluate all trained *zh->en* models on BLEU, COMET and BlonDe, you can run the following script
 ```bash
 cd sh/zh-en
 chmod +x generate_all.sh 
